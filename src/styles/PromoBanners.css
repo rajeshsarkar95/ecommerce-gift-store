@@ -1,0 +1,73 @@
+/* Promo Section */
+.promo-section {
+  padding: 50px 8%;
+  background: #fff;
+}
+.promo-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.promo-banner {
+  position: relative;
+  overflow: hidden;
+  border-radius: 15px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+.promo-banner img {
+  width: 558px;
+  height: 400px;
+  object-fit: cover;
+}
+.promo-text {
+  position: absolute;
+  top: 20%;
+  left: 20%;
+  color: #fff;
+}
+.promo-text h3 {
+  font-size: 18px;
+  text-transform: uppercase;
+  opacity: 0.9;
+}
+.promo-text h1 {
+  font-size: 40px;
+  font-weight: bold;
+}
+.promo-text p {
+  margin-top: 10px;
+  font-size: 16px;
+  background: rgba(0, 0, 0, 0.5);
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 8px;
+}
+@media (max-width: 1024px) {
+  .promo-banner {
+    width: 100%;
+  }
+  .promo-text h1 {
+    font-size: 2.5rem;
+  }
+}
+/* 📱 Mobile View */
+@media (max-width: 480px) {
+  .promo-container {
+    gap: 18px;
+  }
+  .promo-text {
+    bottom: 10%;
+    left: 8%;
+    text-align: left;
+  }
+  .promo-text h3 {
+    font-size: 0.9rem;
+  }
+  .promo-text h1 {
+    font-size: 1.8rem;
+  }
+  .promo-text p {
+    font-size: 0.85rem;
+  }
+}

@@ -1,0 +1,130 @@
+/* T-Shirt Collection */
+.tshirt-collection {
+  text-align: center;
+  padding: 50px;
+}
+.product .add-btn {
+  margin-top: 8px;
+  padding: 8px 14px;
+  background: #ff6b00;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: 0.2s ease;
+}
+
+.product .add-btn:hover {
+  background: #e15800;
+}
+
+.tshirt-collection h2 {
+  color: #3e0066;
+  font-size: 28px;
+  margin-bottom: 30px;
+}
+
+.tshirt-collection .product-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 25px;
+}
+
+.product {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: 0.3s;
+}
+
+.product:hover {
+  transform: translateY(-5px);
+}
+
+.product img {
+  margin-top: 15px;
+  width: 90%;
+  height: 220px;
+  object-fit: cover;
+}
+
+.product-info {
+  padding: 15px;
+}
+
+.product-info h4 {
+  color: #333;
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+.product-info p {
+  color: #6a0dad;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.product-info small {
+  text-decoration: line-through;
+  color: #999;
+}
+
+/* 📱 Mobile Responsive (Small devices) */
+@media (max-width: 576px) {
+  .tshirt-collection {
+    padding: 25px;
+  }
+
+  .tshirt-collection .product-list {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+  }
+
+  .product img {
+    width: 95%;
+    height: 170px;
+  }
+
+  .product-info h4 {
+    font-size: 13px;
+  }
+
+  .product-info p {
+    font-size: 13px;
+  }
+
+  .tshirt-collection h2 {
+    font-size: 20px;
+  }
+}
+
+/* 📲 Tablet Responsive */
+@media (min-width: 577px) and (max-width: 992px) {
+  .tshirt-collection {
+    padding: 35px;
+  }
+
+  .tshirt-collection .product-list {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  .product img {
+    height: 200px;
+  }
+
+  .product-info h4 {
+    font-size: 14px;
+  }
+
+  .product-info p {
+    font-size: 14px;
+  }
+
+  .tshirt-collection h2 {
+    font-size: 24px;
+  }
+}

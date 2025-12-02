@@ -1,0 +1,41 @@
+/* Newsletter Section */
+.newsletter {
+  background: #ffcc00;
+  text-align: center;
+  padding: 40px 20px;
+}
+.newsletter h2 {
+  font-size: 28px;
+  color: #3e0066;
+  margin-bottom: 10px;
+}
+.newsletter p {
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 20px;
+}
+.newsletter form {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+.newsletter input {
+  padding: 10px;
+  width: 300px;
+  border-radius: 8px;
+  border: none;
+}
+.newsletter button {
+  background: #000;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+.newsletter button:hover {
+  background: #333;
+}
