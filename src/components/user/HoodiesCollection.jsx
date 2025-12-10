@@ -1,85 +1,72 @@
-import React from "react";
-import "../../styles/HoodiesCollection.css";
-import bosscopouple from "../../assets/Boss-Couple-2.jpg";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import { useCart } from "../../context/CartContext";
 import { useNavigate } from "react-router-dom";
-
-const hoodieProducts = [
-  {
-    id: 301,
-    title: "Couple Personalized Hoodies",
-    price: 700,
-    img: bosscopouple,
-    alt: "Couple Personalized Hoodie",
-  },
-  {
-    id: 302,
-    title: "Personalized Hoodies",
-    price: 700,
-    img: bosscopouple,
-    alt: "Personalized Hoodie",
-  },
-  {
-    id: 303,
-    title: "Custom Printed Hoodies",
-    price: 700,
-    img: bosscopouple,
-    alt: "Custom Hoodie",
-  },
-  {
-    id: 304,
-    title: "Demon Slayer Anime Hoodie",
-    price: 700,
-    img: bosscopouple,
-    alt: "Anime Hoodie",
-  },
-];
-
-function HoodieCard({ product }) {
-  const navigate = useNavigate();
-  const { addToCart } = useCart();
-
-  return (
-    <div className="product">
-      <img
-        src={product.img}
-        alt={product.alt}
-        className="clickable"
-        loading="lazy"
-        onClick={() => navigate(`/product/${product.id}`)}
-      />
-
-      <div className="product-info">
-        <h4>{product.title}</h4>
-        <p>₹{product.price}</p>
-
-        <button
-          className="add-btn"
-          onClick={() =>
-            addToCart({
-              id: product.id,
-              name: product.title,
-              price: product.price,
-              image: product.img,
-            })
-          }
-        >
-          Add to Cart
-        </button>
-      </div>
-    </div>
-  );
-}
+import "../../styles/HoodiesCollection.css"
 
 export default function HoodiesCollection() {
+  const [hoodies, setHoodies] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const { addToCart } = useCart();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchHoodies = async () => {
+      try {
+        const { data } = await axios.get("http://localhost:5000/api/hoodies");
+        if (!data.success) {
+          throw new Error(data.message || "Failed to fetch hoodies");
+        }
+        setHoodies(data.data);
+      } catch (err) {
+        setError(err.response?.data?.message || err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchHoodies();
+  }, []);
+
+  if (loading) return <p>Loading Hoodies...</p>;
+  if (error) return <p>Error: {error}</p>;
+  if (!hoodies.length) return <p>No hoodies available.</p>;
+
   return (
     <section className="tshirt-collection">
       <h2>Hoodies Collection</h2>
-
       <div className="product-list">
-        {hoodieProducts.map((item) => (
-          <HoodieCard key={item.id} product={item} />
-        ))}
+        {hoodies.map((product) => {
+          const imageUrl = `http://localhost:5000/uploads/hoodies/${product.image}`;
+          return (
+            <div key={product._id} className="product">
+              <img
+                src={imageUrl}
+                alt={product.title}
+                className="clickable"
+                loading="lazy"
+                onClick={() => navigate(`/product/${product._id}`)}
+              />
+              <div className="product-info">
+                <h4>{product.title}</h4>
+                <p>₹{product.price}</p>
+                <button
+                  className="add-btn"
+                  onClick={() =>
+                    addToCart({
+                      id: product._id,
+                      name: product.title,
+                      price: product.price,
+                      image: imageUrl,
+                    })
+                  }
+                >
+                  Add to Cart
+                </button>
+              </div>
+            </div>
+          );
+        })}
       </div>
     </section>
   );

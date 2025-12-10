@@ -1,43 +1,56 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "../../styles/PopularCategories.css";
-
-// Importing Images
-import cusion from "../../assets/cusion.jpg";
-import mug from "../../assets/Mug.jpg";
-import lamp from "../../assets/frame.png";
-import tshirt from "../../assets/tshirt.jpg";
-import frame from "../../assets/Fl.jpg";
+import axios from "axios";
 
 function PopularCategories() {
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const res = await axios.get("http://localhost:5000/api/popularcategories");
+        if (res.data.success) {
+          setCategories(res.data.data.slice(0, 5));
+        }
+      } catch (err) {
+        console.log("Error fetching categories:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
+  if (loading) {
+    return (
+      <section className="popular-categories">
+        <h2>Popular Categories</h2>
+        <p>Loading...</p>
+      </section>
+    );
+  }
+
   return (
     <section className="popular-categories">
       <h2>Popular Categories</h2>
       <div className="category-list">
-        <div className="category">
-          <img src={cusion} alt="Printed Cushion" />
-          <h4>Printed Cushion</h4>
-          <p>6 items</p>
-        </div>
-        <div className="category">
-          <img src={mug} alt="Mugs" />
-          <h4>Mugs</h4>
-          <p>6 items</p>
-        </div>
-        <div className="category">
-          <img src={lamp} alt="Lamp" />
-          <h4>Lamp</h4>
-          <p>5 items</p>
-        </div>
-        <div className="category">
-          <img src={tshirt} alt="T-shirts" />
-          <h4>T-shirts</h4>
-          <p>6 items</p>
-        </div>
-        <div className="category">
-          <img src={frame} alt="Photo Frames" />
-          <h4>Photo Frames</h4>
-          <p>9 items</p>
-        </div>
+        {categories.length > 0 ? (
+          categories.map((cat) => (
+            <div className="category" key={cat._id}>
+              <img
+                src={`http://localhost:5000/uploads/popularcategory/${cat.image[0]}`}
+                alt={cat.title}
+                className="category-img"
+              />
+              <h4>{cat.title}</h4>
+              <p>{cat.itemsCount} items</p>
+            </div>
+          ))
+        ) : (
+          <p>No categories available.</p>
+        )}
       </div>
     </section>
   );

@@ -1,93 +1,70 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "../../styles/TshirtCollection.css";
 import Oversize1 from "../../assets/Oversize1.png";
 import { useCart } from "../../context/CartContext";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
-const defaultProducts = [
-  {
-    id: 201,
-    title: "Oversize T-Shirt",
-    price: 700,
-    img: Oversize1,
-    alt: "Oversize T-shirt",
-  },
-  {
-    id: 202,
-    title: "Pure Cotton Round Neck T-Shirt",
-    price: 699,
-    img: Oversize1,
-    alt: "Round neck cotton t-shirt",
-  },
-  {
-    id: 203,
-    title: "Round Neck Custom Couple T-Shirt (Your Design)",
-    price: 699,
-    img: Oversize1,
-    alt: "Custom couple t-shirt",
-  },
-  {
-    id: 204,
-    title: "Kalakaar Hindi Printed T-Shirt",
-    price: 295,
-    img: Oversize1,
-    alt: "Hindi printed t-shirt",
-  },
-  {
-    id: 205,
-    title: "Custom T-Shirt (Double Side Printing)",
-    price: 949,
-    img: Oversize1,
-    alt: "Custom double side print t-shirt",
-  },
-];
-
-function ProductCard({ product }) {
+export default function TshirtCollection() {
+  const [products, setProducts] = useState([]);
   const navigate = useNavigate();
   const { addToCart } = useCart();
+  const fetchProducts = async () => {
+    try {
+      const res = await axios.get("http://localhost:5000/api/tshirt");
+      const formatted = res.data.data.map((item) => ({
+        id: item._id,
+        title: item.title,
+        price: item.price,
+        img:
+          item.image?.length > 0
+            ? `http://localhost:5000/uploads/tshirt/${item.image[0]}`
+            : Oversize1,
+        alt: item.title,
+      }));
 
-  return (
-    <div className="product">
-      {/* 🔥 Click to open detail page */}
-      <img
-        src={product.img}
-        alt={product.alt}
-        loading="lazy"
-        className="clickable"
-        onClick={() => navigate(`/product/${product.id}`)}
-      />
+      setProducts(formatted);
+    } catch (error) {
+      console.log("API Error:", error.message);
+    }
+  };
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    fetchProducts();
+  }, []);
 
-      <div className="product-info">
-        <h4>{product.title}</h4>
-        <p>₹{product.price}</p>
-
-        {/* 🔥 Add to Cart button */}
-        <button
-          className="add-btn"
-          onClick={() =>
-            addToCart({
-              id: product.id,
-              name: product.title,
-              price: product.price,
-              image: product.img,
-            })
-          }
-        >
-          Add to Cart
-        </button>
-      </div>
-    </div>
-  );
-}
-
-export default function TshirtCollection({ products = defaultProducts }) {
   return (
     <section className="tshirt-collection">
       <h2>T-Shirt And Hoodies Collection</h2>
 
       <div className="product-list">
-        {products.map((item) => (
-          <ProductCard key={item.id} product={item} />
+        {products.map((product) => (
+          <div key={product.id} className="product">
+            <img
+              src={product.img}
+              alt={product.alt}
+              loading="lazy"
+              className="clickable"
+              onClick={() => navigate(`/product/${product.id}`)}
+            />
+            <div className="product-info">
+              <h4>{product.title}</h4>
+              <p>₹{product.price}</p>
+              <button
+                className="add-btn"
+                onClick={() =>
+                  addToCart({
+                    id: product.id,
+                    name: product.title,
+                    price: product.price,
+                    image: product.img,
+                  })
+                }
+              >
+                Add to Cart
+              </button>
+            </div>
+          </div>
         ))}
       </div>
     </section>

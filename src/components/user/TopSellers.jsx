@@ -1,68 +1,48 @@
 import React from "react";
 import "../../styles/TopSellers.css";
-import Flimg from "../../assets/Fl.jpg";
-import cusionimg from "../../assets/cusion.jpg";
-import ledimg from "../../assets/led.jpg";
-import threeD from "../../assets/3dled.jpg";
-import Woodframe from "../../assets/woodenframe.jpg";
+import { useEffect, useState } from "react";
 import { useCart } from "../../context/CartContext";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function TopSellers() {
   const { addToCart } = useCart();
   const navigate = useNavigate();
-  const products = [
-    {
-      id: 101,
-      name: "Frameless Photo Frame",
-      price: 540,
-      image: Flimg,
-    },
-    {
-      id: 102,
-      name: "Customized Printed Cushion",
-      price: 150,
-      image: cusionimg,
-    },
-    {
-      id: 103,
-      name: "LED Illusion Heart Lamp",
-      price: 1499,
-      image: ledimg,
-    },
-    {
-      id: 104,
-      name: "LED Photo Frame",
-      price: 1500,
-      image: threeD,
-    },
-    {
-      id: 105,
-      name: "Personalized Photo Frame",
-      price: 350,
-      image: Woodframe,
-    },
-  ];
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  useEffect(() => {
+    const fetchTopSellers = async () => {
+      try {
+        const res = await axios.get("http://localhost:5000/api/topseller");
+        setProducts(res.data.data);
+      } catch (error) {
+        setError("Failed to fetch products", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchTopSellers();
+  }, []);
+  if (loading) return <p>Loading top sellers...</p>;
+  if (error) return <p>{error}</p>;
+
   return (
     <section className="top-sellers">
       <h2>Top Sellers</h2>
-
       <div className="product-list">
         {products.map((p) => (
-          <div className="product" key={p.id}>
+          <div className="top-seller-product" key={p._id}>
             <img
-              src={p.image}
-              alt={p.name}
+              src={`http://localhost:5000/uploads/topSellar/${p.images[0]}`}
+              alt={p.title}
               className="clickable"
-              onClick={() => navigate(`/product/${p.id}`, {state:p })}
+              onClick={() => navigate(`/product/${p._id}`, { state: p })}
             />
             <div className="product-info">
-              <h4>{p.name}</h4>
+              <h4>{p.title}</h4>
               <p>₹{p.price}</p>
-              <button
-                className="add-btn"
-                onClick={() => addToCart(p)}
-              >
+              <button className="add-btn" onClick={() => addToCart(p)}>
                 Add to Cart
               </button>
             </div>

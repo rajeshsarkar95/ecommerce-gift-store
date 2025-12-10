@@ -1,44 +1,32 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import "../../styles/MugCollection.css";
-import whiteMug from "../../assets/whitemug.jpg";
 import { useCart } from "../../context/CartContext";
 import { useNavigate } from "react-router-dom";
 
-const mugProducts = [
-  {
-    id: 401,
-    img: whiteMug,
-    alt: "White Mug",
-    title: "Personalized White Photo Mug",
-    price: 249,
-  },
-  {
-    id: 402,
-    img: whiteMug,
-    alt: "Inner Color Mug",
-    title: "Personalized Inner Color Mug",
-    price: 320,
-  },
-  {
-    id: 403,
-    img: whiteMug,
-    alt: "Photo Magic Mug",
-    title: "Photo Magic Mug",
-    price: 520,
-  },
-  {
-    id: 404,
-    img: whiteMug,
-    alt: "Couple Mug",
-    title: "Personalized Couple Mug",
-    oldPrice: 550,
-    price: 530,
-  },
-];
-
 export default function MugCollection() {
+  const [mugProducts, setMugProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
   const { addToCart } = useCart();
+  const fetchMugs = async () => {
+    try {
+      const res = await axios.get("http://localhost:5000/api/mugs");
+      setMugProducts(res.data.mugs);
+      setLoading(false);
+    } catch (err) {
+      setError("Failed to load mugs",err);
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    fetchMugs();
+  }, []);
+
+  if (loading) return <p>Loading mugs...</p>;
+  if (error) return <p>{error}</p>;
 
   return (
     <section className="product-section">
@@ -46,15 +34,15 @@ export default function MugCollection() {
 
       <div className="product-grid">
         {mugProducts.map((product) => (
-          <div className="product" key={product.id}>
+          <div className="product" key={product._id}>
             <img
-              src={product.img}
-              alt={product.alt}
+              src={`http://localhost:5000/${product.image}`}
+              alt={product.name}
               className="clickable"
-              onClick={() => navigate(`/product/${product.id}`)}
+              onClick={() => navigate(`/product/${product._id}`)}
             />
 
-            <h3>{product.title}</h3>
+            <h3>{product.name}</h3>
 
             <p>
               {product.oldPrice && (
@@ -67,10 +55,10 @@ export default function MugCollection() {
               className="add-btn"
               onClick={() =>
                 addToCart({
-                  id: product.id,
-                  name: product.title,
+                  id: product._id,
+                  name: product.name,
                   price: product.price,
-                  image: product.img,
+                  image: `http://localhost:5000/${product.image}`,
                 })
               }
             >

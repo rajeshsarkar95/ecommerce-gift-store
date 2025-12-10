@@ -1,25 +1,30 @@
-import React from "react";
-import "../../styles/OfferBanners.css"; 
-import bulk1 from "../../assets/bulk1.jpeg"
-import bulk2 from  "../../assets/bulk2.jpeg"
-
-const offerBanners = [
-  {
-    id: 1,
-    img: bulk1,
-    alt: "Best Offer Banner",
-  },
-  {
-    id: 2,
-    img: bulk2 ,
-    alt: "Bulk Order Offer Banner",
-  },
-];
+/* eslint-disable react-hooks/set-state-in-effect */
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import "../../styles/OfferBanners.css";
 
 export default function OffersBanner() {
+  const [banners, setBanners] = useState([]);
+  const fetchBanners = async () => {
+    try {
+      const res = await axios.get("http://localhost:5000/api/customegiftbanner");
+      const data = res?.data?.data || [];
+      const formatted = data.map((item) => ({
+        id: item._id,
+        img: `http://localhost:5000/${item.bulkOrderImage}`, 
+        alt: "Offer Banner",
+      }));
+      setBanners(formatted);
+    } catch (err) {
+      console.error("Banner Fetch Error:", err);
+    }
+  };
+  useEffect(() => {
+    fetchBanners();
+  }, []);
   return (
     <section className="offer-banners">
-      {offerBanners.map((offer) => (
+      {banners.map((offer) => (
         <div className="offer" key={offer.id}>
           <img src={offer.img} alt={offer.alt} />
           <div className="offer-text"></div>

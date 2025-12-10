@@ -1,9 +1,7 @@
 import React from 'react';
 import { useQuery } from "@tanstack/react-query";
 import {api} from "../../api/api";  
-
 import "../../styles/TopBar.css";
-
 function TopBar() {
   const {data} = useQuery({
     queryKey: ['topbar'],
@@ -12,9 +10,7 @@ function TopBar() {
       return response.data;
     }
   })
-   console.log("data qury",data);
     const topBar = data?.[0]
-   
   return (
     <div className="top-bar">
       <div className='top-fetch'>
