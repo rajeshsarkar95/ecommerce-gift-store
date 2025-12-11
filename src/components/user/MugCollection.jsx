@@ -16,7 +16,7 @@ export default function MugCollection() {
       setMugProducts(res.data.mugs);
       setLoading(false);
     } catch (err) {
-      setError("Failed to load mugs",err);
+      setError("Failed to load mugs", err);
       setLoading(false);
     }
   };
@@ -41,16 +41,13 @@ export default function MugCollection() {
               className="clickable"
               onClick={() => navigate(`/product/${product._id}`)}
             />
-
             <h3>{product.name}</h3>
-
             <p>
               {product.oldPrice && (
                 <span className="old-price">₹{product.oldPrice}</span>
               )}
               <span className="new-price"> ₹{product.price}</span>
             </p>
-
             <button
               className="add-btn"
               onClick={() =>
