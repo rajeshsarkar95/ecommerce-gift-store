@@ -17,12 +17,8 @@ const FeaturedProducts = () => {
     const fetchProducts = async () => {
       try {
         const res = await axios.get("http://localhost:5000/api/featuredproducts");
-
-        console.log("API Response:", res.data);
-
         setProducts(res.data.products);
         setLoading(false);
-
       } catch (err) {
         console.error(err);
         setError("Failed to load featured products");

@@ -1,0 +1,219 @@
+.banner-table-container {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+.admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.add-btn {
+    background-color: #5cb85c; 
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.add-btn:hover {
+    background-color: #4cae4c;
+}
+
+/* --- Table Structure --- */
+.banner-data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Table Header and Cells */
+.banner-data-table th, .banner-data-table td {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    text-align: left;
+    vertical-align: top; /* Important for multi-line description/subtitle */
+}
+
+.banner-data-table th {
+    background-color: #f4f4f4;
+    color: #333;
+    font-weight: bold;
+}
+
+.banner-data-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.banner-data-table tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* --- Specific Banner Content Styling --- */
+/* Note: Since banner data is mostly text, we use general styling for clarity */
+
+.banner-description-cell {
+    /* Optional: Limit the width and show ellipsis for long descriptions */
+    max-width: 300px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.banner-image-count-cell {
+    text-align: center;
+    font-weight: bold;
+    color: #0275d8; /* Distinct color for count */
+}
+
+/* --- Row Action Buttons (Edit/Delete) --- */
+.action-buttons button {
+    margin-right: 5px;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.edit-btn {
+    background-color: #0275d8; 
+    color: white;
+}
+.edit-btn:hover {
+    background-color: #025aa5;
+}
+
+.delete-btn {
+    background-color: #d9534f; 
+    color: white;
+}
+.delete-btn:hover {
+    background-color: #c9302c;
+}
+
+/* --- Modal/Popup Styling (Using generic class names for shared modal logic) --- */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: white;
+    padding: 30px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 500px;
+    position: relative;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.form-group input, .form-group textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    resize: vertical; /* Allow resizing for textarea */
+}
+
+.modal-actions {
+    margin-top: 20px;
+    text-align: right;
+}
+
+.submit-btn, .cancel-btn {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-left: 10px;
+}
+
+.submit-btn {
+    background-color: #5cb85c;
+    color: white;
+}
+
+.cancel-btn {
+    background-color: #ccc;
+}
+
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+/* --- Status Messages --- */
+.loading-message, .error-message, .no-data-message {
+    padding: 20px;
+    text-align: center;
+    font-size: 1.1em;
+}
+
+/* --- Basic Responsiveness for smaller screens --- */
+@media (max-width: 600px) {
+    .banner-data-table thead {
+        /* Hide table headers (but not display: none;, for accessibility) */
+        border: none;
+        clip: rect(0 0 0 0);
+        height: 1px;
+        margin: -1px;
+        overflow: hidden;
+        padding: 0;
+        position: absolute;
+        width: 1px;
+    }
+
+    .banner-data-table tr {
+        border-bottom: 3px solid #ddd;
+        display: block;
+        margin-bottom: .625em;
+    }
+
+    .banner-data-table td {
+        border-bottom: 1px solid #ddd;
+        display: block;
+        text-align: right;
+        font-size: .8em;
+    }
+
+    .banner-data-table td::before {
+        /* Prepend the column name */
+        content: attr(data-label);
+        float: left;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+
+    .banner-data-table td:last-child {
+        border-bottom: 0;
+    }
+}
