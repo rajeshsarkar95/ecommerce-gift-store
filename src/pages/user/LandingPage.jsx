@@ -14,6 +14,7 @@ import FeaturedProducts from "../../components/user/FeaturedProducts";
 import RecommendedProducts from "../../components/user/RecommendedProducts";
 import Footer from "../../components/user/Footer";
 import Newsletter from "../../components/user/Newsletter";
+import WhatsAppIcon from "../../components/user/WhatapsIcons";
 
 export default function LandingPage() {
   return (
@@ -33,6 +34,7 @@ export default function LandingPage() {
       <FeaturedProducts />
       <RecommendedProducts />
       <Newsletter />
+      <WhatsAppIcon/>
       <Footer />
     </>
   );

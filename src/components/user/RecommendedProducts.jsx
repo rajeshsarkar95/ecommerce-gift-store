@@ -19,7 +19,6 @@ const RecommendedProducts = () => {
     }
   };
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchRecommended();
   }, []);
   const handleAddToCart = (product) => {

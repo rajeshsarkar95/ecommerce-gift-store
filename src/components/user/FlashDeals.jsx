@@ -27,7 +27,7 @@ function FlashDeals() {
         {products.map((product) => (
           <div className="product-deals" key={product._id}>
             <img
-              src={`http://localhost:5000/uploads/${product.images[0]}`}
+              src={`http://localhost:5000/uploads/flashdeals/${product.images[0]}`}
               alt={product.tittle}
               onClick={() =>
                 navigate(`/product/${product._id}`, {state: product })

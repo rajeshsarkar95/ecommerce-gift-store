@@ -7,19 +7,20 @@ import axios from "axios";
 function TopSellers() {
   const { addToCart } = useCart();
   const navigate = useNavigate();
-  const [products, setProducts] = useState([]); 
+  const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
 
   useEffect(() => {
     const fetchTopSellers = async () => {
       try {
         const res = await axios.get("http://localhost:5000/api/topseller");
-        if (Array.isArray(res.data)) {
-          setProducts(res.data);
+        const data = res.data.data || res.data;
+        if (Array.isArray(data)) {
+          setProducts(data);
         } else {
           setProducts([]);
-          console.error("Expected array but got:", res.data);
         }
       } catch (err) {
         setError("Failed to fetch products");
@@ -31,6 +32,9 @@ function TopSellers() {
 
     fetchTopSellers();
   }, []);
+
+
+
   if (loading) return <p>Loading top sellers...</p>;
   if (error) return <p>{error}</p>;
   if (products.length === 0) return <p>No top sellers available.</p>;

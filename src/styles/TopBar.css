@@ -4,7 +4,7 @@
   padding: 8px 20px;
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: end;
   align-items: center;
   gap: 10px;
   font-size: 14px;
@@ -13,6 +13,11 @@
   width: 100%;
   z-index: 1000;
   text-align: center;
+}
+.top-icons{
+    display: flex;
+    gap: 12px;
+    justify-content: start;
 }
 .top-fetch{
   display: flex;

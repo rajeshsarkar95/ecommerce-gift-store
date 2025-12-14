@@ -16,21 +16,16 @@ function PopularCategoryTable() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalAction, setModalAction] = useState('add');
   const [formData, setFormData] = useState(emptyCategory);
-  const [selectedImageFile, setSelectedImageFile] = useState(null); // Assuming single image for categories
+  const [selectedImageFile, setSelectedImageFile] = useState(null); 
 
   console.log("Current category form data:", formData);
-
-  // --- Data Fetching Logic (Read) ---
   const fetchCategories = useCallback(async () => {
     setIsLoading(true);
     setError(null);
     try {
       const response = await axios.get(API_URL);
-      // Ensure we get the array of data
       const apiData = response.data.data || response.data; 
-      
       let categoriesArray = Array.isArray(apiData) ? apiData : [];
-
       setCategories(categoriesArray);
     } catch (err) {
       console.error("Failed to fetch categories:", err);
@@ -44,8 +39,6 @@ function PopularCategoryTable() {
   useEffect(() => {
     fetchCategories();
   }, [fetchCategories]);
-
-  // --- Modal Open/Close Handlers ---
   const handleAddClick = () => {
     setFormData(emptyCategory);
     setSelectedImageFile(null);
@@ -57,7 +50,6 @@ function PopularCategoryTable() {
     setFormData({
       ...category,
       itemsCount: category.itemsCount || 0,
-      // Ensure 'image' is an array with one valid string/url, matching the schema
       image: Array.isArray(category.image) && category.image.length > 0
           ? category.image
           : [""]
@@ -69,16 +61,12 @@ function PopularCategoryTable() {
   
   const handleCloseModal = () => setIsModalOpen(false);
   const handleContentClick = (e) => e.stopPropagation();
-
-  // --- Form Change Handlers ---
   const handleChange = (e) => {
     const { name, value, files } = e.target;
-
     if (name === 'image' && files && files.length > 0) {
       setSelectedImageFile(files[0]);
       return;
     }
-    
     setFormData(prevData => {
       const newValue = (name === 'itemsCount') ? parseInt(value) || 0 : value;
       return {
@@ -88,7 +76,6 @@ function PopularCategoryTable() {
     });
   };
 
-  // --- Form Submission Logic (Create/Update) ---
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
@@ -98,20 +85,15 @@ function PopularCategoryTable() {
     const url = modalAction === "add"
       ? API_URL
       : `${API_URL}/${formData._id}`;
-  
-    // Use FormData for text fields and file uploads
     const dataToSend = new FormData();
     dataToSend.append("title", formData.title);
     dataToSend.append("itemsCount", String(formData.itemsCount));
 
     if (selectedImageFile) {
-      dataToSend.append("image", selectedImageFile); // 'image' field must match Multer config
+      dataToSend.append("image", selectedImageFile); 
     } else if (modalAction === "edit" && formData.image && formData.image[0]) {
-      // Pass the existing URL if no new file is uploaded
       dataToSend.append("existingImage", formData.image[0]); 
     }
-    
-    // Validation: Require new file if adding
     if (modalAction === "add" && !selectedImageFile) {
       setError("Please select an image file to upload for the category.");
       setIsLoading(false);
@@ -124,13 +106,13 @@ function PopularCategoryTable() {
         url: url,
         data: dataToSend,
         headers: {
-            'Content-Type': 'multipart/form-data', // Crucial for file upload
+            'Content-Type': 'multipart/form-data', 
         },
       });
   
       setIsModalOpen(false);
       setSelectedImageFile(null);
-      fetchCategories(); // Refresh data in table
+      fetchCategories(); 
   
     } catch (err) {
       const serverMessage =
@@ -141,7 +123,6 @@ function PopularCategoryTable() {
     }
   };
   
-  // --- Deletion Logic ---
   const handleDelete = async (categoryId, title) => {
     if (!window.confirm(`Are you sure you want to DELETE the category: "${title}"?`)) {
       return;
@@ -159,13 +140,11 @@ function PopularCategoryTable() {
     }
   };
 
-  // --- Render ---
   if (isLoading && categories.length === 0) {
     return <div className="loading-message">Loading popular categories...</div>;
   }
 
   return (
-    // Reusing the container class names for immediate styling
     <div className="flash-deal-container"> 
       <div className="admin-header">
         <h2> Popular Categories Management</h2>
@@ -195,7 +174,7 @@ function PopularCategoryTable() {
                     <img
                         src={category.image && category.image[0] ? `http://localhost:5000${category.image[0]}` : 'placeholder.jpg'}
                         alt={category.title || 'Category Image'}
-                        className="deal-image" // Reusing deal-image class
+                        className="deal-image" 
                     />
                 </td>
                 <td data-label="Title">{category.title}</td>
@@ -214,28 +193,20 @@ function PopularCategoryTable() {
           </tbody>
         </table>
       )}
-
-      {/* --- Modal Component --- */}
       {isModalOpen && (
         <div className="modal-overlay" onClick={handleCloseModal}>
           <div className="modal-content" onClick={handleContentClick}>
             <h3>{modalAction === 'add' ? 'Create New Category' : `Edit Category: ${formData.title}`}</h3>
             <hr />
             <form onSubmit={handleSubmit}>
-
-              {/* Title Input */}
               <div className="form-group">
                 <label htmlFor="title">Title:</label>
                 <input type="text" id="title" name="title" value={formData.title} onChange={handleChange} required />
               </div>
-
-              {/* Items Count Input */}
               <div className="form-group">
                 <label htmlFor="itemsCount">Items Count:</label>
                 <input type="number" id="itemsCount" name="itemsCount" value={formData.itemsCount} onChange={handleChange} required min="0" step="1" />
               </div>
-
-              {/* Image Upload Input */}
               <div className="form-group">
                 <label htmlFor="imageFile">Upload Image File:</label>
                 <input

@@ -9,6 +9,8 @@ export default function TshirtCollection() {
   const [products, setProducts] = useState([]);
   const navigate = useNavigate();
   const { addToCart } = useCart();
+
+  
   const fetchProducts = async () => {
     try {
       const res = await axios.get("http://localhost:5000/api/tshirt");

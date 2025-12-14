@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import '../../styles/admin/FlashDealsTable.css';
+
 const API_URL = 'http://localhost:5000/api/featuredproducts';
 
 const emptyProduct = {
@@ -12,6 +13,7 @@ const emptyProduct = {
 };
 
 function FeaturedProductTable() {
+
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -20,25 +22,30 @@ function FeaturedProductTable() {
   const [formData, setFormData] = useState(emptyProduct);
   const [selectedImageFile, setSelectedImageFile] = useState(null);
 
-  console.log("Current featured product form data:", formData);
-
   const fetchProducts = useCallback(async () => {
-    setIsLoading(true);
-    setError(null);
     try {
-      const response = await axios.get(API_URL);
-      const apiData = response.data.data || response.data;
-      let productsArray = Array.isArray(apiData) ? apiData : [];
+      setIsLoading(true);
+      setError(null);
+      const res = await axios.get(API_URL);
+      const apiData = res.data;
+      let productsArray = Array.isArray(apiData.products) ? apiData.products : [];
+      productsArray = productsArray.map((item, index) => ({
+        _id: item._id || index,
+        name: item.name || item.title || "",
+        price: Number(item.price || item.newPrice || 0),
+        oldprice: Number(item.oldprice || item.oldPrice || 0),
+        image: item.image || item.images || ""
+      }));
       setProducts(productsArray);
     } catch (err) {
       console.error("Failed to fetch featured products:", err);
-      setError('Failed to load featured products. Check the server and API_URL.');
+      setError("Failed to fetch featured products. Check server.");
       setProducts([]);
     } finally {
       setIsLoading(false);
     }
   }, []);
-
+  
   useEffect(() => {
     fetchProducts();
   }, [fetchProducts]);
@@ -63,6 +70,7 @@ function FeaturedProductTable() {
   };
 
   const handleCloseModal = () => setIsModalOpen(false);
+
   const handleContentClick = (e) => e.stopPropagation();
 
   const handleChange = (e) => {
@@ -80,7 +88,6 @@ function FeaturedProductTable() {
       };
     });
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
@@ -113,18 +120,14 @@ function FeaturedProductTable() {
         method: method,
         url: url,
         data: dataToSend,
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
+        headers: { 'Content-Type': 'multipart/form-data' },
       });
 
       setIsModalOpen(false);
       setSelectedImageFile(null);
       fetchProducts();
-
     } catch (err) {
-      const serverMessage =
-        err.response?.data?.message || err.message || "Check network and server logs.";
+      const serverMessage = err.response?.data?.message || err.message || "Check network and server logs.";
       setError(`Failed to save product: ${serverMessage}`);
     } finally {
       setIsLoading(false);
@@ -132,14 +135,13 @@ function FeaturedProductTable() {
   };
 
   const handleDelete = async (productId, name) => {
-    if (!window.confirm(`Are you sure you want to DELETE the featured product: "${name}"?`)) {
-      return;
-    }
+    if (!window.confirm(`Are you sure you want to DELETE the featured product: "${name}"?`)) return;
+
     setError(null);
     setIsLoading(true);
     try {
       await axios.delete(`${API_URL}/${productId}`);
-      setProducts(prevProducts => prevProducts.filter(product => product._id !== productId));
+      setProducts(prev => prev.filter(p => p._id !== productId));
     } catch (err) {
       const serverMessage = err.response?.data?.message || 'Check network and server logs.';
       setError(`Failed to delete product: ${serverMessage}`);
@@ -155,11 +157,12 @@ function FeaturedProductTable() {
   return (
     <div className="flash-deal-container">
       <div className="admin-header">
-        <h2> Featured Products Management</h2>
+        <h2>Featured Products Management</h2>
         <button onClick={handleAddClick} className="add-btn" title="Create a new Featured Product">
           + ADD NEW FEATURED PRODUCT
         </button>
       </div>
+
       {error && <div className="error-message admin-error">{error}</div>}
 
       {products.length === 0 && !isLoading ? (
@@ -176,13 +179,13 @@ function FeaturedProductTable() {
             </tr>
           </thead>
           <tbody>
-            {products.map((product) => {
+            {products.map((product, index) => {
               // eslint-disable-next-line no-unused-vars
               const discount = product.oldprice && product.oldprice > 0
                 ? (((product.oldprice - product.price) / product.oldprice) * 100).toFixed(0)
                 : 'N/A';
               return (
-                <tr key={product._id}>
+                <tr key={product._id || index}>
                   <td data-label="Image">
                     <img
                       src={product.image ? `http://localhost:5000${product.image}` : 'placeholder.jpg'}
@@ -191,15 +194,11 @@ function FeaturedProductTable() {
                     />
                   </td>
                   <td data-label="Name">{product.name}</td>
-                  <td data-label="Current Price" className="price-new">${product.price ? product.price.toFixed(2) : '0.00'}</td>
-                  <td data-label="Old Price" className="price-old">${product.oldprice ? product.oldprice.toFixed(2) : '0.00'}</td>
+                  <td data-label="Current Price" className="price-new">${product.price?.toFixed(2) || '0.00'}</td>
+                  <td data-label="Old Price" className="price-old">${product.oldprice?.toFixed(2) || '0.00'}</td>
                   <td data-label="Actions" className="action-buttons">
-                    <button onClick={() => handleEditClick(product)} className="edit-btn">
-                      Edit
-                    </button>
-                    <button onClick={() => handleDelete(product._id, product.name)} className="delete-btn">
-                      Delete
-                    </button>
+                    <button onClick={() => handleEditClick(product)} className="edit-btn">Edit</button>
+                    <button onClick={() => handleDelete(product._id, product.name)} className="delete-btn">Delete</button>
                   </td>
                 </tr>
               );
@@ -207,6 +206,7 @@ function FeaturedProductTable() {
           </tbody>
         </table>
       )}
+
       {isModalOpen && (
         <div className="modal-overlay" onClick={handleCloseModal}>
           <div className="modal-content" onClick={handleContentClick}>
@@ -221,22 +221,14 @@ function FeaturedProductTable() {
                 <label htmlFor="price">Current Price:</label>
                 <input type="number" id="price" name="price" value={formData.price} onChange={handleChange} required min="0.01" step="0.01" />
               </div>
-
               <div className="form-group">
                 <label htmlFor="oldprice">Old Price:</label>
                 <input type="number" id="oldprice" name="oldprice" value={formData.oldprice} onChange={handleChange} required min="0.01" step="0.01" />
               </div>
               <div className="form-group">
                 <label htmlFor="imageFile">Upload Image File:</label>
-                <input
-                  type="file"
-                  id="image"
-                  name="image"
-                  accept="image/*"
-                  onChange={handleChange}
-                  required={modalAction === 'add'}
-                />
-                {(modalAction === 'edit' && formData.image) && (
+                <input type="file" id="image" name="image" accept="image/*" onChange={handleChange} required={modalAction === 'add'} />
+                {modalAction === 'edit' && formData.image && (
                   <small>
                     Current Image: <a href={`http://localhost:5000${formData.image}`} target="_blank" rel="noopener noreferrer">View</a> (Upload new file to replace)
                   </small>

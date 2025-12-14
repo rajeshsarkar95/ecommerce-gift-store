@@ -3,6 +3,7 @@ import axios from 'axios';
 import '../../styles/admin/FlashDealsTable.css';
 
 const API_URL = 'http://localhost:5000/api/tshirt';
+
 const CATEGORY_OPTIONS = ["tshirt", "hoodie", "kids", "women", "men"];
 
 const emptyProduct = {
@@ -94,7 +95,7 @@ function TshirtTable() {
     dataToSend.append("category", formData.category);
 
     selectedImageFiles.forEach(file => {
-      dataToSend.append("images", file);
+      dataToSend.append("image", file);
     });
     if (modalAction === "edit" && selectedImageFiles.length === 0 && formData.image.length > 0) {
       formData.image.forEach(url => {

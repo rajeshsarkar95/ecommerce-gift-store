@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
 import AdminSidebar from './AdminSidebar';
 import Topbar from './Topbar';
-import CustomiedGift from './CustomiedGift';
+import CustomGiftBannerTable from './CustomiedBanner';
 import FlashDeals from './FlashDeals';
 import Banner from './Banner';
 import PopularCategoris from './PopularCategoris';
 import PersonalGift from './PersonalGift';
 import TshirtColletions from './TshirtColletions';
 import HoodiesColletions from './HoodiesColletions';
-import CustomeGift from './CustomeGift';
 import FeaturesProduct from './FeaturesProduct';
 import RecommendProduct from './RecommendProduct';
 import TopSellerTable from './TopSeller';
@@ -27,7 +26,7 @@ const AdminLayout = () => {
       case "CustomizedGift":
         return (
           <>
-            <CustomiedGift />
+            <CustomGiftBannerTable />
           </>
         );
 
@@ -54,54 +53,54 @@ const AdminLayout = () => {
       case "PopularCategories":
         return (
           <>
-         <PopularCategoris/>
+            <PopularCategoris />
           </>
         )
       case "PersonalGift":
         return (
           <>
-        <PersonalGift/>
+            <PersonalGift />
           </>
         )
       case "Tshirt":
         return (
           <>
-         <TshirtColletions/>
+            <TshirtColletions />
           </>
         )
       case "HoodiesCollection":
         return (
           <>
-        <HoodiesColletions/>
+            <HoodiesColletions />
           </>
         )
       case "CustomeGift":
         return (
           <>
-         <CustomiedGift/>
+            <CustomiedGift />
           </>
         )
       case "MugCollection":
         return (
           <>
-        <MugTable/>
+            <MugTable />
           </>
         )
-        case "FeaturedProducts":
-          return (
-            <>
-        <FeaturesProduct/>
-            </>
-          )
-          case "RecommendedProducts": 
-          return(
-            <>
-         <RecommendProduct/>
-            </>
-          ) 
+      case "FeaturedProducts":
+        return (
+          <>
+            <FeaturesProduct />
+          </>
+        )
+      case "RecommendedProducts":
+        return (
+          <>
+            <RecommendProduct />
+          </>
+        )
 
       default:
-        return <><PopularCategoris/></>;
+        return <><PopularCategoris /></>;
     }
   };
 

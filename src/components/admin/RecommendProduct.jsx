@@ -1,15 +1,16 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
-import '../../styles/admin/FlashDealsTable.css'; 
+import '../../styles/admin/FlashDealsTable.css';
 
-const API_URL = 'http://localhost:5000/api/recommendedproducts'; 
+const API_URL = 'http://localhost:5000/api/recommendedproducts';
 
 const emptyProduct = {
   name: '',
-  price: 0, 
-  image: '', 
+  price: 0,
+  image: '',
   _id: null,
 };
+
 
 function RecommendedProductTable() {
   const [products, setProducts] = useState([]);
@@ -18,21 +19,26 @@ function RecommendedProductTable() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalAction, setModalAction] = useState('add');
   const [formData, setFormData] = useState(emptyProduct);
-  const [selectedImageFile, setSelectedImageFile] = useState(null); 
+  const [selectedImageFile, setSelectedImageFile] = useState(null);
 
-  console.log("Current recommended product form data:", formData);
 
   const fetchProducts = useCallback(async () => {
-    setIsLoading(true);
-    setError(null);
     try {
-      const response = await axios.get(API_URL);
-      const apiData = response.data.data || response.data; 
-      let productsArray = Array.isArray(apiData) ? apiData : [];
+      setIsLoading(true);
+      setError(null);
+      const res = await axios.get(API_URL);
+      const apiData = res.data;
+      let productsArray = Array.isArray(apiData.products) ? apiData.products : [];
+      productsArray = productsArray.map((item, index) => ({
+        _id: item._id || index,
+        name: item.name || item.title || "",
+        price: Number(item.price || item.newPrice || 0),
+        image: item.image || item.images || ""
+      }));
       setProducts(productsArray);
     } catch (err) {
-      console.error("Failed to fetch recommended products:", err);
-      setError('Failed to load recommended products. Check the server and API_URL.');
+      console.error("Failed to fetch featured products:", err);
+      setError("Failed to fetch featured products. Check server.");
       setProducts([]);
     } finally {
       setIsLoading(false);
@@ -54,13 +60,13 @@ function RecommendedProductTable() {
     setFormData({
       ...product,
       price: product.price || 0,
-      image: product.image || '', 
+      image: product.image || '',
     });
     setSelectedImageFile(null);
     setModalAction("edit");
     setIsModalOpen(true);
   };
-  
+
   const handleCloseModal = () => setIsModalOpen(false);
   const handleContentClick = (e) => e.stopPropagation();
 
@@ -71,7 +77,7 @@ function RecommendedProductTable() {
       setSelectedImageFile(files[0]);
       return;
     }
-    
+
     setFormData(prevData => {
       const newValue = (name === 'price') ? parseFloat(value) || 0 : value;
       return {
@@ -85,20 +91,20 @@ function RecommendedProductTable() {
     e.preventDefault();
     setError(null);
     setIsLoading(true);
-  
+
     const method = modalAction === "add" ? "post" : "put";
     const url = modalAction === "add"
       ? API_URL
       : `${API_URL}/${formData._id}`;
-  
+
     const dataToSend = new FormData();
     dataToSend.append("name", formData.name);
     dataToSend.append("price", String(formData.price));
 
     if (selectedImageFile) {
-      dataToSend.append("image", selectedImageFile); 
+      dataToSend.append("image", selectedImageFile);
     } else if (modalAction === "edit" && formData.image) {
-      dataToSend.append("existingImage", formData.image); 
+      dataToSend.append("existingImage", formData.image);
     }
 
     if (modalAction === "add" && !selectedImageFile) {
@@ -106,21 +112,21 @@ function RecommendedProductTable() {
       setIsLoading(false);
       return;
     }
-  
+
     try {
       await axios({
         method: method,
         url: url,
         data: dataToSend,
         headers: {
-            'Content-Type': 'multipart/form-data', 
+          'Content-Type': 'multipart/form-data',
         },
       });
-  
+
       setIsModalOpen(false);
       setSelectedImageFile(null);
-      fetchProducts(); 
-  
+      fetchProducts();
+
     } catch (err) {
       const serverMessage =
         err.response?.data?.message || err.message || "Check network and server logs.";
@@ -150,7 +156,7 @@ function RecommendedProductTable() {
   }
 
   return (
-    <div className="flash-deal-container"> 
+    <div className="flash-deal-container">
       <div className="admin-header">
         <h2> Recommended Products Management</h2>
         <button onClick={handleAddClick} className="add-btn" title="Create a new Recommended Product">
@@ -158,11 +164,11 @@ function RecommendedProductTable() {
         </button>
       </div>
       {error && <div className="error-message admin-error">{error}</div>}
-      
+
       {products.length === 0 && !isLoading ? (
         <div className="no-data-message">No recommended products found. Click ADD NEW RECOMMENDED PRODUCT to create one.</div>
       ) : (
-        <table className="flash-deal-table"> 
+        <table className="flash-deal-table">
           <thead>
             <tr>
               <th>Image</th>
@@ -175,11 +181,11 @@ function RecommendedProductTable() {
             {products.map((product) => (
               <tr key={product._id}>
                 <td data-label="Image">
-                    <img
-                        src={product.image ? `http://localhost:5000${product.image}` : 'placeholder.jpg'}
-                        alt={product.name || 'Recommended Product Image'}
-                        className="deal-image" 
-                    />
+                  <img
+                    src={product.image ? `http://localhost:5000${product.image}` : 'placeholder.jpg'}
+                    alt={product.name || 'Recommended Product Image'}
+                    className="deal-image"
+                  />
                 </td>
                 <td data-label="Name">{product.name}</td>
                 <td data-label="Price" className="price-new">${product.price ? product.price.toFixed(2) : '0.00'}</td>

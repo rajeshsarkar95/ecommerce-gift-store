@@ -1,9 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import '../../styles/admin/FlashDealsTable.css';
-
 const API_URL = 'http://localhost:5000/api/flashdeals';
-
 const emptyDeal = {
   tittle: '',
   price: 0,
@@ -11,7 +9,6 @@ const emptyDeal = {
   images: [],
   _id: null,
 };
-
 function FlashDealTable() {
   const [flashDeals, setFlashDeals] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -20,9 +17,6 @@ function FlashDealTable() {
   const [modalAction, setModalAction] = useState('add');
   const [formData, setFormData] = useState(emptyDeal);
   const [selectedImageFile, setSelectedImageFile] = useState(null);
-
-  console.log("submit form  data",formData);
-
   const fetchDeals = useCallback(async () => {
     setIsLoading(true);
     setError(null);
@@ -41,8 +35,6 @@ function FlashDealTable() {
           dealsArray = [apiData.data];
         }
       }
-
-
       setFlashDeals(dealsArray);
     } catch (err) {
       console.error("Failed to fetch flash deals:", err);
@@ -121,7 +113,7 @@ function FlashDealTable() {
     dataToSend.append("oldPrice", String(formData.oldPrice));
 
     if (selectedImageFile) {
-      dataToSend.append("image", selectedImageFile);
+      dataToSend.append("images", selectedImageFile);
     } else if (modalAction === "edit" && formData.images && formData.images[0]) {
       dataToSend.append("existingImage", formData.images[0]);
     }
