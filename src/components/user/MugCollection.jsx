@@ -11,14 +11,13 @@ export default function MugCollection() {
 
   const navigate = useNavigate();
   const { addToCart } = useCart();
-
   useEffect(() => {
     const fetchMugs = async () => {
       try {
         const res = await axios.get("http://localhost:5000/api/mugs");
         setMugProducts(res.data.mugs || []);
       } catch (err) {
-        setError("Failed to load mugs", err);
+        setError("Failed to load mugs");
       } finally {
         setLoading(false);
       }
@@ -28,6 +27,7 @@ export default function MugCollection() {
 
   if (loading) return <p>Loading mugs...</p>;
   if (error) return <p>{error}</p>;
+  if (!mugProducts.length) return <p>No mugs available.</p>;
 
   return (
     <section className="product-section">
@@ -43,15 +43,14 @@ export default function MugCollection() {
                 src={imageUrl}
                 alt={product.name}
                 className="clickable"
+                loading="lazy"
                 onClick={() =>
                   navigate(`/product/${product._id}`, {
                     state: {
                       _id: product._id,
                       title: product.name,
                       price: product.price,
-                      description: product.description,
                       images: product.image ? [product.image] : [],
-                      oldPrice: product.oldPrice,
                       folder: "mugs",
                     },
                   })
@@ -75,7 +74,7 @@ export default function MugCollection() {
                     title: product.name,
                     price: product.price,
                     images: product.image ? [product.image] : [],
-                    folder: "",
+                    folder: "mugs",
                   })
                 }
               >

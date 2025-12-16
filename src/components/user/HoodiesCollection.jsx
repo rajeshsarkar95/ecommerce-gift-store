@@ -53,8 +53,8 @@ export default function HoodiesCollection() {
                       title: product.title,
                       price: product.price,
                       description: product.description,
-                      images: product.image ? [product.image] : [], // ✅ normalize
-                      folder: "hoodies", // ✅ REQUIRED
+                      images: product.image ? [product.image] : [],  
+                      folder: "hoodies", 
                     },
                   })
                 }

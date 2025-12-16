@@ -2,69 +2,85 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "../../styles/RecommendedProducts.css";
 import { useNavigate } from "react-router-dom";
+import { useCart } from "../../context/CartContext";
 
 const RecommendedProducts = () => {
+  const navigate = useNavigate();
+  const { addToCart } = useCart();
+
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const navigate = useNavigate();
-  const fetchRecommended = async () => {
-    try {
-      const res = await axios.get("http://localhost:5000/api/recommendedproducts");
-      setProducts(res.data.products); 
-      setLoading(false);
-    } catch (err) {
-      setError("Failed to load recommended products",err);
-      setLoading(false);
-    }
-  };
+
   useEffect(() => {
+    const fetchRecommended = async () => {
+      try {
+        const res = await axios.get(
+          "http://localhost:5000/api/recommendedproducts"
+        );
+        setProducts(res.data.products || []);
+      } catch (err) {
+        setError("Failed to load recommended products", err);
+      } finally {
+        setLoading(false);
+      }
+    };
     fetchRecommended();
   }, []);
-  const handleAddToCart = (product) => {
-    let cart = JSON.parse(localStorage.getItem("cart")) || [];
-    cart.push(product);
-    localStorage.setItem("cart", JSON.stringify(cart));
-    alert("Added to cart!");
-  };
 
-  if (loading) return <p>Loading recommended products...</p>;
-  if (error) return <p>{error}</p>;
+  if (loading) return <p style={{ textAlign: "center" }}>Loading...</p>;
+  if (error) return (
+    <p style={{ textAlign: "center", color: "red" }}>{error}</p>
+  );
 
   return (
     <section className="product-section">
       <h2>Recommended Products</h2>
-
       <div className="product-grid">
-        {products.map((product) => (
-          <div className="product" key={product._id}>
-            <div
-              className="product-card clickable"
-              onClick={() => navigate(`/product/${product._id}`)}
-            >
+        {products.map((product) => {
+          const fileName = product.image
+            ? product.image.split("/").pop().split("\\").pop()
+            : "";
+          const imageUrl = `http://localhost:5000/uploads/recommended/${fileName}`;
+          return (
+            <div className="product" key={product._id}>
               <img
-                src={`http://localhost:5000/${product.image}`}
+                src={imageUrl}
                 alt={product.name}
+                className="clickable"
+                onClick={() =>
+                  navigate(`/product/${product._id}`, {
+                    state: {
+                      _id: product._id,
+                      title: product.name,
+                      price: product.price,
+                      description: product.description,
+                      images: product.image ? [fileName] : [],
+                      folder: "recommended",
+                    },
+                  })
+                }
               />
               <h3>{product.name}</h3>
               <p>₹{product.price}</p>
-            </div>
 
-            <button
-              className="add-to-cart-btn"
-              onClick={() =>
-                handleAddToCart({
-                  id: product._id,
-                  name: product.name,
-                  price: product.price,
-                  image: `http://localhost:5000/${product.image}`,
-                })
-              }
-            >
-              Add to Cart
-            </button>
-          </div>
-        ))}
+              <button
+                className="add-btn"
+                onClick={() =>
+                  addToCart({
+                    _id: product._id,
+                    title: product.name,
+                    price: product.price,
+                    images: product.image ? [fileName] : [],
+                    folder: "recommended",
+                  })
+                }
+              >
+                Add to Cart
+              </button>
+            </div>
+          );
+        })}
       </div>
     </section>
   );
