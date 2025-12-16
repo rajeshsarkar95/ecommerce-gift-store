@@ -28,8 +28,6 @@ const FeaturedProducts = () => {
 
     fetchProducts();
   }, []);
-
-
   if (loading) return <p style={{ textAlign: "center" }}>Loading...</p>;
   if (error) return <p style={{ textAlign: "center", color: "red" }}>{error}</p>;
   return (

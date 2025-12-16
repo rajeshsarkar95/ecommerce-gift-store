@@ -7,7 +7,7 @@ function FlashDeals() {
   const { addToCart } = useCart();
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
-  useEffect(() => { 
+  useEffect(() => {
     const fetchFlashDeals = async () => {
       try {
         const res = await fetch("http://localhost:5000/api/flashdeals");
@@ -28,9 +28,11 @@ function FlashDeals() {
           <div className="product-deals" key={product._id}>
             <img
               src={`http://localhost:5000/uploads/flashdeals/${product.images[0]}`}
-              alt={product.tittle}
+              alt={product.title || product.tittle}
               onClick={() =>
-                navigate(`/product/${product._id}`, {state: product })
+                navigate(`/product/${product._id}`, {
+                  state: { ...product, folder: "flashdeals" }
+                })
               }
             />
             <div className="product-info">

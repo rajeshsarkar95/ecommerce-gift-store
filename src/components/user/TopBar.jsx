@@ -21,9 +21,7 @@ function TopBar() {
 
     fetchTopBar();
   }, []);
-
   if (loading) return null;
-
   return (
     <div className="top-bar">
       <div className="top-icons">
@@ -49,7 +47,8 @@ function TopBar() {
         >
           <FaInstagram />
         </a>
-
+        <a>
+        </a>
       </div>
     </div>
   );

@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import "../../styles/PopularCategories.css";
 import axios from "axios";
 
+
+
+
 function PopularCategories() {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -37,15 +40,15 @@ function PopularCategories() {
       <h2>Popular Categories</h2>
       <div className="category-list">
         {categories.length > 0 ? (
-          categories.map((cat) => (
-            <div className="category" key={cat._id}>
+          categories.map((product) => (
+            <div className="category" key={product._id}>
               <img
-                src={`http://localhost:5000/uploads/popularcategory/${cat.image[0]}`}
-                alt={cat.title}
+                src={`http://localhost:5000/uploads/popularcategory/${product.image[0]}`}
+                alt={product.title}
                 className="category-img"
               />
-              <h4>{cat.title}</h4>
-              <p>{cat.itemsCount} items</p>
+              <h4>{product.title}</h4>
+              <p>{product.itemsCount} items</p>
             </div>
           ))
         ) : (

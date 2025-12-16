@@ -7,10 +7,10 @@ import axios from "axios";
 function TopSellers() {
   const { addToCart } = useCart();
   const navigate = useNavigate();
+
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
 
   useEffect(() => {
     const fetchTopSellers = async () => {
@@ -33,8 +33,6 @@ function TopSellers() {
     fetchTopSellers();
   }, []);
 
-
-
   if (loading) return <p>Loading top sellers...</p>;
   if (error) return <p>{error}</p>;
   if (products.length === 0) return <p>No top sellers available.</p>;
@@ -48,12 +46,21 @@ function TopSellers() {
               src={`http://localhost:5000/uploads/topSellar/${p.images?.[0] || "placeholder.jpg"}`}
               alt={p.title || "Product Image"}
               className="clickable"
-              onClick={() => navigate(`/product/${p._id}`, { state: p })}
+              onClick={() =>
+                navigate(`/product/${p._id}`, {
+                  state: {
+                    ...p,
+                    folder: "topSellar",
+                    title: p.title || p.tittle || "No Title" 
+                  }
+                })
+              }
+
             />
             <div className="product-info">
               <h4>{p.title || "No Title"}</h4>
               <p>₹{p.price ?? "N/A"}</p>
-              <button className="add-btn" onClick={() => addToCart(p)}>
+              <button className="add-btn" onClick={() =>addToCart(p)}>
                 Add to Cart
               </button>
             </div>

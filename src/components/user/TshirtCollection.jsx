@@ -10,28 +10,16 @@ export default function TshirtCollection() {
   const navigate = useNavigate();
   const { addToCart } = useCart();
 
-  
-  const fetchProducts = async () => {
-    try {
-      const res = await axios.get("http://localhost:5000/api/tshirt");
-      const formatted = res.data.data.map((item) => ({
-        id: item._id,
-        title: item.title,
-        price: item.price,
-        img:
-          item.image?.length > 0
-            ? `http://localhost:5000/uploads/tshirt/${item.image[0]}`
-            : Oversize1,
-        alt: item.title,
-      }));
-
-      setProducts(formatted);
-    } catch (error) {
-      console.log("API Error:", error.message);
-    }
-  };
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
+    const fetchProducts = async () => {
+      try {
+        const res = await axios.get("http://localhost:5000/api/tshirt");
+        setProducts(res.data.data || []);
+      } catch (error) {
+        console.log("API Error:", error.message);
+      }
+    };
+
     fetchProducts();
   }, []);
 
@@ -41,27 +29,37 @@ export default function TshirtCollection() {
 
       <div className="product-list">
         {products.map((product) => (
-          <div key={product.id} className="product">
+          <div key={product._id} className="product">
             <img
-              src={product.img}
-              alt={product.alt}
-              loading="lazy"
+              src={
+                product.image?.length
+                  ? `http://localhost:5000/uploads/tshirt/${product.image[0]}`
+                  : Oversize1
+              }
+              alt={product.title}
               className="clickable"
-              onClick={() => navigate(`/product/${product.id}`)}
+              onClick={() =>
+                navigate(`/product/${product._id}`, {
+                  state: {
+                    _id: product._id,
+                    title: product.title,
+                    price: product.price,
+                    description: product.description,
+                    images: product.image || [],
+                    folder: "tshirt",
+                  },
+                })
+              }
             />
+
+
             <div className="product-info">
               <h4>{product.title}</h4>
               <p>₹{product.price}</p>
+
               <button
                 className="add-btn"
-                onClick={() =>
-                  addToCart({
-                    id: product.id,
-                    name: product.title,
-                    price: product.price,
-                    image: product.img,
-                  })
-                }
+                onClick={() => addToCart(product)}
               >
                 Add to Cart
               </button>

@@ -179,7 +179,7 @@ function CustomGiftBannerTable() {
               <tr key={banner._id}>
                 <td data-label="Image">
                   <img
-                    src={banner.backgroundImage ? `http://localhost:5000${banner.backgroundImage}` : 'placeholder.jpg'}
+                    src={banner.backgroundImage ? `http://localhost:5000/uploads/customeGift/${banner.backgroundImage}` : 'placeholder.jpg'}
                     alt={banner.title || 'Custom Banner'}
                     className="deal-image"
                   />

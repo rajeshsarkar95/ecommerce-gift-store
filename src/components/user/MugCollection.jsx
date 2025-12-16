@@ -8,20 +8,21 @@ export default function MugCollection() {
   const [mugProducts, setMugProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
   const navigate = useNavigate();
   const { addToCart } = useCart();
-  const fetchMugs = async () => {
-    try {
-      const res = await axios.get("http://localhost:5000/api/mugs");
-      setMugProducts(res.data.mugs);
-      setLoading(false);
-    } catch (err) {
-      setError("Failed to load mugs", err);
-      setLoading(false);
-    }
-  };
+
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
+    const fetchMugs = async () => {
+      try {
+        const res = await axios.get("http://localhost:5000/api/mugs");
+        setMugProducts(res.data.mugs || []);
+      } catch (err) {
+        setError("Failed to load mugs", err);
+      } finally {
+        setLoading(false);
+      }
+    };
     fetchMugs();
   }, []);
 
@@ -33,36 +34,56 @@ export default function MugCollection() {
       <h2>Mug Collection</h2>
 
       <div className="product-grid">
-        {mugProducts.map((product) => (
-          <div className="product" key={product._id}>
-            <img
-              src={`http://localhost:5000/${product.image}`}
-              alt={product.name}
-              className="clickable"
-              onClick={() => navigate(`/product/${product._id}`)}
-            />
-            <h3>{product.name}</h3>
-            <p>
-              {product.oldPrice && (
-                <span className="old-price">₹{product.oldPrice}</span>
-              )}
-              <span className="new-price"> ₹{product.price}</span>
-            </p>
-            <button
-              className="add-btn"
-              onClick={() =>
-                addToCart({
-                  id: product._id,
-                  name: product.name,
-                  price: product.price,
-                  image: `http://localhost:5000/${product.image}`,
-                })
-              }
-            >
-              Add to Cart
-            </button>
-          </div>
-        ))}
+        {mugProducts.map((product) => {
+          const imageUrl = `http://localhost:5000/${product.image}`;
+
+          return (
+            <div className="product" key={product._id}>
+              <img
+                src={imageUrl}
+                alt={product.name}
+                className="clickable"
+                onClick={() =>
+                  navigate(`/product/${product._id}`, {
+                    state: {
+                      _id: product._id,
+                      title: product.name,
+                      price: product.price,
+                      description: product.description,
+                      images: product.image ? [product.image] : [],
+                      oldPrice: product.oldPrice,
+                      folder: "mugs",
+                    },
+                  })
+                }
+              />
+
+              <h3>{product.name}</h3>
+
+              <p>
+                {product.oldPrice && (
+                  <span className="old-price">₹{product.oldPrice}</span>
+                )}
+                <span className="new-price"> ₹{product.price}</span>
+              </p>
+
+              <button
+                className="add-btn"
+                onClick={() =>
+                  addToCart({
+                    _id: product._id,
+                    title: product.name,
+                    price: product.price,
+                    images: product.image ? [product.image] : [],
+                    folder: "",
+                  })
+                }
+              >
+                Add to Cart
+              </button>
+            </div>
+          );
+        })}
       </div>
     </section>
   );

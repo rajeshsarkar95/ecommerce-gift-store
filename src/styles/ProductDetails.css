@@ -1,27 +1,86 @@
 .product-details-page {
-  max-width: 900px;
-  margin: 40px auto;
-  padding: 20px;
+  max-width: 1100px;
+  margin: 60px auto;
+  padding: 40px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
+
 .product-wrapper {
   display: flex;
-  gap: 30px;
+  gap: 60px;
+  align-items: flex-start;
 }
 .product-img {
-  width: 320px;
-  border-radius: 10px;
+  width: 400px;
+  object-fit: cover;
+  border-radius: 12px;
+  border: 1px solid #e0e0e0;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+.details-box {
+  flex-grow: 1;
+  padding-top: 5px;
 }
 .details-box h2 {
-  font-size: 24px;
+  font-size: 32px; 
+  font-weight: 700;
+  color: #333333;
+  margin-bottom: 15px;
+  line-height: 1.2;
 }
 .price {
-  font-size: 20px;
-  color: #ff5555;
+  font-size: 28px; 
+  font-weight: 600;
+  color: #007bff; 
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  /* Separator line */
+  border-bottom: 1px solid #f0f0f0;
 }
-.add-btn {
-  background: #ff4d4d;
+
+.price small {
+  font-size: 18px;
+  color: #888888;
+  font-weight: 400;
+  /* Strikethrough for the old price */
+  text-decoration: line-through;
+  margin-left: 10px;
+}
+
+/* --- Description --- */
+.desc {
+  font-size: 16px;
+  color: #555555;
+  line-height: 1.6;
+  margin-bottom: 30px;
+}
+
+/* --- Add to Cart Button --- */
+.product-add-btn {
+  /* Use a primary brand color (e.g., a professional blue) */
+  background: #ff6b00; /* Modern Success Green/Blue */
   color: white;
-  padding: 10px 18px;
-  border-radius: 8px;
+  font-size: 18px;
+  font-weight: 600;
+  padding: 12px 30px; /* More padding for a premium feel */
+  border: none; /* Remove border */
+  border-radius: 6px;
   cursor: pointer;
+  transition: background 0.3s ease, transform 0.1s ease;
+  /* Add a subtle shadow to the button */
+  box-shadow: 0 4px 10px rgba(40, 167, 69, 0.4);
+}
+
+.product-add-btn:hover {
+  /* Darken the background slightly on hover */
+  background: #ff6b00;
+  /* Lift the button slightly */
+  box-shadow:#ff6b00;
+}
+
+.product-add-btn:active {
+  /* Press-down effect */
+  transform: translateY(1px);
 }
