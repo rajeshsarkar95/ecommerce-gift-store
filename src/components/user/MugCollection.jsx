@@ -11,13 +11,15 @@ export default function MugCollection() {
 
   const navigate = useNavigate();
   const { addToCart } = useCart();
+
   useEffect(() => {
     const fetchMugs = async () => {
       try {
         const res = await axios.get("http://localhost:5000/api/mugs");
         setMugProducts(res.data.mugs || []);
       } catch (err) {
-        setError("Failed to load mugs");
+        setError("Failed to load mugs",err);
+        console.error(err);
       } finally {
         setLoading(false);
       }
@@ -35,48 +37,46 @@ export default function MugCollection() {
 
       <div className="product-grid">
         {mugProducts.map((product) => {
-          const imageUrl = `http://localhost:5000/${product.image}`;
+          // Ensure proper image URL
+          const imageUrl = product.image
+            ? `http://localhost:5000/${product.image}`
+            : "/placeholder.jpg";
+
+          // Map product for CartContext
+          const cartProduct = {
+            id: product._id,
+            title: product.name || "No Name",
+            price: product.price ?? 0,
+            images: product.image ? [product.image] : [],
+            folder: "mugs",
+          };
 
           return (
             <div className="product" key={product._id}>
               <img
                 src={imageUrl}
-                alt={product.name}
+                alt={cartProduct.title}
                 className="clickable"
                 loading="lazy"
                 onClick={() =>
                   navigate(`/product/${product._id}`, {
-                    state: {
-                      _id: product._id,
-                      title: product.name,
-                      price: product.price,
-                      images: product.image ? [product.image] : [],
-                      folder: "mugs",
-                    },
+                    state: cartProduct,
                   })
                 }
               />
 
-              <h3>{product.name}</h3>
+              <h3>{cartProduct.title}</h3>
 
               <p>
                 {product.oldPrice && (
                   <span className="old-price">₹{product.oldPrice}</span>
                 )}
-                <span className="new-price"> ₹{product.price}</span>
+                <span className="new-price"> ₹{cartProduct.price}</span>
               </p>
 
               <button
                 className="add-btn"
-                onClick={() =>
-                  addToCart({
-                    _id: product._id,
-                    title: product.name,
-                    price: product.price,
-                    images: product.image ? [product.image] : [],
-                    folder: "mugs",
-                  })
-                }
+                onClick={() => addToCart(cartProduct)}
               >
                 Add to Cart
               </button>

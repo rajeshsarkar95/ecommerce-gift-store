@@ -19,7 +19,8 @@ const FeaturedProducts = () => {
         );
         setProducts(res.data.products || []);
       } catch (err) {
-        setError("Failed to load featured products",err);
+        setError("Failed to load featured products");
+        console.error(err);
       } finally {
         setLoading(false);
       }
@@ -29,7 +30,9 @@ const FeaturedProducts = () => {
   }, []);
 
   if (loading) return <p style={{ textAlign: "center" }}>Loading...</p>;
-  if (error) return <p style={{ textAlign: "center", color: "red" }}>{error}</p>;
+  if (error) return (
+    <p style={{ textAlign: "center", color: "red" }}>{error}</p>
+  );
 
   return (
     <section className="product-section">
@@ -37,36 +40,40 @@ const FeaturedProducts = () => {
 
       <div className="product-grid">
         {products.map((product) => {
+          // Extract filename safely
           const fileName = product.image
             ? product.image.split("/").pop().split("\\").pop()
             : "";
 
-          const imageUrl = `http://localhost:5000/uploads/featured/${fileName}`;
+          const imageUrl = fileName
+            ? `http://localhost:5000/uploads/featured/${fileName}`
+            : "/placeholder.jpg";
+
+          // Standardized product object for cart
+          const cartProduct = {
+            id: product._id,
+            title: product.name || "No Name",
+            price: product.price ?? 0,
+            images: fileName ? [fileName] : [],
+            folder: "featured",
+          };
 
           return (
             <div className="product" key={product._id}>
               <img
                 src={imageUrl}
-                alt={product.name}
+                alt={cartProduct.title}
                 className="clickable"
                 loading="lazy"
                 onClick={() =>
-                  navigate(`/product/${product._id}`, {
-                    state: {
-                      _id: product._id,
-                      title: product.name,
-                      price: product.price,
-                      images: fileName ? [fileName] : [],
-                      folder: "featured", 
-                    },
-                  })
+                  navigate(`/product/${product._id}`, { state: cartProduct })
                 }
               />
 
-              <h3>{product.name}</h3>
+              <h3>{cartProduct.title}</h3>
 
               <p>
-                ₹{product.price}
+                ₹{cartProduct.price}
                 {product.oldprice && (
                   <span
                     style={{
@@ -82,15 +89,7 @@ const FeaturedProducts = () => {
 
               <button
                 className="add-btn"
-                onClick={() =>
-                  addToCart({
-                    _id: product._id,
-                    title: product.name,
-                    price: product.price,
-                    images: fileName ? [fileName] : [],
-                    folder: "featured",
-                  })
-                }
+                onClick={() => addToCart(cartProduct)}
               >
                 Add to Cart
               </button>

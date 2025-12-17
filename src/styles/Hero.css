@@ -1,9 +1,10 @@
 .hero {
+  margin-top: 7%;
   background: linear-gradient(90deg, #b77aff, #f2d7ff);
   display: flex;
   align-items: center;
   justify-content: space-around;
-  padding: 50px 5%;
+  padding: 70px 5%;
   gap: 20px;
   flex-wrap: wrap;
 }
@@ -36,6 +37,7 @@
 .hero img {
   width: 45%;
   max-width: 450px;
+  border-radius: 30px;
 }
 @media (max-width: 400px) {
   .hero {

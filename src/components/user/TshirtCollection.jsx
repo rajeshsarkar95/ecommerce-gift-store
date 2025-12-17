@@ -28,44 +28,46 @@ export default function TshirtCollection() {
       <h2>T-Shirt And Hoodies Collection</h2>
 
       <div className="product-list">
-        {products.map((product) => (
-          <div key={product._id} className="product">
-            <img
-              src={
-                product.image?.length
-                  ? `http://localhost:5000/uploads/tshirt/${product.image[0]}`
-                  : Oversize1
-              }
-              alt={product.title}
-              className="clickable"
-              onClick={() =>
-                navigate(`/product/${product._id}`, {
-                  state: {
-                    _id: product._id,
-                    title: product.title,
-                    price: product.price,
-                    description: product.description,
-                    images: product.image || [],
-                    folder: "tshirt",
-                  },
-                })
-              }
-            />
+        {products.map((product) => {
+          // Map _id → id for CartContext
+          const cartProduct = {
+            ...product,
+            id: product._id,
+            title: product.title || "No Title",
+            images: product.image || [],
+          };
 
+          return (
+            <div key={product._id} className="product">
+              <img
+                src={
+                  cartProduct.images.length
+                    ? `http://localhost:5000/uploads/tshirt/${cartProduct.images[0]}`
+                    : Oversize1
+                }
+                alt={cartProduct.title}
+                className="clickable"
+                onClick={() =>
+                  navigate(`/product/${product._id}`, {
+                    state: { ...cartProduct, folder: "tshirt" },
+                  })
+                }
+              />
 
-            <div className="product-info">
-              <h4>{product.title}</h4>
-              <p>₹{product.price}</p>
+              <div className="product-info">
+                <h4>{cartProduct.title}</h4>
+                <p>₹{product.price ?? "N/A"}</p>
 
-              <button
-                className="add-btn"
-                onClick={() => addToCart(product)}
-              >
-                Add to Cart
-              </button>
+                <button
+                  className="add-btn"
+                  onClick={() => addToCart(cartProduct)}
+                >
+                  Add to Cart
+                </button>
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </section>
   );

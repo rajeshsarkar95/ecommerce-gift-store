@@ -20,7 +20,8 @@ const RecommendedProducts = () => {
         );
         setProducts(res.data.products || []);
       } catch (err) {
-        setError("Failed to load recommended products", err);
+        setError("Failed to load recommended products");
+        console.error(err);
       } finally {
         setLoading(false);
       }
@@ -38,43 +39,43 @@ const RecommendedProducts = () => {
       <h2>Recommended Products</h2>
       <div className="product-grid">
         {products.map((product) => {
+          // Extract filename from path
           const fileName = product.image
             ? product.image.split("/").pop().split("\\").pop()
             : "";
-          const imageUrl = `http://localhost:5000/uploads/recommended/${fileName}`;
+          
+          // Construct image URL
+          const imageUrl = fileName
+            ? `http://localhost:5000/uploads/recommended/${fileName}`
+            : "/placeholder.jpg";
+
+          // Map product for CartContext
+          const cartProduct = {
+            id: product._id,
+            title: product.name || "No Name",
+            price: product.price ?? 0,
+            description: product.description || "",
+            images: fileName ? [fileName] : [],
+            folder: "recommended",
+          };
+
           return (
             <div className="product" key={product._id}>
               <img
                 src={imageUrl}
-                alt={product.name}
+                alt={cartProduct.title}
                 className="clickable"
                 onClick={() =>
                   navigate(`/product/${product._id}`, {
-                    state: {
-                      _id: product._id,
-                      title: product.name,
-                      price: product.price,
-                      description: product.description,
-                      images: product.image ? [fileName] : [],
-                      folder: "recommended",
-                    },
+                    state: cartProduct,
                   })
                 }
               />
-              <h3>{product.name}</h3>
-              <p>₹{product.price}</p>
-
+              <h3>{cartProduct.title}</h3>
+              <p>₹{cartProduct.price}</p>
               <button
                 className="add-btn"
-                onClick={() =>
-                  addToCart({
-                    _id: product._id,
-                    title: product.name,
-                    price: product.price,
-                    images: product.image ? [fileName] : [],
-                    folder: "recommended",
-                  })
-                }
+                onClick={() => addToCart(cartProduct)}
               >
                 Add to Cart
               </button>

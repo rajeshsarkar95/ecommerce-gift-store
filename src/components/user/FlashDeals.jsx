@@ -7,6 +7,7 @@ function FlashDeals() {
   const { addToCart } = useCart();
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
+
   useEffect(() => {
     const fetchFlashDeals = async () => {
       try {
@@ -20,32 +21,43 @@ function FlashDeals() {
     };
     fetchFlashDeals();
   }, []);
+
   return (
     <section className="flash-deals">
       <h2>Flash Deals</h2>
       <div className="product-list">
-        {products.map((product) => (
-          <div className="product-deals" key={product._id}>
-            <img
-              src={`http://localhost:5000/uploads/flashdeals/${product.images[0]}`}
-              alt={product.title || product.tittle}
-              onClick={() =>
-                navigate(`/product/${product._id}`, {
-                  state: { ...product, folder: "flashdeals" }
-                })
-              }
-            />
-            <div className="product-info">
-              <h4>{product.tittle}</h4>
-              <p>
-                ₹{product.price} <small>₹{product.oldPrice}</small>
-              </p>
-              <button className="add-btn" onClick={() => addToCart(product)}>
-                Add to Cart
-              </button>
+        {products.map((product) => {
+          // Map _id to id for CartContext
+          const cartProduct = { ...product, id: product._id, title: product.tittle };
+
+          return (
+            <div className="product-deals" key={product._id}>
+              <img
+                src={
+                  product.images && product.images.length > 0
+                    ? `http://localhost:5000/uploads/flashdeals/${product.images[0]}`
+                    : "/placeholder.jpg"
+                }
+                alt={cartProduct.title}
+                onClick={() =>
+                  navigate(`/product/${product._id}`, {
+                    state: { ...cartProduct, folder: "flashdeals" },
+                  })
+                }
+              />
+
+              <div className="product-info">
+                <h4>{cartProduct.title}</h4>
+                <p>
+                  ₹{product.price} <small>₹{product.oldPrice}</small>
+                </p>
+                <button className="add-btn" onClick={() => addToCart(cartProduct)}>
+                  Add to Cart
+                </button>
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </section>
   );

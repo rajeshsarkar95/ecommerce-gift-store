@@ -29,43 +29,50 @@ function TopSellers() {
         setLoading(false);
       }
     };
-
     fetchTopSellers();
   }, []);
 
   if (loading) return <p>Loading top sellers...</p>;
   if (error) return <p>{error}</p>;
   if (products.length === 0) return <p>No top sellers available.</p>;
+
   return (
     <section className="top-sellers">
       <h2>Top Sellers</h2>
       <div className="product-list">
-        {products.map((p) => (
-          <div className="top-seller-product" key={p._id}>
-            <img
-              src={`http://localhost:5000/uploads/topSellar/${p.images?.[0] || "placeholder.jpg"}`}
-              alt={p.title || "Product Image"}
-              className="clickable"
-              onClick={() =>
-                navigate(`/product/${p._id}`, {
-                  state: {
-                    ...p,
-                    folder: "topSellar",
-                    title: p.title || p.tittle || "No Title" 
-                  }
-                })
-              }
+        {products.map((p) => {
+          const product = {
+            ...p,
+            id: p._id,
+            title: p.title || p.tittle || "No Title",
+          };
 
-            />
-            <div className="product-info">
-              <h4>{p.title || "No Title"}</h4>
-              <p>₹{p.price ?? "N/A"}</p>
-              <button className="add-btn" onClick={() =>addToCart(p)}>
-                Add to Cart
-              </button>
+          return (
+            <div className="top-seller-product" key={p._id}>
+              <img
+                src={
+                  product.images?.[0]
+                    ? `http://localhost:5000/uploads/topSellar/${product.images[0]}`
+                    : "/placeholder.jpg"
+                }
+                alt={product.title}
+                className="clickable"
+                onClick={() =>
+                  navigate(`/product/${p._id}`, {
+                    state: { ...product, folder: "topSellar" },
+                  })
+                }
+              />
+              <div className="product-info">
+                <h4>{product.title}</h4>
+                <p>₹{product.price ?? "N/A"}</p>
+                <button className="add-btn" onClick={() => addToCart(product)}>
+                  Add to Cart
+                </button>
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
       <div className="back-top">
         <a href="#top">↑ Back to top</a>

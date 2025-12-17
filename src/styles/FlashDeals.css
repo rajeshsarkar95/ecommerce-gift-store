@@ -47,7 +47,8 @@
 .product-deals img {
   width: 100%;
   height: 220px;
-  object-fit: contain;
+  object-fit: scale-down;
+  border-radius: 40px;
 }
 .product-info {
   padding: 15px;

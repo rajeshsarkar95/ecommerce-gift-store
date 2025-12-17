@@ -20,6 +20,7 @@ export default function HoodiesCollection() {
         setHoodies(data.data || []);
       } catch (err) {
         setError(err.message);
+        console.error(err);
       } finally {
         setLoading(false);
       }
@@ -37,44 +38,42 @@ export default function HoodiesCollection() {
 
       <div className="product-list">
         {hoodies.map((product) => {
-          const imageUrl = `http://localhost:5000/uploads/hoodies/${product.image}`;
+          // Ensure image URL
+          const imageUrl = product.image
+            ? `http://localhost:5000/uploads/hoodies/${product.image}`
+            : "/placeholder.jpg";
+
+          // Standardize product object for cart
+          const cartProduct = {
+            id: product._id,
+            title: product.title || "No Title",
+            price: product.price ?? 0,
+            images: product.image ? [product.image] : [],
+            folder: "hoodies",
+            description: product.description || "",
+          };
 
           return (
             <div key={product._id} className="product">
               <img
                 src={imageUrl}
-                alt={product.title}
+                alt={cartProduct.title}
                 className="clickable"
                 loading="lazy"
                 onClick={() =>
                   navigate(`/product/${product._id}`, {
-                    state: {
-                      _id: product._id,
-                      title: product.title,
-                      price: product.price,
-                      description: product.description,
-                      images: product.image ? [product.image] : [],  
-                      folder: "hoodies", 
-                    },
+                    state: cartProduct,
                   })
                 }
               />
 
               <div className="product-info">
-                <h4>{product.title}</h4>
-                <p>₹{product.price}</p>
+                <h4>{cartProduct.title}</h4>
+                <p>₹{cartProduct.price}</p>
 
                 <button
                   className="add-btn"
-                  onClick={() =>
-                    addToCart({
-                      _id: product._id,
-                      title: product.title,
-                      price: product.price,
-                      images: product.image ? [product.image] : [],
-                      folder: "hoodies",
-                    })
-                  }
+                  onClick={() => addToCart(cartProduct)}
                 >
                   Add to Cart
                 </button>
