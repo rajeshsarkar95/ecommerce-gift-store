@@ -6,7 +6,7 @@ import Dropdown from "./Dropdown";
 
 const Navbar = () => {
   const { cart } = useCart();
-  const option = ["Apple", "Banana", "Orange", "Mango"];
+  const option = ["Home", "FlashDeals","Topellers","PopularCategories","T-Shirt","HoodiesCollection","MugCollection"];
   return (
     <div className="navbar">
       <div className="logo">
