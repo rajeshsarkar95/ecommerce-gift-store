@@ -14,6 +14,16 @@
   z-index: 1000;
   text-align: center;
 }
+.redirect-btn {
+  background: #6a0dad;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background 0.3s;
+}
+
 .top-icons{
     display: flex;
     gap: 12px;

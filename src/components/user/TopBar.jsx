@@ -2,11 +2,16 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "../../styles/TopBar.css";
 import { FaFacebookF, FaInstagram, FaPhoneAlt, FaEnvelope } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 function TopBar() {
   const [topBar, setTopBar] = useState(null);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
+  const handleRedirect = () => {
+    navigate("/admin/dashboard");
+  };
   useEffect(() => {
     const fetchTopBar = async () => {
       try {
@@ -47,8 +52,9 @@ function TopBar() {
         >
           <FaInstagram />
         </a>
-        <a>
-        </a>
+        <button className="redirect-btn" onClick={handleRedirect}>
+          Admin
+        </button>
       </div>
     </div>
   );
