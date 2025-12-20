@@ -8,7 +8,7 @@ function PromoSection() {
   useEffect(() => {
     const fetchBanners = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/banners");
+        const res = await axios.get("https://onlinegiftbackend.onrender.com/api/banners");
         if (res.data.success) {
           setBanners(res.data.data);
         }
@@ -25,7 +25,7 @@ function PromoSection() {
         {banners.map((banner) => (
           <div className="promo-banner" key={banner._id}>
             <img
-              src={`http://localhost:5000/uploads/banners/${banner.image}`}
+              src={`https://onlinegiftbackend.onrender.com/uploads/banners/${banner.image}`}
               alt={banner.title}
             />
             <div className="promo-text">

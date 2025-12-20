@@ -16,7 +16,7 @@ const RecommendedProducts = () => {
     const fetchRecommended = async () => {
       try {
         const res = await axios.get(
-          "http://localhost:5000/api/recommendedproducts"
+          "https://onlinegiftbackend.onrender.com/api/recommendedproducts"
         );
         setProducts(res.data.products || []);
       } catch (err) {
@@ -46,7 +46,7 @@ const RecommendedProducts = () => {
           
           // Construct image URL
           const imageUrl = fileName
-            ? `http://localhost:5000/uploads/recommended/${fileName}`
+            ? `https://onlinegiftbackend.onrender.com/uploads/recommended/${fileName}`
             : "/placeholder.jpg";
 
           // Map product for CartContext

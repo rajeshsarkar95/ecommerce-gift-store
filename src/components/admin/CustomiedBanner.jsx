@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import '../../styles/admin/FlashDealsTable.css';
-const API_URL = 'http://localhost:5000/api/customebanner';
+const API_URL = 'https://onlinegiftbackend.onrender.com/api/customebanner';
 const emptyBanner = {
   title: '',
   subtitle: '',
@@ -179,7 +179,7 @@ function CustomGiftBannerTable() {
               <tr key={banner._id}>
                 <td data-label="Image">
                   <img
-                    src={banner.backgroundImage ? `http://localhost:5000/uploads/customeGift/${banner.backgroundImage}` : 'placeholder.jpg'}
+                    src={banner.backgroundImage ? `https://onlinegiftbackend.onrender.com/uploads/customeGift/${banner.backgroundImage}` : 'placeholder.jpg'}
                     alt={banner.title || 'Custom Banner'}
                     className="deal-image"
                   />
@@ -237,7 +237,7 @@ function CustomGiftBannerTable() {
                   required={modalAction === 'add'}
                 />
                 {(modalAction === 'edit' && formData.backgroundImage) && (
-                  <small>Current Image: <a href={`http://localhost:5000${formData.backgroundImage}`} target="_blank" rel="noopener noreferrer">View</a> (Upload new file to replace)</small>
+                  <small>Current Image: <a href={`https://onlinegiftbackend.onrender.com/${formData.backgroundImage}`} target="_blank" rel="noopener noreferrer">View</a> (Upload new file to replace)</small>
                 )}
               </div>
               <div className="modal-actions">

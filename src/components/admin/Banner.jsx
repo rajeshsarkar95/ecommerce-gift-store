@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import '../../styles/admin/AddBannerForm.css';
 
-const API_URL = 'http://localhost:5000/api/banners';
+const API_URL = 'https://onlinegiftbackend.onrender.com/api/banners';
 
 const emptyBanner = {
   title: '',

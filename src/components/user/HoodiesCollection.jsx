@@ -15,7 +15,7 @@ export default function HoodiesCollection() {
   useEffect(() => {
     const fetchHoodies = async () => {
       try {
-        const { data } = await axios.get("http://localhost:5000/api/hoodies");
+        const { data } = await axios.get("https://onlinegiftbackend.onrender.com/api/hoodies");
         if (!data.success) throw new Error(data.message);
         setHoodies(data.data || []);
       } catch (err) {
@@ -38,12 +38,9 @@ export default function HoodiesCollection() {
 
       <div className="product-list">
         {hoodies.map((product) => {
-          // Ensure image URL
           const imageUrl = product.image
-            ? `http://localhost:5000/uploads/hoodies/${product.image}`
+            ? `https://onlinegiftbackend.onrender.com/uploads/hoodies/${product.image}`
             : "/placeholder.jpg";
-
-          // Standardize product object for cart
           const cartProduct = {
             id: product._id,
             title: product.title || "No Title",

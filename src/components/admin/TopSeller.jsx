@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import '../../styles/admin/FlashDealsTable.css'; 
 
-const API_URL = 'http://localhost:5000/api/topseller'; 
+const API_URL = 'https://onlinegiftbackend.onrender.com/api/topseller'; 
 
 const emptyProduct = {
   title: '',
@@ -185,7 +185,7 @@ function TopSellerTable() {
               <tr key={product._id}>
                 <td data-label="Image">
                     <img
-                        src={product.images && product.images[0] ? `http://localhost:5000${product.images[0]}` : 'placeholder.jpg'}
+                        src={product.images && product.images[0] ? `https://onlinegiftbackend.onrender.com${product.images[0]}` : 'placeholder.jpg'}
                         alt={product.title || 'Product Image'}
                         className="deal-image" 
                     />

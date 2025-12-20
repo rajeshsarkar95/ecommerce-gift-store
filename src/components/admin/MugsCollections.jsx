@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import '../../styles/admin/FlashDealsTable.css';
 
-const API_URL = 'http://localhost:5000/api/mugs';
+const API_URL = 'https://onlinegiftbackend.onrender.com/api/mugs';
 
 const emptyProduct = {
     name: '',
@@ -199,7 +199,7 @@ function MugTable() {
                                 <tr key={product._id}>
                                     <td data-label="Image">
                                         <img
-                                            src={product.image ? `http://localhost:5000${product.image}` : 'placeholder.jpg'}
+                                            src={product.image ? `https://onlinegiftbackend.onrender.com${product.image}` : 'placeholder.jpg'}
                                             alt={product.name || 'Mug Image'}
                                             className="deal-image"
                                         />
@@ -259,7 +259,7 @@ function MugTable() {
                                 />
                                 {(modalAction === 'edit' && formData.image) && (
                                     <small>
-                                        Current Image: <a href={`http://localhost:5000${formData.image}`} target="_blank" rel="noopener noreferrer">View</a> (Upload new file to replace)
+                                        Current Image: <a href={`https://onlinegiftbackend.onrender.com${formData.image}`} target="_blank" rel="noopener noreferrer">View</a> (Upload new file to replace)
                                     </small>
                                 )}
                             </div>

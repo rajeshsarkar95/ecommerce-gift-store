@@ -7,7 +7,7 @@ import axios from "axios";
 function TopSellers() {
   const { addToCart } = useCart();
   const navigate = useNavigate();
-
+  
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -15,7 +15,7 @@ function TopSellers() {
   useEffect(() => {
     const fetchTopSellers = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/topseller");
+        const res = await axios.get("https://onlinegiftbackend.onrender.com/api/topseller");
         const data = res.data.data || res.data;
         if (Array.isArray(data)) {
           setProducts(data);
@@ -52,7 +52,7 @@ function TopSellers() {
               <img
                 src={
                   product.images?.[0]
-                    ? `http://localhost:5000/uploads/topSellar/${product.images[0]}`
+                    ? `https://onlinegiftbackend.onrender.com/uploads/topSellar/${product.images[0]}`
                     : "/placeholder.jpg"
                 }
                 alt={product.title}

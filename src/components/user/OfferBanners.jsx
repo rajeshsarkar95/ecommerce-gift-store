@@ -7,11 +7,11 @@ export default function OffersBanner() {
   const [banners, setBanners] = useState([]);
   const fetchBanners = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/customegiftbanner");
+      const res = await axios.get("https://onlinegiftbackend.onrender.com/api/customegiftbanner");
       const data = res?.data?.data || [];
       const formatted = data.map((item) => ({
         id: item._id,
-        img: `http://localhost:5000/${item.bulkOrderImage}`, 
+        img: `https://onlinegiftbackend.onrender.com${item.bulkOrderImage}`, 
         alt: "Offer Banner",
       }));
       setBanners(formatted);

@@ -5,7 +5,7 @@ import FlashDeals from "../../components/user/FlashDeals";
 import PromoSection from "../../components/user/PromoBanners";
 import TopSellers from "../../components/user/TopSellers";
 import PopularCategories from "../../components/user/PopularCategories";
-import PersonalizedGifts from "../../components/user/personalizedgifts";
+import PersonalizedGifts from "../../components/user/Personalizedgifts";
 import TShirtCollection from "../../components/user/TshirtCollection";
 import HoddiesCollection from "../../components/user/HoodiesCollection";
 import OffersBanner from "../../components/user/OfferBanners";

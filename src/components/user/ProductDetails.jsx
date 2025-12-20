@@ -7,7 +7,6 @@ export default function ProductDetails() {
   const { id } = useParams();
   const location = useLocation();
   const { addToCart } = useCart();
-
   const [product, setProduct] = useState(null);
 
   useEffect(() => {
@@ -28,7 +27,7 @@ export default function ProductDetails() {
 
   const title = product.title || product.tittle;
 
-  const imageBaseUrl = `http://localhost:5000/uploads/${product.folder}`;
+  const imageBaseUrl = `https://onlinegiftbackend.onrender.com/uploads/${product.folder}`;
 
   return (
     <div className="product-details-page">

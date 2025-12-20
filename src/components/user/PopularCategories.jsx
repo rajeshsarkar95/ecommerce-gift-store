@@ -2,17 +2,13 @@ import React, { useEffect, useState } from "react";
 import "../../styles/PopularCategories.css";
 import axios from "axios";
 
-
-
-
 function PopularCategories() {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
-
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/popularcategories");
+        const res = await axios.get("https://onlinegiftbackend.onrender.com/api/popularcategories");
         if (res.data.success) {
           setCategories(res.data.data.slice(0, 5));
         }
@@ -43,7 +39,7 @@ function PopularCategories() {
           categories.map((product) => (
             <div className="category" key={product._id}>
               <img
-                src={`http://localhost:5000/uploads/popularcategory/${product.image[0]}`}
+                src={`https://onlinegiftbackend.onrender.com/uploads/popularcategory/${product.image}`}
                 alt={product.title}
                 className="category-img"
               />

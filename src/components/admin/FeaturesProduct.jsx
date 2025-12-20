@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import '../../styles/admin/FlashDealsTable.css';
 
-const API_URL = 'http://localhost:5000/api/featuredproducts';
+const API_URL = 'https://onlinegiftbackend.onrender.com/api/featuredproducts';
 
 const emptyProduct = {
   name: '',
@@ -188,7 +188,7 @@ function FeaturedProductTable() {
                 <tr key={product._id || index}>
                   <td data-label="Image">
                     <img
-                      src={product.image ? `http://localhost:5000${product.image}` : 'placeholder.jpg'}
+                      src={product.image ? `https://onlinegiftbackend.onrender.com/${product.image}` : 'placeholder.jpg'}
                       alt={product.name || 'Featured Product Image'}
                       className="deal-image"
                     />
@@ -230,7 +230,7 @@ function FeaturedProductTable() {
                 <input type="file" id="image" name="image" accept="image/*" onChange={handleChange} required={modalAction === 'add'} />
                 {modalAction === 'edit' && formData.image && (
                   <small>
-                    Current Image: <a href={`http://localhost:5000${formData.image}`} target="_blank" rel="noopener noreferrer">View</a> (Upload new file to replace)
+                    Current Image: <a href={`https://onlinegiftbackend.onrender.com/{formData.image}`} target="_blank" rel="noopener noreferrer">View</a> (Upload new file to replace)
                   </small>
                 )}
               </div>

@@ -10,7 +10,7 @@ const Hero = () => {
     const fetchHero = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5000/api/customebanner"
+          "https://onlinegiftbackend.onrender.com/api/customebanner"
         );
         if (response.data.length > 0) {
           setHeroData(response.data[0]);
@@ -38,7 +38,7 @@ const Hero = () => {
       </div>
       {heroData.backgroundImage && (
         <img
-          src={`http://localhost:5000/uploads/customeBanner/${heroData.backgroundImage}`}
+          src={`https://onlinegiftbackend.onrender.com/uploads/customeBanner/${heroData.backgroundImage}`}
           alt="Gift"
         />
       )}

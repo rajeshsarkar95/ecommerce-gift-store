@@ -13,7 +13,7 @@ export default function TshirtCollection() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/tshirt");
+        const res = await axios.get("https://onlinegiftbackend.onrender.com/api/tshirt");
         setProducts(res.data.data || []);
       } catch (error) {
         console.log("API Error:", error.message);
@@ -42,7 +42,7 @@ export default function TshirtCollection() {
               <img
                 src={
                   cartProduct.images.length
-                    ? `http://localhost:5000/uploads/tshirt/${cartProduct.images[0]}`
+                    ? `https://onlinegiftbackend.onrender.com/uploads/tshirt/${cartProduct.images[0]}`
                     : Oversize1
                 }
                 alt={cartProduct.title}

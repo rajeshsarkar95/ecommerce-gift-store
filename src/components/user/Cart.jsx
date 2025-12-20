@@ -4,10 +4,7 @@ import { useCart } from "../../context/CartContext";
 export default function Cart() {
   const { cart, removeFromCart, increaseQty, decreaseQty } = useCart();
 
-  // Calculate total price
   const totalPrice = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
-
-  // Format cart items for WhatsApp message
   const formatCartForWhatsapp = () => {
     if (cart.length === 0) return "";
     let message = "Hello! I want to order the following items:\n";
@@ -17,10 +14,7 @@ export default function Cart() {
     message += `Total: ₹${totalPrice}`;
     return encodeURIComponent(message);
   };
-
-  // WhatsApp link
   const whatsappLink = `https://wa.me/919568755984?text=${formatCartForWhatsapp()}`;
-
   return (
     <div className="cart-page">
       <h1>Your Cart</h1>
@@ -45,7 +39,6 @@ export default function Cart() {
           <div className="item-total">₹{item.price * item.qty}</div>
         </div>
       ))}
-
       {cart.length > 0 && (
         <div className="cart-summary">
           <h2>Total: ₹{totalPrice}</h2>

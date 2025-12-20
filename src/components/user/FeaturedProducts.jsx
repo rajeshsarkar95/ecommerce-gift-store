@@ -15,7 +15,7 @@ const FeaturedProducts = () => {
     const fetchProducts = async () => {
       try {
         const res = await axios.get(
-          "http://localhost:5000/api/featuredproducts"
+          "https://onlinegiftbackend.onrender.com/api/featuredproducts"
         );
         setProducts(res.data.products || []);
       } catch (err) {
@@ -46,7 +46,7 @@ const FeaturedProducts = () => {
             : "";
 
           const imageUrl = fileName
-            ? `http://localhost:5000/uploads/featured/${fileName}`
+            ? `https://onlinegiftbackend.onrender.com/uploads/featured/${fileName}`
             : "/placeholder.jpg";
 
           // Standardized product object for cart

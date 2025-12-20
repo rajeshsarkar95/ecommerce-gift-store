@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import '../../styles/admin/FlashDealsTable.css';
-const API_URL = 'http://localhost:5000/api/flashdeals';
+const API_URL = 'https://onlinegiftbackend.onrender.com/api/flashdeals';
 const emptyDeal = {
   tittle: '',
   price: 0,
@@ -199,7 +199,7 @@ function FlashDealTable() {
                 <tr key={deal._id}>
                   <td data-label="Image">
                     <img
-                      src={deal.images && deal.images[0] ? `http://localhost:5000${deal.images[0]}` : 'placeholder.jpg'}
+                      src={deal.images && deal.images[0] ? `https://onlinegiftbackend.onrender.com${deal.images[0]}` : 'placeholder.jpg'}
                       alt={deal.tittle || 'Flash Deal'}
                       className="deal-image"
                     />
@@ -254,7 +254,7 @@ function FlashDealTable() {
                   required={modalAction === 'add'}
                 />
                 {(modalAction === 'edit' && formData.images[0]) && (
-                  <small>Current Image: <a href={`http://localhost:5000${formData.images[0]}`} target="_blank" rel="noopener noreferrer">View</a> (Upload new file to replace)</small>
+                  <small>Current Image: <a href={`https://onlinegiftbackend.onrender.com${formData.images[0]}`} target="_blank" rel="noopener noreferrer">View</a> (Upload new file to replace)</small>
                 )}
               </div>
 

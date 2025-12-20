@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
-const API_URL = 'http://localhost:5000/api/popularcategories'; 
+const API_URL = 'https://onlinegiftbackend.onrender.com/api/popularcategories'; 
 
 const emptyCategory = {
   title: '',
@@ -172,7 +172,7 @@ function PopularCategoryTable() {
               <tr key={category._id}>
                 <td data-label="Image">
                     <img
-                        src={category.image && category.image[0] ? `http://localhost:5000${category.image[0]}` : 'placeholder.jpg'}
+                        src={category.image && category.image[0] ? `https://onlinegiftbackend.onrender.com/${category.image[0]}` : 'placeholder.jpg'}
                         alt={category.title || 'Category Image'}
                         className="deal-image" 
                     />
@@ -220,7 +220,7 @@ function PopularCategoryTable() {
                 
                 {(modalAction === 'edit' && formData.image[0]) && (
                   <small>
-                    Current Image: <a href={`http://localhost:5000${formData.image[0]}`} target="_blank" rel="noopener noreferrer">View</a> (Upload new file to replace)
+                    Current Image: <a href={`https://onlinegiftbackend.onrender.com${formData.image[0]}`} target="_blank" rel="noopener noreferrer">View</a> (Upload new file to replace)
                   </small>
                 )}
               </div>

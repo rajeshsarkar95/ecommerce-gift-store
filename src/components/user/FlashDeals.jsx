@@ -8,10 +8,10 @@ function FlashDeals() {
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
 
-  useEffect(() => {
+  useEffect(() =>{
     const fetchFlashDeals = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/flashdeals");
+        const res = await fetch("https://onlinegiftbackend.onrender.com/api/flashdeals");
         const data = await res.json();
         console.log("Fetched flash deals:", data);
         setProducts(data.data || []);
@@ -27,15 +27,13 @@ function FlashDeals() {
       <h2>Flash Deals</h2>
       <div className="product-list">
         {products.map((product) => {
-          // Map _id to id for CartContext
           const cartProduct = { ...product, id: product._id, title: product.tittle };
-
           return (
             <div className="product-deals" key={product._id}>
               <img
                 src={
                   product.images && product.images.length > 0
-                    ? `http://localhost:5000/uploads/flashdeals/${product.images[0]}`
+                    ? `https://onlinegiftbackend.onrender.com/uploads/flashdeals/${product.images[0]}`
                     : "/placeholder.jpg"
                 }
                 alt={cartProduct.title}
@@ -45,7 +43,6 @@ function FlashDeals() {
                   })
                 }
               />
-
               <div className="product-info">
                 <h4>{cartProduct.title}</h4>
                 <p>

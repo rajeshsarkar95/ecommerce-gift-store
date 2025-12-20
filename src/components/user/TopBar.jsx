@@ -10,7 +10,7 @@ function TopBar() {
   useEffect(() => {
     const fetchTopBar = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/topbar");
+        const response = await axios.get("https://onlinegiftbackend.onrender.com/api/topbar");
         setTopBar(response.data[0]);
       } catch (error) {
         console.error("Error fetching TopBar:", error);

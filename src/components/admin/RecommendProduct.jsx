@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import '../../styles/admin/FlashDealsTable.css';
 
-const API_URL = 'http://localhost:5000/api/recommendedproducts';
+const API_URL = 'https://onlinegiftbackend.onrender.com/api/recommendedproducts';
 
 const emptyProduct = {
   name: '',

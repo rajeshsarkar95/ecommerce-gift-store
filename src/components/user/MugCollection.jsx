@@ -15,7 +15,7 @@ export default function MugCollection() {
   useEffect(() => {
     const fetchMugs = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/mugs");
+        const res = await axios.get("https://onlinegiftbackend.onrender.com/api/mugs");
         setMugProducts(res.data.mugs || []);
       } catch (err) {
         setError("Failed to load mugs",err);
@@ -39,7 +39,7 @@ export default function MugCollection() {
         {mugProducts.map((product) => {
           // Ensure proper image URL
           const imageUrl = product.image
-            ? `http://localhost:5000/${product.image}`
+            ? `https://onlinegiftbackend.onrender.com/${product.image}`
             : "/placeholder.jpg";
 
           // Map product for CartContext
