@@ -6,7 +6,7 @@
   padding: 0 20px;
   border-bottom: 1px solid #ddd;
   position: fixed;
-  top: 0;
+  top: 34px;
   width: 100%;
   z-index: 999;
   height: 70px;
@@ -23,7 +23,7 @@
 }
 
 .navbar input {
-  width: 100%;
+  width:85%;
   padding: 8px 10px;
   border: 2px solid #6a0dad;
   border-right: none;
