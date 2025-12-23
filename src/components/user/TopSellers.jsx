@@ -7,7 +7,6 @@ import axios from "axios";
 function TopSellers() {
   const { addToCart } = useCart();
   const navigate = useNavigate();
-  
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -37,9 +36,9 @@ function TopSellers() {
   if (products.length === 0) return <p>No top sellers available.</p>;
 
   return (
-    <section className="top-sellers">
-      <h2>Top Sellers</h2>
-      <div className="product-list">
+    <section className="top-sellers-section">
+      <h2 className="top-sellers-title">Top Sellers</h2>
+      <div className="top-sellers-grid">
         {products.map((p) => {
           const product = {
             ...p,
@@ -48,25 +47,24 @@ function TopSellers() {
           };
 
           return (
-            <div className="top-seller-product" key={p._id}>
+            <div className="top-sellers-card" key={p._id}>
               <img
-                src={
-                  product.images?.[0]
-                    ? `https://onlinegiftbackend.onrender.com/uploads/topSellar/${product.images[0]}`
-                    : "/placeholder.jpg"
-                }
+                src={product.images?.[0]?.url || "/placeholder.jpg"}
                 alt={product.title}
-                className="clickable"
+                className="top-sellers-img clickable"
                 onClick={() =>
                   navigate(`/product/${p._id}`, {
-                    state: { ...product, folder: "topSellar" },
+                    state: { ...product, folder: "topSeller" },
                   })
                 }
               />
-              <div className="product-info">
-                <h4>{product.title}</h4>
-                <p>₹{product.price ?? "N/A"}</p>
-                <button className="add-btn" onClick={() => addToCart(product)}>
+              <div className="top-sellers-info">
+                <h4 className="top-sellers-product-title">{product.title}</h4>
+                <p className="top-sellers-price">₹{product.price ?? "N/A"}</p>
+                <button
+                  className="top-sellers-add-btn"
+                  onClick={() => addToCart(product)}
+                >
                   Add to Cart
                 </button>
               </div>
@@ -74,7 +72,7 @@ function TopSellers() {
           );
         })}
       </div>
-      <div className="back-top">
+      <div className="top-sellers-back-top">
         <a href="#top">↑ Back to top</a>
       </div>
     </section>

@@ -43,6 +43,7 @@ function TopSellerTable() {
   useEffect(() => {
     fetchProducts();
   }, [fetchProducts]);
+
   const handleAddClick = () => {
     setFormData(emptyProduct);
     setSelectedImageFiles([]);
@@ -80,6 +81,7 @@ function TopSellerTable() {
       };
     });
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
@@ -100,9 +102,7 @@ function TopSellerTable() {
     });
 
     if (modalAction === "edit" && selectedImageFiles.length === 0 && formData.images.length > 0) {
-        formData.images.forEach(url => {
-            dataToSend.append("existingImages", url); 
-        });
+        formData.images.forEach(imgObj => dataToSend.append("existingImages", imgObj.url)); 
     }
 
     if (modalAction === "add" && selectedImageFiles.length === 0) {
@@ -133,7 +133,6 @@ function TopSellerTable() {
       setIsLoading(false);
     }
   };
-
 
   const handleDelete = async (productId, title) => {
     if (!window.confirm(`Are you sure you want to DELETE the top seller product: "${title}"?`)) {
@@ -185,14 +184,14 @@ function TopSellerTable() {
               <tr key={product._id}>
                 <td data-label="Image">
                     <img
-                        src={product.images && product.images[0] ? `https://onlinegiftbackend.onrender.com${product.images[0]}` : 'placeholder.jpg'}
+                        src={product.images && product.images[0]?.url ? product.images[0].url : 'placeholder.jpg'}
                         alt={product.title || 'Product Image'}
                         className="deal-image" 
                     />
                 </td>
                 <td data-label="Title">{product.title}</td>
-                <td data-label="Current Price" className="price-new">${product.price}</td>
-                <td data-label="Old Price" className="price-old">${product.oldPrice ? product.oldPrice.toFixed(2) : '0.00'}</td>
+                <td data-label="Current Price" className="price-new">₹{product.price}</td>
+                <td data-label="Old Price" className="price-old">₹{product.oldPrice ? product.oldPrice.toFixed(2) : '0.00'}</td>
                 <td data-label="Images Count">{product.images ? product.images.length : 0}</td>
                 <td data-label="Actions" className="action-buttons">
                   <button onClick={() => handleEditClick(product)} className="edit-btn">

@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
-import '../../styles/admin/FlashDealsTable.css'; 
-const API_URL = 'https://onlinegiftbackend.onrender.com/api/hoodies'; 
+import '../../styles/admin/FlashDealsTable.css';
+
+const API_URL = 'https://onlinegiftbackend.onrender.com/api/hoodies';
 
 const emptyProduct = {
   title: '',
-  price: '', 
-  image: '', 
-  category: 'hoodies', 
+  price: '',
+  category: 'hoodies',
+  image: null, 
   _id: null,
 };
 
@@ -18,22 +19,16 @@ function HoodieTable() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalAction, setModalAction] = useState('add');
   const [formData, setFormData] = useState(emptyProduct);
-  const [selectedImageFile, setSelectedImageFile] = useState(null); 
-
-  console.log("Current hoodie product form data:", formData);
-
+  const [selectedImageFile, setSelectedImageFile] = useState(null);
 
   const fetchProducts = useCallback(async () => {
     setIsLoading(true);
     setError(null);
     try {
       const response = await axios.get(API_URL);
-      const apiData = response.data.data || response.data; 
-      let productsArray = Array.isArray(apiData) ? apiData : [];
-      setProducts(productsArray);
+      setProducts(response.data?.data || []);
     } catch (err) {
-      console.error("Failed to fetch products:", err);
-      setError('Failed to load hoodie products. Check the server and API_URL.');
+      setError('Failed to load hoodie products.',err);
       setProducts([]);
     } finally {
       setIsLoading(false);
@@ -53,30 +48,28 @@ function HoodieTable() {
 
   const handleEditClick = (product) => {
     setFormData({
-      ...product,
-
-      image: product.image || '', 
+      _id: product._id,
+      title: product.title,
+      price: product.price,
+      category: product.category,
+      image: product.image, // store full image object
     });
     setSelectedImageFile(null);
-    setModalAction("edit");
+    setModalAction('edit');
     setIsModalOpen(true);
   };
-  
-  const handleCloseModal = () => setIsModalOpen(false);
-  const handleContentClick = (e) => e.stopPropagation();
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
 
-    if (name === 'image' && files && files.length > 0) {
-      
+    if (name === 'image' && files?.length) {
       setSelectedImageFile(files[0]);
       return;
     }
-    
-    setFormData(prevData => ({
-      ...prevData,
-      [name]: value
+
+    setFormData(prev => ({
+      ...prev,
+      [name]: value,
     }));
   };
 
@@ -84,64 +77,55 @@ function HoodieTable() {
     e.preventDefault();
     setError(null);
     setIsLoading(true);
-  
-    const method = modalAction === "add" ? "post" : "put";
-    const url = modalAction === "add"
-      ? API_URL
-      : `${API_URL}/${formData._id}`;
-  
-    const dataToSend = new FormData();
-    dataToSend.append("title", formData.title);
-    dataToSend.append("price", formData.price);
-    dataToSend.append("category", formData.category);
+
+    const method = modalAction === 'add' ? 'post' : 'put';
+    const url =
+      modalAction === 'add'
+        ? API_URL
+        : `${API_URL}/${formData._id}`;
+
+    const formPayload = new FormData();
+    formPayload.append('title', formData.title);
+    formPayload.append('price', formData.price);
+    formPayload.append('category', formData.category);
 
     if (selectedImageFile) {
-      dataToSend.append("image", selectedImageFile); 
-    } else if (modalAction === "edit" && formData.image) {
-      dataToSend.append("existingImage", formData.image); 
+      formPayload.append('image', selectedImageFile);
     }
-    
-    if (modalAction === "add" && !selectedImageFile) {
-      setError("Please select an image file to upload for the product.");
+
+    if (modalAction === 'add' && !selectedImageFile) {
+      setError('Please select an image.');
       setIsLoading(false);
       return;
     }
-  
+
     try {
       await axios({
-        method: method,
-        url: url,
-        data: dataToSend,
-        headers: {
-            'Content-Type': 'multipart/form-data', 
-        },
+        method,
+        url,
+        data: formPayload,
+        headers: { 'Content-Type': 'multipart/form-data' },
       });
-  
+
       setIsModalOpen(false);
       setSelectedImageFile(null);
-      fetchProducts(); 
-  
+      fetchProducts();
     } catch (err) {
-      const serverMessage =
-        err.response?.data?.message || err.message || "Check network and server logs.";
-      setError(`Failed to save product: ${serverMessage}`);
+      setError(err.response?.data?.message || 'Failed to save product.');
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handleDelete = async (productId, title) => {
-    if (!window.confirm(`Are you sure you want to DELETE the product: "${title}"?`)) {
-      return;
-    }
-    setError(null);
+  const handleDelete = async (id, title) => {
+    if (!window.confirm(`Delete "${title}"?`)) return;
+
     setIsLoading(true);
     try {
-      await axios.delete(`${API_URL}/${productId}`);
-      setProducts(prevProducts => prevProducts.filter(product => product._id !== productId));
-    } catch (err) {
-      const serverMessage = err.response?.data?.message || 'Check network and server logs.';
-      setError(`Failed to delete product: ${serverMessage}`);
+      await axios.delete(`${API_URL}/${id}`);
+      setProducts(prev => prev.filter(p => p._id !== id));
+    } catch {
+      setError('Failed to delete product.');
     } finally {
       setIsLoading(false);
     }
@@ -152,19 +136,20 @@ function HoodieTable() {
   }
 
   return (
-    <div className="flash-deal-container"> 
+    <div className="flash-deal-container">
       <div className="admin-header">
         <h2> Hoodie Collection Management</h2>
-        <button onClick={handleAddClick} className="add-btn" title="Create a new Hoodie Product">
+        <button onClick={handleAddClick} className="add-btn">
           + ADD NEW HOODIE
         </button>
       </div>
+
       {error && <div className="error-message admin-error">{error}</div>}
-      
+
       {products.length === 0 && !isLoading ? (
-        <div className="no-data-message">No hoodie products found. Click ADD NEW HOODIE to create one.</div>
+        <div className="no-data-message">No hoodie products found.</div>
       ) : (
-        <table className="flash-deal-table"> 
+        <table className="flash-deal-table">
           <thead>
             <tr>
               <th>Image</th>
@@ -175,19 +160,19 @@ function HoodieTable() {
             </tr>
           </thead>
           <tbody>
-            {products.map((product) => (
+            {products.map(product => (
               <tr key={product._id}>
-                <td data-label="Image">
-                    <img
-                        src={product.image ? `https://onlinegiftbackend.onrender.com${product.image}` : 'placeholder.jpg'}
-                        alt={product.title || 'Product Image'}
-                        className="deal-image" 
-                    />
+                <td>
+                  <img
+                    src={product.image?.url}
+                    alt={product.title}
+                    className="deal-image"
+                  />
                 </td>
-                <td data-label="Title">{product.title}</td>
-                <td data-label="Price" className="price-new">${product.price}</td>
-                <td data-label="Category">{product.category}</td>
-                <td data-label="Actions" className="action-buttons">
+                <td>{product.title}</td>
+                <td className="price-new">₹{product.price}</td>
+                <td>{product.category}</td>
+                <td className="action-buttons">
                   <button onClick={() => handleEditClick(product)} className="edit-btn">
                     Edit
                   </button>
@@ -200,50 +185,55 @@ function HoodieTable() {
           </tbody>
         </table>
       )}
+
       {isModalOpen && (
-        <div className="modal-overlay" onClick={handleCloseModal}>
-          <div className="modal-content" onClick={handleContentClick}>
-            <h3>{modalAction === 'add' ? 'Create New Hoodie' : `Edit Hoodie: ${formData.title}`}</h3>
+        <div className="modal-overlay" onClick={() => setIsModalOpen(false)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <h3>{modalAction === 'add' ? 'Create New Hoodie' : `Edit Hoodie`}</h3>
             <hr />
+
             <form onSubmit={handleSubmit}>
               <div className="form-group">
-                <label htmlFor="title">Title:</label>
-                <input type="text" id="title" name="title" value={formData.title} onChange={handleChange} required />
-              </div>
-              <div className="form-group">
-                <label htmlFor="price">Price (String):</label>
-                <input type="text" id="price" name="price" value={formData.price} onChange={handleChange} required />
+                <label>Title</label>
+                <input name="title" value={formData.title} onChange={handleChange} required />
               </div>
 
               <div className="form-group">
-                <label htmlFor="category">Category:</label>
-                <input type="text" id="category" name="category" value={formData.category} readOnly disabled />
+                <label>Price</label>
+                <input name="price" value={formData.price} onChange={handleChange} required />
               </div>
+
               <div className="form-group">
-                <label htmlFor="imageFile">Upload Image File:</label>
-                <input
-                  type="file"
-                  id="image"
-                  name="image"
-                  accept="image/*"
-                  onChange={handleChange}
-                  required={modalAction === 'add'}
-                />
-                {(modalAction === 'edit' && formData.image) && (
+                <label>Category</label>
+                <input value={formData.category} readOnly disabled />
+              </div>
+
+              <div className="form-group">
+                <label>Upload Image</label>
+                <input type="file" name="image" accept="image/*" onChange={handleChange} />
+                {modalAction === 'edit' && formData.image?.url && (
                   <small>
-                    Current Image: <a href={`https://onlinegiftbackend.onrender.com${formData.image}`} target="_blank" rel="noopener noreferrer">View</a> (Upload new file to replace)
+                    Current Image:{' '}
+                    <a href={formData.image.url} target="_blank" rel="noreferrer">
+                      View
+                    </a>
                   </small>
                 )}
               </div>
-              <div className="modal-actions">
-                <button type="submit" className="submit-btn" disabled={isLoading}>
-                  {isLoading ? 'Saving...' : (modalAction === 'add' ? 'Create Hoodie' : 'Save Changes')}
-                </button>
-                <button type="button" className="cancel-btn" onClick={handleCloseModal} disabled={isLoading}>Cancel</button>
-              </div>
 
+              <div className="modal-actions">
+                <button type="submit" className="submit-btn">
+                  {modalAction === 'add' ? 'Create Hoodie' : 'Save Changes'}
+                </button>
+                <button type="button" className="cancel-btn" onClick={() => setIsModalOpen(false)}>
+                  Cancel
+                </button>
+              </div>
             </form>
-            <button className="close-button" onClick={handleCloseModal} disabled={isLoading}>&times;</button>
+
+            <button className="close-button" onClick={() => setIsModalOpen(false)}>
+              ×
+            </button>
           </div>
         </div>
       )}

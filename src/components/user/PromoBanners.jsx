@@ -1,14 +1,14 @@
-import React from "react";
-import { useEffect,useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../../styles/PromoBanners.css";
-import axios  from "axios";
+import axios from "axios";
 
 function PromoSection() {
-  const [banners,setBanners] = useState([]);
+  const [banners, setBanners] = useState([]);
+
   useEffect(() => {
     const fetchBanners = async () => {
       try {
-        const res = await axios.get("https://onlinegiftbackend.onrender.com/api/banners");
+        const res = await axios.get("https://onlinegiftbackend.onrender.com/api/Promobanners");
         if (res.data.success) {
           setBanners(res.data.data);
         }
@@ -25,7 +25,7 @@ function PromoSection() {
         {banners.map((banner) => (
           <div className="promo-banner" key={banner._id}>
             <img
-              src={`https://onlinegiftbackend.onrender.com/uploads/banners/${banner.image}`}
+              src={banner.images?.[0]?.url || "/placeholder.jpg"} 
               alt={banner.title}
             />
             <div className="promo-text">

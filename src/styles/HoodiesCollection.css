@@ -1,4 +1,3 @@
-/* Main Container */
 .tshirt-collection {
   max-width: 1200px;
   margin: auto;
@@ -11,13 +10,11 @@
   font-weight: 700;
   margin-bottom: 40px;
 }
-/* Grid Layout */
 .product-list {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 25px;
 }
-/* Card Style */
 .product {
   background: #fff;
   border-radius: 18px;
@@ -30,36 +27,27 @@
 .product:hover {
   transform: translateY(-5px);
 }
-/* Image Style */
 .product img {
   width: 100%;
   height: 260px;
   object-fit: cover;
   border-bottom: 1px solid #eee;
 }
-
-/* Text Style */
 .product-info {
   padding: 15px;
 }
-
 .product-info h4 {
   color: #222;
   font-size: 17px;
   font-weight: 600;
   margin-bottom: 8px;
 }
-
 .product-info p {
   color: #6a0dad;
   font-size: 16px;
   font-weight: bold;
   margin: 0;
 }
-
-
-
-/* 📱 Mobile Responsive */
 @media (max-width: 768px) {
   .product img {
     height: 220px;

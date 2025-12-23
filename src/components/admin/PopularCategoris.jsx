@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
+
 const API_URL = 'https://onlinegiftbackend.onrender.com/api/popularcategories'; 
 
 const emptyCategory = {
@@ -19,6 +20,7 @@ function PopularCategoryTable() {
   const [selectedImageFile, setSelectedImageFile] = useState(null); 
 
   console.log("Current category form data:", formData);
+
   const fetchCategories = useCallback(async () => {
     setIsLoading(true);
     setError(null);
@@ -39,6 +41,7 @@ function PopularCategoryTable() {
   useEffect(() => {
     fetchCategories();
   }, [fetchCategories]);
+
   const handleAddClick = () => {
     setFormData(emptyCategory);
     setSelectedImageFile(null);
@@ -50,17 +53,18 @@ function PopularCategoryTable() {
     setFormData({
       ...category,
       itemsCount: category.itemsCount || 0,
-      image: Array.isArray(category.image) && category.image.length > 0
-          ? category.image
-          : [""]
+      image: Array.isArray(category.images) && category.images.length > 0
+          ? category.images
+          : [""] 
     });
     setSelectedImageFile(null);
     setModalAction("edit");
     setIsModalOpen(true);
   };
-  
+
   const handleCloseModal = () => setIsModalOpen(false);
   const handleContentClick = (e) => e.stopPropagation();
+
   const handleChange = (e) => {
     const { name, value, files } = e.target;
     if (name === 'image' && files && files.length > 0) {
@@ -80,40 +84,42 @@ function PopularCategoryTable() {
     e.preventDefault();
     setError(null);
     setIsLoading(true);
-  
+
     const method = modalAction === "add" ? "post" : "put";
     const url = modalAction === "add"
       ? API_URL
       : `${API_URL}/${formData._id}`;
+
     const dataToSend = new FormData();
     dataToSend.append("title", formData.title);
     dataToSend.append("itemsCount", String(formData.itemsCount));
 
     if (selectedImageFile) {
-      dataToSend.append("image", selectedImageFile); 
-    } else if (modalAction === "edit" && formData.image && formData.image[0]) {
-      dataToSend.append("existingImage", formData.image[0]); 
+      dataToSend.append("images", selectedImageFile);
+    } else if (modalAction === "edit" && formData.image && formData.image[0]?.url) {
+      dataToSend.append("existingImage", formData.image[0].url);
     }
+
     if (modalAction === "add" && !selectedImageFile) {
       setError("Please select an image file to upload for the category.");
       setIsLoading(false);
       return;
     }
-  
+
     try {
       await axios({
-        method: method,
-        url: url,
+        method,
+        url,
         data: dataToSend,
         headers: {
-            'Content-Type': 'multipart/form-data', 
+          'Content-Type': 'multipart/form-data',
         },
       });
-  
+
       setIsModalOpen(false);
       setSelectedImageFile(null);
       fetchCategories(); 
-  
+
     } catch (err) {
       const serverMessage =
         err.response?.data?.message || err.message || "Check network and server logs.";
@@ -122,7 +128,7 @@ function PopularCategoryTable() {
       setIsLoading(false);
     }
   };
-  
+
   const handleDelete = async (categoryId, title) => {
     if (!window.confirm(`Are you sure you want to DELETE the category: "${title}"?`)) {
       return;
@@ -153,7 +159,7 @@ function PopularCategoryTable() {
         </button>
       </div>
       {error && <div className="error-message admin-error">{error}</div>}
-      
+
       {categories.length === 0 && !isLoading ? (
         <div className="no-data-message">No popular categories found. Click ADD NEW CATEGORY to create one.</div>
       ) : (
@@ -172,7 +178,7 @@ function PopularCategoryTable() {
               <tr key={category._id}>
                 <td data-label="Image">
                     <img
-                        src={category.image && category.image[0] ? `https://onlinegiftbackend.onrender.com/${category.image[0]}` : 'placeholder.jpg'}
+                        src={category.images?.[0]?.url || ''}
                         alt={category.title || 'Category Image'}
                         className="deal-image" 
                     />
@@ -193,6 +199,7 @@ function PopularCategoryTable() {
           </tbody>
         </table>
       )}
+
       {isModalOpen && (
         <div className="modal-overlay" onClick={handleCloseModal}>
           <div className="modal-content" onClick={handleContentClick}>
@@ -218,9 +225,9 @@ function PopularCategoryTable() {
                   required={modalAction === 'add'}
                 />
                 
-                {(modalAction === 'edit' && formData.image[0]) && (
+                {(modalAction === 'edit' && formData.image[0]?.url) && (
                   <small>
-                    Current Image: <a href={`https://onlinegiftbackend.onrender.com${formData.image[0]}`} target="_blank" rel="noopener noreferrer">View</a> (Upload new file to replace)
+                    Current Image: <a href={formData.image[0].url} target="_blank" rel="noopener noreferrer">View</a> (Upload new file to replace)
                   </small>
                 )}
               </div>
@@ -231,7 +238,6 @@ function PopularCategoryTable() {
                 </button>
                 <button type="button" className="cancel-btn" onClick={handleCloseModal} disabled={isLoading}>Cancel</button>
               </div>
-
             </form>
             <button className="close-button" onClick={handleCloseModal} disabled={isLoading}>&times;</button>
           </div>

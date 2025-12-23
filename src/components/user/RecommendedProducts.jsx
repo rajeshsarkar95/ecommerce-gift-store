@@ -30,51 +30,38 @@ const RecommendedProducts = () => {
   }, []);
 
   if (loading) return <p style={{ textAlign: "center" }}>Loading...</p>;
-  if (error) return (
-    <p style={{ textAlign: "center", color: "red" }}>{error}</p>
-  );
+  if (error) return <p style={{ textAlign: "center", color: "red" }}>{error}</p>;
 
   return (
-    <section className="product-section">
-      <h2>Recommended Products</h2>
-      <div className="product-grid">
+    <section className="recommended-section">
+      <h2 className="recommended-title">Recommended Products</h2>
+      <div className="recommended-grid">
         {products.map((product) => {
-          // Extract filename from path
-          const fileName = product.image
-            ? product.image.split("/").pop().split("\\").pop()
-            : "";
-          
-          // Construct image URL
-          const imageUrl = fileName
-            ? `https://onlinegiftbackend.onrender.com/uploads/recommended/${fileName}`
-            : "/placeholder.jpg";
+          const imageUrl = product.image?.url || "/placeholder.jpg";
 
-          // Map product for CartContext
           const cartProduct = {
             id: product._id,
             title: product.name || "No Name",
             price: product.price ?? 0,
             description: product.description || "",
-            images: fileName ? [fileName] : [],
+            images: imageUrl ? [imageUrl] : [],
             folder: "recommended",
           };
 
           return (
-            <div className="product" key={product._id}>
+            <div className="recommended-card" key={product._id}>
               <img
                 src={imageUrl}
                 alt={cartProduct.title}
-                className="clickable"
+                className="recommended-img clickable"
                 onClick={() =>
-                  navigate(`/product/${product._id}`, {
-                    state: cartProduct,
-                  })
+                  navigate(`/product/${product._id}`, { state: cartProduct })
                 }
               />
-              <h3>{cartProduct.title}</h3>
-              <p>₹{cartProduct.price}</p>
+              <h3 className="recommended-product-title">{cartProduct.title}</h3>
+              <p className="recommended-product-price">₹{cartProduct.price}</p>
               <button
-                className="add-btn"
+                className="recommended-add-btn"
                 onClick={() => addToCart(cartProduct)}
               >
                 Add to Cart

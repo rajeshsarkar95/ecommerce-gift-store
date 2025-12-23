@@ -1,40 +1,48 @@
-/* Promo Section */
 .promo-section {
   padding: 50px 8%;
   background: #fff;
 }
+
 .promo-container {
   display: flex;
   justify-content: space-between;
   gap: 20px;
   flex-wrap: wrap;
 }
+
 .promo-banner {
   position: relative;
   overflow: hidden;
   border-radius: 15px;
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
-}
-.promo-banner img {
   width: 558px;
-  height: 400px;
-  object-fit: cover;
 }
+
+.promo-banner img {
+  width: 558px; 
+  height: 400px;
+  display: block;
+  border-radius: 15px;
+}
+
 .promo-text {
   position: absolute;
   top: 20%;
   left: 20%;
   color: #fff;
 }
+
 .promo-text h3 {
   font-size: 18px;
   text-transform: uppercase;
   opacity: 0.9;
 }
+
 .promo-text h1 {
   font-size: 40px;
   font-weight: bold;
 }
+
 .promo-text p {
   margin-top: 10px;
   font-size: 16px;
@@ -47,26 +55,43 @@
   .promo-banner {
     width: 100%;
   }
+
+  .promo-banner img {
+    width: 100%;
+    height: auto; 
+  }
+
   .promo-text h1 {
     font-size: 2.5rem;
   }
 }
-/* 📱 Mobile View */
 @media (max-width: 480px) {
   .promo-container {
-    gap: 18px;
+    gap: 15px;
+    flex-direction: column;
+    align-items: center;
   }
+
+  .promo-banner img {
+    width: 100%;
+    height: auto;
+  }
+
   .promo-text {
+    top: auto;
     bottom: 10%;
     left: 8%;
     text-align: left;
   }
+
   .promo-text h3 {
     font-size: 0.9rem;
   }
+
   .promo-text h1 {
     font-size: 1.8rem;
   }
+
   .promo-text p {
     font-size: 0.85rem;
   }

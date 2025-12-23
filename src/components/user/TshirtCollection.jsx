@@ -19,32 +19,30 @@ export default function TshirtCollection() {
         console.log("API Error:", error.message);
       }
     };
-
     fetchProducts();
   }, []);
-
+  
   return (
     <section className="tshirt-collection">
       <h2>T-Shirt And Hoodies Collection</h2>
 
       <div className="product-list">
         {products.map((product) => {
-          // Map _id → id for CartContext
+          const imageUrl =
+            product.image?.url ||
+            (Array.isArray(product.image) && product.image.length > 0 ? product.image[0].url : Oversize1);
+
           const cartProduct = {
             ...product,
             id: product._id,
             title: product.title || "No Title",
-            images: product.image || [],
+            imageUrl,
           };
 
           return (
             <div key={product._id} className="product">
               <img
-                src={
-                  cartProduct.images.length
-                    ? `https://onlinegiftbackend.onrender.com/uploads/tshirt/${cartProduct.images[0]}`
-                    : Oversize1
-                }
+                src={cartProduct.imageUrl}
                 alt={cartProduct.title}
                 className="clickable"
                 onClick={() =>

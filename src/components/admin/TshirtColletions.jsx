@@ -3,13 +3,12 @@ import axios from 'axios';
 import '../../styles/admin/FlashDealsTable.css';
 
 const API_URL = 'https://onlinegiftbackend.onrender.com/api/tshirt';
-
 const CATEGORY_OPTIONS = ["tshirt", "hoodie", "kids", "women", "men"];
 
 const emptyProduct = {
   title: '',
   price: '',
-  image: [],
+  images: [],
   category: CATEGORY_OPTIONS[0],
   _id: null,
 };
@@ -23,18 +22,15 @@ function TshirtTable() {
   const [formData, setFormData] = useState(emptyProduct);
   const [selectedImageFiles, setSelectedImageFiles] = useState([]);
 
-  console.log("Current product form data:", formData);
   const fetchProducts = useCallback(async () => {
     setIsLoading(true);
     setError(null);
     try {
       const response = await axios.get(API_URL);
       const apiData = response.data.data || response.data;
-      let productsArray = Array.isArray(apiData) ? apiData : [];
-      setProducts(productsArray);
+      setProducts(Array.isArray(apiData) ? apiData : []);
     } catch (err) {
-      console.error("Failed to fetch products:", err);
-      setError('Failed to load products. Check the server and API_URL.');
+      setError('Failed to load products. Check the server and API_URL.',err);
       setProducts([]);
     } finally {
       setIsLoading(false);
@@ -55,7 +51,7 @@ function TshirtTable() {
   const handleEditClick = (product) => {
     setFormData({
       ...product,
-      image: Array.isArray(product.image) ? product.image : (product.image ? [product.image] : []),
+      images: Array.isArray(product.images) ? product.images : [],
       category: product.category || CATEGORY_OPTIONS[0],
     });
     setSelectedImageFiles([]);
@@ -68,17 +64,13 @@ function TshirtTable() {
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
-
     if (name === 'image' && files) {
       setSelectedImageFiles(Array.from(files));
       return;
     }
-
-    setFormData(prevData => ({
-      ...prevData,
-      [name]: value
-    }));
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
@@ -94,14 +86,14 @@ function TshirtTable() {
     dataToSend.append("price", formData.price);
     dataToSend.append("category", formData.category);
 
-    selectedImageFiles.forEach(file => {
-      dataToSend.append("image", file);
-    });
-    if (modalAction === "edit" && selectedImageFiles.length === 0 && formData.image.length > 0) {
-      formData.image.forEach(url => {
-        dataToSend.append("existingImages", url);
-      });
+    // append new image files
+    selectedImageFiles.forEach(file => dataToSend.append("image", file));
+
+    // For edit: if no new images selected, keep existing image URLs
+    if (modalAction === "edit" && selectedImageFiles.length === 0 && formData.images.length > 0) {
+      formData.images.forEach(img => dataToSend.append("existingImages", img.url));
     }
+
     if (modalAction === "add" && selectedImageFiles.length === 0) {
       setError("Please select at least one image file to upload for the product.");
       setIsLoading(false);
@@ -113,9 +105,7 @@ function TshirtTable() {
         method: method,
         url: url,
         data: dataToSend,
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
+        headers: { 'Content-Type': 'multipart/form-data' },
       });
 
       setIsModalOpen(false);
@@ -123,22 +113,20 @@ function TshirtTable() {
       fetchProducts();
 
     } catch (err) {
-      const serverMessage =
-        err.response?.data?.message || err.message || "Check network and server logs.";
+      const serverMessage = err.response?.data?.message || err.message || "Check network and server logs.";
       setError(`Failed to save product: ${serverMessage}`);
     } finally {
       setIsLoading(false);
     }
   };
+
   const handleDelete = async (productId, title) => {
-    if (!window.confirm(`Are you sure you want to DELETE the product: "${title}"?`)) {
-      return;
-    }
+    if (!window.confirm(`Are you sure you want to DELETE the product: "${title}"?`)) return;
     setError(null);
     setIsLoading(true);
     try {
       await axios.delete(`${API_URL}/${productId}`);
-      setProducts(prevProducts => prevProducts.filter(product => product._id !== productId));
+      setProducts(prev => prev.filter(p => p._id !== productId));
     } catch (err) {
       const serverMessage = err.response?.data?.message || 'Check network and server logs.';
       setError(`Failed to delete product: ${serverMessage}`);
@@ -146,6 +134,7 @@ function TshirtTable() {
       setIsLoading(false);
     }
   };
+
   if (isLoading && products.length === 0) {
     return <div className="loading-message">Loading products...</div>;
   }
@@ -154,12 +143,9 @@ function TshirtTable() {
     <div className="flash-deal-container">
       <div className="admin-header">
         <h2> T-Shirt Collection Management</h2>
-        <button onClick={handleAddClick} className="add-btn" title="Create a new Product">
-          + ADD NEW PRODUCT
-        </button>
+        <button onClick={handleAddClick} className="add-btn" title="Create a new Product">+ ADD NEW PRODUCT</button>
       </div>
       {error && <div className="error-message admin-error">{error}</div>}
-
       {products.length === 0 && !isLoading ? (
         <div className="no-data-message">No products found. Click ADD NEW PRODUCT to create one.</div>
       ) : (
@@ -174,25 +160,21 @@ function TshirtTable() {
             </tr>
           </thead>
           <tbody>
-            {products.map((product) => (
+            {products.map(product => (
               <tr key={product._id}>
                 <td data-label="Image">
                   <img
-                    src={product.image && product.image[0] ? `https://onlinegiftbackend.onrender.com${product.image[0]}` : 'placeholder.jpg'}
+                    src={product.images && product.images[0]?.url ? product.images[0].url : 'placeholder.jpg'}
                     alt={product.title || 'Product Image'}
                     className="deal-image"
                   />
                 </td>
                 <td data-label="Title">{product.title}</td>
-                <td data-label="Price" className="price-new">${product.price}</td>
+                <td data-label="Price" className="price-new">₹{product.price}</td>
                 <td data-label="Category">{product.category}</td>
                 <td data-label="Actions" className="action-buttons">
-                  <button onClick={() => handleEditClick(product)} className="edit-btn">
-                    Edit
-                  </button>
-                  <button onClick={() => handleDelete(product._id, product.title)} className="delete-btn">
-                    Delete
-                  </button>
+                  <button onClick={() => handleEditClick(product)} className="edit-btn">Edit</button>
+                  <button onClick={() => handleDelete(product._id, product.title)} className="delete-btn">Delete</button>
                 </td>
               </tr>
             ))}
@@ -200,15 +182,12 @@ function TshirtTable() {
         </table>
       )}
 
-
       {isModalOpen && (
         <div className="modal-overlay" onClick={handleCloseModal}>
           <div className="modal-content" onClick={handleContentClick}>
             <h3>{modalAction === 'add' ? 'Create New Product' : `Edit Product: ${formData.title}`}</h3>
             <hr />
             <form onSubmit={handleSubmit}>
-
-
               <div className="form-group">
                 <label htmlFor="title">Title:</label>
                 <input type="text" id="title" name="title" value={formData.title} onChange={handleChange} required />
@@ -236,11 +215,8 @@ function TshirtTable() {
                   onChange={handleChange}
                   required={modalAction === 'add'}
                 />
-
-                {(modalAction === 'edit' && formData.image.length > 0) && (
-                  <small>
-                    Currently loaded images: **{formData.image.length}**.
-                  </small>
+                {modalAction === 'edit' && formData.images.length > 0 && (
+                  <small>Currently loaded images: {formData.images.length}</small>
                 )}
               </div>
 
@@ -250,7 +226,6 @@ function TshirtTable() {
                 </button>
                 <button type="button" className="cancel-btn" onClick={handleCloseModal} disabled={isLoading}>Cancel</button>
               </div>
-
             </form>
             <button className="close-button" onClick={handleCloseModal} disabled={isLoading}>&times;</button>
           </div>

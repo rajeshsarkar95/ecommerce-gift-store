@@ -182,10 +182,11 @@ function RecommendedProductTable() {
               <tr key={product._id}>
                 <td data-label="Image">
                   <img
-                    src={product.image ? `http://localhost:5000${product.image}` : 'placeholder.jpg'}
+                    src={product.image?.url || 'placeholder.jpg'}
                     alt={product.name || 'Recommended Product Image'}
                     className="deal-image"
                   />
+
                 </td>
                 <td data-label="Name">{product.name}</td>
                 <td data-label="Price" className="price-new">${product.price ? product.price.toFixed(2) : '0.00'}</td>
@@ -226,6 +227,7 @@ function RecommendedProductTable() {
                   onChange={handleChange}
                   required={modalAction === 'add'}
                 />
+
                 {(modalAction === 'edit' && formData.image) && (
                   <small>
                     Current Image: <a href={`http://localhost:5000${formData.image}`} target="_blank" rel="noopener noreferrer">View</a> (Upload new file to replace)

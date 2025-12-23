@@ -5,6 +5,7 @@ import axios from "axios";
 function PopularCategories() {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -24,27 +25,27 @@ function PopularCategories() {
 
   if (loading) {
     return (
-      <section className="popular-categories">
-        <h2>Popular Categories</h2>
+      <section className="popular-categories-section">
+        <h2 className="popular-categories-title">Popular Categories</h2>
         <p>Loading...</p>
       </section>
     );
   }
 
   return (
-    <section className="popular-categories">
-      <h2>Popular Categories</h2>
-      <div className="category-list">
+    <section className="popular-categories-section">
+      <h2 className="popular-categories-title">Popular Categories</h2>
+      <div className="popular-categories-grid">
         {categories.length > 0 ? (
-          categories.map((product) => (
-            <div className="category" key={product._id}>
+          categories.map((category) => (
+            <div className="popular-category-card" key={category._id}>
               <img
-                src={`https://onlinegiftbackend.onrender.com/uploads/popularcategory/${product.image}`}
-                alt={product.title}
-                className="category-img"
+                src={category.images?.[0]?.url || "/placeholder.jpg"}
+                alt={category.title}
+                className="popular-category-img"
               />
-              <h4>{product.title}</h4>
-              <p>{product.itemsCount} items</p>
+              <h4 className="popular-category-title">{category.title}</h4>
+              <p className="popular-category-count">{category.itemsCount} items</p>
             </div>
           ))
         ) : (

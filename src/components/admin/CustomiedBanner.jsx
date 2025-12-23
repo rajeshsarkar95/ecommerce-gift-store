@@ -1,12 +1,14 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import '../../styles/admin/FlashDealsTable.css';
+
 const API_URL = 'https://onlinegiftbackend.onrender.com/api/customebanner';
+
 const emptyBanner = {
   title: '',
   subtitle: '',
   descriptions: '',
-  backgroundImage: '',
+  image: '',
   _id: null,
 };
 
@@ -71,60 +73,58 @@ function CustomGiftBannerTable() {
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
-    if (name === 'imageFile' && files && files.length > 0) {
-      setSelectedImageFile(files[0]);
+  
+    if (name === 'image' && files && files.length > 0) {
+      setSelectedImageFile(files[0]);  
       return;
     }
-
+  
     setFormData(prevData => ({
       ...prevData,
       [name]: value
     }));
   };
+  
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError(null);
-    setIsLoading(true);
 
-    const method = modalAction === 'add' ? 'post' : 'put';
-    const url = modalAction === 'add' ? API_URL : `${API_URL}/${formData._id}`;
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setError(null);
+  setIsLoading(true);
 
-    const dataToSend = new FormData();
-    dataToSend.append('title', formData.title);
-    dataToSend.append('subtitle', formData.subtitle);
-    dataToSend.append('descriptions', formData.descriptions);
-    if (selectedImageFile) {
-      dataToSend.append('backgroundImage', selectedImageFile);
-    }
-    else if (modalAction === 'edit' && formData.backgroundImage) {
-      dataToSend.append('existingImage', formData.backgroundImage);
-    }
+  const method = modalAction === 'add' ? 'post' : 'put';
+  const url = modalAction === 'add' ? API_URL : `${API_URL}/${formData._id}`;
 
-    if (modalAction === 'add' && !selectedImageFile) {
-      setError('Please select an image file to upload.');
-      setIsLoading(false);
-      return;
-    }
+  const dataToSend = new FormData();
+  dataToSend.append('title', formData.title);
+  dataToSend.append('subtitle', formData.subtitle);
+  dataToSend.append('descriptions', formData.descriptions);
 
-    try {
-      await axios({
-        method: method,
-        url: url,
-        data: dataToSend,
-      });
-
-      setIsModalOpen(false);
-      setSelectedImageFile(null);
-      fetchBanners();
-
-    } catch (err) {
-      const serverMessage = err.response?.data?.message || err.message || 'Check network and server logs.';
-      setError(`Failed to save banner: ${serverMessage}`);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  if (selectedImageFile) {
+    dataToSend.append('image', selectedImageFile); 
+  }
+  if (modalAction === 'add' && !selectedImageFile) {
+    setError('Please select an image file to upload.');
+    setIsLoading(false);
+    return;
+  }
+  try {
+    await axios({
+      method: method,
+      url: url,
+      data: dataToSend,
+      headers: { 'Content-Type': 'multipart/form-data' }
+    });
+    setIsModalOpen(false);
+    setSelectedImageFile(null);
+    fetchBanners();
+  } catch (err) {
+    const serverMessage = err.response?.data?.message || err.message || 'Check network and server logs.';
+    setError(`Failed to save banner: ${serverMessage}`);
+  } finally {
+    setIsLoading(false);
+  }
+};
   const handleDelete = async (bannerId, title) => {
     if (!window.confirm(`Are you sure you want to DELETE the banner: "${title}"?`)) {
       return;
@@ -179,7 +179,7 @@ function CustomGiftBannerTable() {
               <tr key={banner._id}>
                 <td data-label="Image">
                   <img
-                    src={banner.backgroundImage ? `https://onlinegiftbackend.onrender.com/uploads/customeGift/${banner.backgroundImage}` : 'placeholder.jpg'}
+                    src={banner.backgroundImage ? `${banner.backgroundImage}` : 'placeholder.jpg'}
                     alt={banner.title || 'Custom Banner'}
                     className="deal-image"
                   />
@@ -231,13 +231,13 @@ function CustomGiftBannerTable() {
                 <input
                   type="file"
                   id="imageFile"
-                  name="imageFile"
+                  name="image"
                   accept="image/*"
                   onChange={handleChange}
                   required={modalAction === 'add'}
                 />
                 {(modalAction === 'edit' && formData.backgroundImage) && (
-                  <small>Current Image: <a href={`https://onlinegiftbackend.onrender.com/${formData.backgroundImage}`} target="_blank" rel="noopener noreferrer">View</a> (Upload new file to replace)</small>
+                  <small>Current Image: <a href={`${formData.backgroundImage}`} target="_blank" rel="noopener noreferrer">View</a> (Upload new file to replace)</small>
                 )}
               </div>
               <div className="modal-actions">

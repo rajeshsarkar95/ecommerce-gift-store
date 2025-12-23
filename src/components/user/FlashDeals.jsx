@@ -8,7 +8,7 @@ function FlashDeals() {
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
 
-  useEffect(() =>{
+  useEffect(() => {
     const fetchFlashDeals = async () => {
       try {
         const res = await fetch("https://onlinegiftbackend.onrender.com/api/flashdeals");
@@ -23,32 +23,36 @@ function FlashDeals() {
   }, []);
 
   return (
-    <section className="flash-deals">
-      <h2>Flash Deals</h2>
-      <div className="product-list">
+    <section className="flash-deals-section">
+      <h2 className="flash-deals-title">Flash Deals</h2>
+      <div className="flash-deals-grid">
         {products.map((product) => {
           const cartProduct = { ...product, id: product._id, title: product.tittle };
           return (
-            <div className="product-deals" key={product._id}>
+            <div className="flash-deals-card" key={product._id}>
               <img
                 src={
                   product.images && product.images.length > 0
-                    ? `https://onlinegiftbackend.onrender.com/uploads/flashdeals/${product.images[0]}`
+                    ? product.images[0].url
                     : "/placeholder.jpg"
                 }
                 alt={cartProduct.title}
+                className="flash-deals-img"
                 onClick={() =>
                   navigate(`/product/${product._id}`, {
                     state: { ...cartProduct, folder: "flashdeals" },
                   })
                 }
               />
-              <div className="product-info">
-                <h4>{cartProduct.title}</h4>
-                <p>
-                  ₹{product.price} <small>₹{product.oldPrice}</small>
+              <div className="flash-deals-info">
+                <h4 className="flash-deals-product-title">{cartProduct.title}</h4>
+                <p className="flash-deals-price">
+                  ₹{product.price} <small className="flash-deals-old-price">₹{product.oldPrice}</small>
                 </p>
-                <button className="add-btn" onClick={() => addToCart(cartProduct)}>
+                <button
+                  className="flash-deals-add-btn"
+                  onClick={() => addToCart(cartProduct)}
+                >
                   Add to Cart
                 </button>
               </div>

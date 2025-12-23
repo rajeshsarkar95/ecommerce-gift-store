@@ -45,7 +45,7 @@ function MugTable() {
             setIsLoading(false);
         }
     }, []);
-    
+
     useEffect(() => {
         fetchProducts();
     }, [fetchProducts]);
@@ -62,7 +62,7 @@ function MugTable() {
             ...product,
             price: product.price || 0,
             oldPrice: product.oldPrice || 0,
-            image: product.image || '',
+            image: product.image?.url || product.image || '',
         });
         setSelectedImageFile(null);
         setModalAction("edit");
@@ -71,7 +71,6 @@ function MugTable() {
 
     const handleCloseModal = () => setIsModalOpen(false);
     const handleContentClick = (e) => e.stopPropagation();
-
 
     const handleChange = (e) => {
         const { name, value, files } = e.target;
@@ -82,15 +81,10 @@ function MugTable() {
         }
 
         setFormData(prevData => {
-
             const newValue = (name === 'price' || name === 'oldPrice') ? parseFloat(value) || 0 : value;
-            return {
-                ...prevData,
-                [name]: newValue
-            };
+            return { ...prevData, [name]: newValue };
         });
     };
-
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -98,22 +92,17 @@ function MugTable() {
         setIsLoading(true);
 
         const method = modalAction === "add" ? "post" : "put";
-        const url = modalAction === "add"
-            ? API_URL
-            : `${API_URL}/${formData._id}`;
+        const url = modalAction === "add" ? API_URL : `${API_URL}/${formData._id}`;
 
         const dataToSend = new FormData();
         dataToSend.append("name", formData.name);
         dataToSend.append("price", String(formData.price));
         dataToSend.append("oldPrice", String(formData.oldPrice));
 
+        // Only append a new image if selected
         if (selectedImageFile) {
             dataToSend.append("image", selectedImageFile);
-        } else if (modalAction === "edit" && formData.image) {
-
-            dataToSend.append("existingImage", formData.image);
         }
-
 
         if (modalAction === "add" && !selectedImageFile) {
             setError("Please select an image file to upload for the mug.");
@@ -126,18 +115,14 @@ function MugTable() {
                 method: method,
                 url: url,
                 data: dataToSend,
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
+                headers: { 'Content-Type': 'multipart/form-data' },
             });
 
             setIsModalOpen(false);
             setSelectedImageFile(null);
             fetchProducts();
-
         } catch (err) {
-            const serverMessage =
-                err.response?.data?.message || err.message || "Check network and server logs.";
+            const serverMessage = err.response?.data?.message || err.message || "Check network and server logs.";
             setError(`Failed to save mug: ${serverMessage}`);
         } finally {
             setIsLoading(false);
@@ -145,14 +130,12 @@ function MugTable() {
     };
 
     const handleDelete = async (productId, name) => {
-        if (!window.confirm(`Are you sure you want to DELETE the mug: "${name}"?`)) {
-            return;
-        }
+        if (!window.confirm(`Are you sure you want to DELETE the mug: "${name}"?`)) return;
         setError(null);
         setIsLoading(true);
         try {
             await axios.delete(`${API_URL}/${productId}`);
-            setProducts(prevProducts => prevProducts.filter(product => product._id !== productId));
+            setProducts(prev => prev.filter(product => product._id !== productId));
         } catch (err) {
             const serverMessage = err.response?.data?.message || 'Check network and server logs.';
             setError(`Failed to delete mug: ${serverMessage}`);
@@ -160,24 +143,19 @@ function MugTable() {
             setIsLoading(false);
         }
     };
-    if (isLoading && products.length === 0) {
-        return <div className="loading-message">Loading mug products...</div>;
-    }
+
+    if (isLoading && products.length === 0) return <div className="loading-message">Loading mug products...</div>;
 
     return (
         <div className="flash-deal-container">
             <div className="admin-header">
                 <h2> Mug Collection Management</h2>
-                <button onClick={handleAddClick} className="add-btn" title="Create a new Mug Product">
-                    + ADD NEW MUG
-                </button>
+                <button onClick={handleAddClick} className="add-btn" title="Create a new Mug">+ ADD NEW MUG</button>
             </div>
             {error && <div className="error-message admin-error">{error}</div>}
-
-            {products.length === 0 && !isLoading ? (
-                <div className="no-data-message">No mug products found. Click ADD NEW MUG to create one.</div>
-            ) : (
-                <table className="flash-deal-table">
+            {products.length === 0 && !isLoading
+                ? <div className="no-data-message">No mug products found. Click ADD NEW MUG to create one.</div>
+                : <table className="flash-deal-table">
                     <thead>
                         <tr>
                             <th>Image</th>
@@ -194,40 +172,25 @@ function MugTable() {
                             const discountPercentage = hasDiscount
                                 ? (((product.oldPrice - product.price) / product.oldPrice) * 100).toFixed(0)
                                 : '0';
-
+                            const imageUrl = product.image?.url || product.image || 'placeholder.jpg';
                             return (
                                 <tr key={product._id}>
-                                    <td data-label="Image">
-                                        <img
-                                            src={product.image ? `https://onlinegiftbackend.onrender.com${product.image}` : 'placeholder.jpg'}
-                                            alt={product.name || 'Mug Image'}
-                                            className="deal-image"
-                                        />
-                                    </td>
+                                    <td data-label="Image"><img src={imageUrl} alt={product.name || 'Mug Image'} className="deal-image" /></td>
                                     <td data-label="Name">{product.name}</td>
-                                    <td data-label="Current Price" className="price-new">
-                                        ${product.price ? product.price.toFixed(2) : '0.00'}
-                                    </td>
-                                    <td data-label="Old Price" className="price-old">
-                                        {hasDiscount ? `$${product.oldPrice.toFixed(2)}` : 'N/A'}
-                                    </td>
-                                    <td data-label="Discount" className="discount">
-                                        {hasDiscount ? `${discountPercentage}% OFF` : ''}
-                                    </td>
+                                    <td data-label="Current Price" className="price-new">₹{product.price?.toFixed(2) || '0.00'}</td>
+                                    <td data-label="Old Price" className="price-old">{hasDiscount ? `₹${product.oldPrice.toFixed(2)}` : 'N/A'}</td>
+                                    <td data-label="Discount" className="discount">{hasDiscount ? `${discountPercentage}% OFF` : ''}</td>
                                     <td data-label="Actions" className="action-buttons">
-                                        <button onClick={() => handleEditClick(product)} className="edit-btn">
-                                            Edit
-                                        </button>
-                                        <button onClick={() => handleDelete(product._id, product.name)} className="delete-btn">
-                                            Delete
-                                        </button>
+                                        <button onClick={() => handleEditClick(product)} className="edit-btn">Edit</button>
+                                        <button onClick={() => handleDelete(product._id, product.name)} className="delete-btn">Delete</button>
                                     </td>
                                 </tr>
                             );
                         })}
                     </tbody>
                 </table>
-            )}
+            }
+
             {isModalOpen && (
                 <div className="modal-overlay" onClick={handleCloseModal}>
                     <div className="modal-content" onClick={handleContentClick}>
@@ -249,17 +212,10 @@ function MugTable() {
                             </div>
                             <div className="form-group">
                                 <label htmlFor="imageFile">Upload Image File:</label>
-                                <input
-                                    type="file"
-                                    id="image"
-                                    name="image"
-                                    accept="image/*"
-                                    onChange={handleChange}
-                                    required={modalAction === 'add'}
-                                />
+                                <input type="file" id="image" name="image" accept="image/*" onChange={handleChange} required={modalAction === 'add'} />
                                 {(modalAction === 'edit' && formData.image) && (
                                     <small>
-                                        Current Image: <a href={`https://onlinegiftbackend.onrender.com${formData.image}`} target="_blank" rel="noopener noreferrer">View</a> (Upload new file to replace)
+                                        Current Image: <a href={formData.image} target="_blank" rel="noopener noreferrer">View</a> (Upload new file to replace)
                                     </small>
                                 )}
                             </div>
@@ -270,7 +226,6 @@ function MugTable() {
                                 </button>
                                 <button type="button" className="cancel-btn" onClick={handleCloseModal} disabled={isLoading}>Cancel</button>
                             </div>
-
                         </form>
                         <button className="close-button" onClick={handleCloseModal} disabled={isLoading}>&times;</button>
                     </div>

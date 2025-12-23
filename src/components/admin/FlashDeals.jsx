@@ -61,21 +61,21 @@ function FlashDealTable() {
       ...deal,
       price: deal.price || 0,
       oldPrice: deal.oldPrice || 0,
-  
+
       _id: deal._id,
-  
+
       // ALWAYS ensure images is an array with one valid string
       images:
         Array.isArray(deal.images) && deal.images.length > 0
           ? deal.images
           : (deal.image ? [deal.image] : [""]),
     });
-  
+
     setSelectedImageFile(null);
     setModalAction("edit");
     setIsModalOpen(true);
   };
-  
+
 
   const handleCloseModal = () => setIsModalOpen(false);
   const handleContentClick = (e) => e.stopPropagation();
@@ -83,10 +83,10 @@ function FlashDealTable() {
   const handleChange = (e) => {
     const { name, value, files } = e.target;
 
-    if (name === 'image' && files && files.length > 0) {
+    if (name === "images" && files && files.length > 0) {
       setSelectedImageFile(files[0]);
       return;
-    }
+    }    
     setFormData(prevData => {
       const newValue = (name === 'price' || name === 'oldPrice') ? parseFloat(value) || 0 : value;
       return {
@@ -102,47 +102,52 @@ function FlashDealTable() {
     setError(null);
     setIsLoading(true);
   
-    const method = modalAction === "add" ? "post" : "put";
-    const url = modalAction === "add"
-      ? API_URL
-      : `${API_URL}/${formData._id}`;
-  
-    const dataToSend = new FormData();
-    dataToSend.append("tittle", formData.tittle);
-    dataToSend.append("price", String(formData.price));
-    dataToSend.append("oldPrice", String(formData.oldPrice));
-
-    if (selectedImageFile) {
-      dataToSend.append("images", selectedImageFile);
-    } else if (modalAction === "edit" && formData.images && formData.images[0]) {
-      dataToSend.append("existingImage", formData.images[0]);
-    }
-    if (modalAction === "add" && !selectedImageFile) {
-      setError("Please select an image file to upload.");
-      setIsLoading(false);
-      return;
-    }
-  
     try {
+      const isAdd = modalAction === "add";
+      const url = isAdd
+        ? API_URL
+        : `${API_URL}/${formData._id}`;
+      const formDataToSend = new FormData();
+      formDataToSend.append("tittle", formData.tittle);
+      formDataToSend.append("price", Number(formData.price));
+      formDataToSend.append("oldPrice", Number(formData.oldPrice));
+  
+      if (selectedImageFile) {
+        formDataToSend.append("images", selectedImageFile);
+      } 
+      else if (!isAdd && formData.images?.[0]) {
+        formDataToSend.append("existingImage", formData.images[0]);
+      } 
+      else if (isAdd) {
+        throw new Error("Image is required for new Flash Deal");
+      }
       await axios({
-        method: method,
-        url: url,
-        data: dataToSend,
+        method: isAdd ? "post" : "put",
+        url,
+        data: formDataToSend,
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       });
   
       setIsModalOpen(false);
       setSelectedImageFile(null);
+      setFormData(emptyDeal);
       fetchDeals();
   
     } catch (err) {
-      const serverMessage =
-        err.response?.data?.message || err.message || "Check network and server logs.";
-      setError(`Failed to save deal: ${serverMessage}`);
+      console.error("Save Error:", err);
+      setError(
+        err.response?.data?.message ||
+        err.message ||
+        "Something went wrong while saving the deal"
+      );
     } finally {
       setIsLoading(false);
     }
   };
   
+
 
   const handleDelete = async (dealId, tittle) => {
     if (!window.confirm(`Are you sure you want to DELETE the deal: "${tittle}"?`)) {
@@ -194,19 +199,23 @@ function FlashDealTable() {
               const discount = deal.oldPrice && deal.oldPrice > 0
                 ? (((deal.oldPrice - deal.price) / deal.oldPrice) * 100).toFixed(0)
                 : 'N/A';
-
               return (
                 <tr key={deal._id}>
                   <td data-label="Image">
                     <img
-                      src={deal.images && deal.images[0] ? `https://onlinegiftbackend.onrender.com${deal.images[0]}` : 'placeholder.jpg'}
-                      alt={deal.tittle || 'Flash Deal'}
+                      src={
+                        deal.images?.length > 0
+                          ? deal.images[0].url
+                          : "/placeholder.jpg"
+                      }
+                      alt={deal.tittle || "Flash Deal"}
                       className="deal-image"
                     />
+
                   </td>
                   <td data-label="Title">{deal.tittle}</td>
-                  <td data-label="New Price" className="price-new">${deal.price ? deal.price.toFixed(2) : '0.00'}</td>
-                  <td data-label="Old Price" className="price-old">${deal.oldPrice ? deal.oldPrice.toFixed(2) : '0.00'}</td>
+                  <td data-label="New Price" className="price-new">₹{deal.price ? deal.price.toFixed(2) : '0.00'}</td>
+                  <td data-label="Old Price" className="price-old">₹{deal.oldPrice ? deal.oldPrice.toFixed(2) : '0.00'}</td>
                   <td data-label="Discount" className="discount">{discount}% OFF</td>
                   <td data-label="Actions" className="action-buttons">
                     <button onClick={() => handleEditClick(deal)} className="edit-btn">
@@ -247,12 +256,13 @@ function FlashDealTable() {
                 <label htmlFor="imageFile">Upload Image File:</label>
                 <input
                   type="file"
-                  id="image"
-                  name="image"
+                  id="images"
+                  name="images"
                   accept="image/*"
                   onChange={handleChange}
-                  required={modalAction === 'add'}
+                  required={modalAction === "add"}
                 />
+
                 {(modalAction === 'edit' && formData.images[0]) && (
                   <small>Current Image: <a href={`https://onlinegiftbackend.onrender.com${formData.images[0]}`} target="_blank" rel="noopener noreferrer">View</a> (Upload new file to replace)</small>
                 )}

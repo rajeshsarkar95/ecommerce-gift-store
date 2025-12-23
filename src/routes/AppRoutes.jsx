@@ -12,17 +12,17 @@ export default function AppRoutes() {
       <Route path="/" element={<LandingPage />} />
       <Route path="/product/:id" element={<ProductDetails />} />
       <Route path="/cart" element={<Cart />} />
-      
+
       <Route path="/admin/login" element={<AdminLogin />} />
 
       <Route
-  path="/admin/dashboard"
-  element={
-    <AdminPrivateRoute>
-      <AdminDashboard />
-    </AdminPrivateRoute>
-  }
-/>
+        path="/admin/dashboard"
+        element={
+          <AdminPrivateRoute>
+            <AdminDashboard />
+          </AdminPrivateRoute>
+        }
+      />
     </Routes>
   );
 }

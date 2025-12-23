@@ -1,20 +1,23 @@
-.product-section {
+.recommended-section {
   max-width: 1200px;
   margin: 60px auto;
   text-align: center;
 }
-.product-section h2 {
+
+.recommended-title {
   color: #3e0066;
   font-size: 28px;
   margin-bottom: 30px;
 }
-.product-grid {
+
+.recommended-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
   gap: 25px;
   margin-top: 25px;
 }
-.product {
+
+.recommended-card {
   background: #fff;
   border-radius: 12px;
   padding: 15px;
@@ -22,29 +25,37 @@
   transition: 0.3s;
   position: relative;
 }
-.product:hover {
+
+.recommended-card:hover {
   transform: scale(1.03);
 }
-.product img {
+
+.recommended-img {
   width: 100%;
   height: 220px;
   object-fit: cover;
+  border-radius: 8px;
+  cursor: pointer;
 }
-.product h3 {
+
+.recommended-product-title {
   color: #333;
   font-size: 16px;
   margin: 12px 0 8px 0;
 }
-.product p {
+
+.recommended-product-price {
   color: #6a0dad;
   font-weight: bold;
   margin-bottom: 5px;
 }
-.old-price {
+
+.recommended-old-price {
   text-decoration: line-through;
   color: gray;
 }
-.off-tag {
+
+.recommended-off-tag {
   position: absolute;
   background: #ff9800;
   color: #fff;
@@ -54,11 +65,12 @@
   top: 10px;
   left: 10px;
 }
-.add-to-cart-btn {
+
+.recommended-add-btn {
   width: 100%;
   margin-top: 10px;
   padding: 10px;
-  background: #ff6b00;      
+  background: #ff6b00;
   color: #fff;
   border: none;
   border-radius: 8px;
@@ -67,7 +79,60 @@
   font-weight: 600;
   transition: 0.2s;
 }
-.add-to-cart-btn:hover {
+
+.recommended-add-btn:hover {
   background: #5800b2;
   transform: scale(1.03);
+}
+
+@media (max-width: 768px) {
+  .recommended-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+  }
+
+  .recommended-img {
+    height: 200px;
+  }
+
+  .recommended-title {
+    font-size: 22px;
+  }
+
+  .recommended-product-title {
+    font-size: 15px;
+  }
+
+  .recommended-product-price {
+    font-size: 14px;
+  }
+
+  .recommended-add-btn {
+    font-size: 14px;
+    padding: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .recommended-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+  }
+
+  .recommended-img {
+    height: 180px;
+  }
+
+  .recommended-product-title {
+    font-size: 14px;
+  }
+
+  .recommended-product-price {
+    font-size: 13px;
+  }
+
+  .recommended-add-btn {
+    font-size: 13px;
+    padding: 8px;
+  }
 }

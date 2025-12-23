@@ -14,9 +14,7 @@ const FeaturedProducts = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await axios.get(
-          "https://onlinegiftbackend.onrender.com/api/featuredproducts"
-        );
+        const res = await axios.get("https://onlinegiftbackend.onrender.com/api/featuredproducts");
         setProducts(res.data.products || []);
       } catch (err) {
         setError("Failed to load featured products");
@@ -25,70 +23,51 @@ const FeaturedProducts = () => {
         setLoading(false);
       }
     };
-
     fetchProducts();
   }, []);
 
   if (loading) return <p style={{ textAlign: "center" }}>Loading...</p>;
-  if (error) return (
-    <p style={{ textAlign: "center", color: "red" }}>{error}</p>
-  );
+  if (error) return <p style={{ textAlign: "center", color: "red" }}>{error}</p>;
 
   return (
-    <section className="product-section">
-      <h2>Featured Products</h2>
-
-      <div className="product-grid">
+    <section className="featured-products-section">
+      <h2 className="featured-products-title">Featured Products</h2>
+      <div className="featured-products-grid">
         {products.map((product) => {
-          // Extract filename safely
-          const fileName = product.image
-            ? product.image.split("/").pop().split("\\").pop()
-            : "";
+          const imageUrl = product.image || "/placeholder.jpg";
 
-          const imageUrl = fileName
-            ? `https://onlinegiftbackend.onrender.com/uploads/featured/${fileName}`
-            : "/placeholder.jpg";
-
-          // Standardized product object for cart
           const cartProduct = {
             id: product._id,
-            title: product.name || "No Name",
+            title: product.title || product.name || "No Title",
             price: product.price ?? 0,
-            images: fileName ? [fileName] : [],
+            images: product.image
+              ? Array.isArray(product.image)
+                ? product.image.map(img => (img.url ? img : { url: img }))
+                : [{ url: product.image.url || product.image }]
+              : [{ url: "/placeholder.jpg" }],
             folder: "featured",
           };
 
           return (
-            <div className="product" key={product._id}>
+            <div className="featured-product-card" key={product._id}>
               <img
                 src={imageUrl}
                 alt={cartProduct.title}
-                className="clickable"
+                className="featured-product-img clickable"
                 loading="lazy"
                 onClick={() =>
                   navigate(`/product/${product._id}`, { state: cartProduct })
                 }
               />
-
-              <h3>{cartProduct.title}</h3>
-
-              <p>
+              <h3 className="featured-product-title">{cartProduct.title}</h3>
+              <p className="featured-product-price">
                 ₹{cartProduct.price}
                 {product.oldprice && (
-                  <span
-                    style={{
-                      textDecoration: "line-through",
-                      marginLeft: 10,
-                      color: "grey",
-                    }}
-                  >
-                    ₹{product.oldprice}
-                  </span>
+                  <span className="featured-product-old-price"> ₹{product.oldprice}</span>
                 )}
               </p>
-
               <button
-                className="add-btn"
+                className="featured-product-add-btn"
                 onClick={() => addToCart(cartProduct)}
               >
                 Add to Cart

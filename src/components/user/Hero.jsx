@@ -38,7 +38,7 @@ const Hero = () => {
       </div>
       {heroData.backgroundImage && (
         <img
-          src={`https://onlinegiftbackend.onrender.com/uploads/customeBanner/${heroData.backgroundImage}`}
+        src={heroData.backgroundImage}
           alt="Gift"
         />
       )}

@@ -2,15 +2,16 @@ import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import '../../styles/admin/AddBannerForm.css';
 
-const API_URL = 'https://onlinegiftbackend.onrender.com/api/banners';
+const API_URL = 'https://onlinegiftbackend.onrender.com/api/Promobanners';
 
 const emptyBanner = {
   title: '',
   subtitle: '',
   description: '',
-  image: [],
+  images: [], 
   _id: null,
 };
+
 function BannerTable() {
   const [banners, setBanners] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -19,7 +20,7 @@ function BannerTable() {
   const [modalAction, setModalAction] = useState('add');
   const [formData, setFormData] = useState(emptyBanner);
   const [selectedImageFiles, setSelectedImageFiles] = useState([]);
-
+   console.log("banner form data",formData)
   const fetchBanners = useCallback(async () => {
     setIsLoading(true);
     setError(null);
@@ -51,7 +52,7 @@ function BannerTable() {
   const handleEditClick = (banner) => {
     setFormData({
       ...banner,
-      image: Array.isArray(banner.image) ? banner.image : (banner.image ? [banner.image] : []),
+      images: Array.isArray(banner.images) ? banner.images : [],
     });
     setSelectedImageFiles([]);
     setModalAction("edit");
@@ -63,7 +64,7 @@ function BannerTable() {
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
-    if (name === 'image' && files) {
+    if (name === 'images' && files) {
       setSelectedImageFiles(Array.from(files));
       return;
     }
@@ -74,6 +75,7 @@ function BannerTable() {
     e.preventDefault();
     setError(null);
     setIsLoading(true);
+
     const method = modalAction === "add" ? "post" : "put";
     const url = modalAction === "add" ? API_URL : `${API_URL}/${formData._id}`;
 
@@ -82,13 +84,15 @@ function BannerTable() {
     dataToSend.append("subtitle", formData.subtitle);
     dataToSend.append("description", formData.description);
 
+    // Append new selected files
     selectedImageFiles.forEach(file => {
-      dataToSend.append("image", file);
+      dataToSend.append("images", file);
     });
 
-    if (modalAction === "edit" && selectedImageFiles.length === 0 && formData.image.length > 0) {
-      formData.image.forEach(url => {
-        dataToSend.append("existingImages", url);
+    // If editing and no new images selected, send existing images
+    if (modalAction === "edit" && selectedImageFiles.length === 0 && formData.images.length > 0) {
+      formData.images.forEach(imgObj => {
+        dataToSend.append("existingImages", imgObj.url); // send URLs of existing images
       });
     }
 
@@ -99,7 +103,12 @@ function BannerTable() {
     }
 
     try {
-      await axios({ method, url, data: dataToSend, headers: { 'Content-Type': 'multipart/form-data' } });
+      await axios({
+        method,
+        url,
+        data: dataToSend,
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
       setIsModalOpen(false);
       setSelectedImageFiles([]);
       fetchBanners();
@@ -162,7 +171,7 @@ function BannerTable() {
                   {banner.description.substring(0, 70)}...
                 </td>
                 <td data-label="Images Count" className="banner-image-count-cell">
-                  {Array.isArray(banner.image) ? banner.image.length : 0}
+                  {Array.isArray(banner.images) ? banner.images.length : 0}
                 </td>
                 <td data-label="Actions" className="action-buttons">
                   <button onClick={() => handleEditClick(banner)} className="edit-btn">Edit</button>
@@ -179,30 +188,26 @@ function BannerTable() {
             <h3>{modalAction === 'add' ? 'Create New Banner' : `Edit Banner: ${formData.title}`}</h3>
             <hr />
             <form onSubmit={handleSubmit}>
-
               <div className="form-group"><label htmlFor="title">Title:</label><input type="text" id="title" name="title" value={formData.title} onChange={handleChange} required /></div>
               <div className="form-group"><label htmlFor="subtitle">Subtitle:</label><input type="text" id="subtitle" name="subtitle" value={formData.subtitle} onChange={handleChange} required /></div>
               <div className="form-group"><label htmlFor="description">Description:</label><textarea id="description" name="description" value={formData.description} onChange={handleChange} required rows="3" /></div>
-
               <div className="form-group">
-                <label htmlFor="imageFile">Upload Images (Multiple Allowed):</label>
-                <input type="file" id="image" name="image" multiple accept="image/*" onChange={handleChange} required={modalAction === 'add'} />
+                <label htmlFor="images">Upload Images (Multiple Allowed):</label>
+                <input type="file" id="images" name="images" multiple accept="image/*" onChange={handleChange} required={modalAction === 'add'} />
 
-                {(modalAction === 'edit' && formData.image.length > 0) && (
-                  <small>Currently loaded images: **{formData.image.length}**.</small>
+                {(modalAction === 'edit' && formData.images.length > 0) && (
+                  <small>Currently loaded images: {formData.images.length}</small>
                 )}
                 {selectedImageFiles.length > 0 && (
                   <small style={{ color: '#007bff', fontWeight: 'bold' }}>{selectedImageFiles.length} new file(s) ready to upload.</small>
                 )}
               </div>
-
               <div className="modal-actions">
                 <button type="submit" className="submit-btn" disabled={isLoading}>
                   {isLoading ? 'Saving...' : (modalAction === 'add' ? 'Create Banner' : 'Save Changes')}
                 </button>
                 <button type="button" className="cancel-btn" onClick={handleCloseModal} disabled={isLoading}>Cancel</button>
               </div>
-
             </form>
             <button className="close-button" onClick={handleCloseModal} disabled={isLoading}>&times;</button>
           </div>

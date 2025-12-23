@@ -6,7 +6,24 @@
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
-
+.back-btn {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  padding: 8px 14px;
+  background: #ff6b00;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.3s, transform 0.2s;
+  z-index: 10;
+}
+.back-btn:hover {
+  background: #8e24aa;
+  transform: translateY(-2px);
+}
 .product-wrapper {
   display: flex;
   gap: 60px;
@@ -36,51 +53,95 @@
   color: #007bff; 
   margin-bottom: 20px;
   padding-bottom: 20px;
-  /* Separator line */
   border-bottom: 1px solid #f0f0f0;
 }
-
 .price small {
   font-size: 18px;
   color: #888888;
   font-weight: 400;
-  /* Strikethrough for the old price */
   text-decoration: line-through;
   margin-left: 10px;
 }
-
-/* --- Description --- */
 .desc {
   font-size: 16px;
   color: #555555;
   line-height: 1.6;
   margin-bottom: 30px;
 }
-
-/* --- Add to Cart Button --- */
 .product-add-btn {
-  /* Use a primary brand color (e.g., a professional blue) */
-  background: #ff6b00; /* Modern Success Green/Blue */
+  background: #ff6b00;
   color: white;
   font-size: 18px;
   font-weight: 600;
-  padding: 12px 30px; /* More padding for a premium feel */
-  border: none; /* Remove border */
+  padding: 12px 30px;
+  border: none;
   border-radius: 6px;
   cursor: pointer;
   transition: background 0.3s ease, transform 0.1s ease;
-  /* Add a subtle shadow to the button */
   box-shadow: 0 4px 10px rgba(40, 167, 69, 0.4);
 }
-
 .product-add-btn:hover {
-  /* Darken the background slightly on hover */
   background: #ff6b00;
-  /* Lift the button slightly */
-  box-shadow:#ff6b00;
+  box-shadow: #ff6b00;
 }
 
 .product-add-btn:active {
-  /* Press-down effect */
   transform: translateY(1px);
+}
+@media (max-width: 992px) {
+  .product-wrapper {
+    flex-direction: column;
+    gap: 30px;
+    align-items: center;
+  }
+  .product-img {
+    width: 80%;
+    max-width: 350px;
+    height: auto;
+  }
+  .details-box h2 {
+    font-size: 28px;
+    text-align: center;
+  }
+  .price {
+    font-size: 24px;
+    text-align: center;
+  }
+  .desc {
+    font-size: 15px;
+    text-align: center;
+  }
+  .product-add-btn {
+    width: 100%;
+    padding: 12px 25px;
+  }
+}
+@media (max-width: 480px) {
+  .product-details-page {
+    padding: 20px;
+  }
+  .back-btn {
+    top: 15px;
+    left: 15px;
+    padding: 6px 12px;
+    font-size: 14px;
+  }
+  .product-img {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+  }
+  .details-box h2 {
+    font-size: 24px;
+  }
+  .price {
+    font-size: 20px;
+  }
+  .desc {
+    font-size: 14px;
+  }
+  .product-add-btn {
+    font-size: 16px;
+    padding: 10px 20px;
+  }
 }

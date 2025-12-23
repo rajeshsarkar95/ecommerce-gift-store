@@ -45,7 +45,7 @@ function FeaturedProductTable() {
       setIsLoading(false);
     }
   }, []);
-  
+
   useEffect(() => {
     fetchProducts();
   }, [fetchProducts]);
@@ -188,14 +188,15 @@ function FeaturedProductTable() {
                 <tr key={product._id || index}>
                   <td data-label="Image">
                     <img
-                      src={product.image ? `https://onlinegiftbackend.onrender.com/${product.image}` : 'placeholder.jpg'}
+                      src={product.image }
                       alt={product.name || 'Featured Product Image'}
                       className="deal-image"
                     />
+
                   </td>
                   <td data-label="Name">{product.name}</td>
-                  <td data-label="Current Price" className="price-new">${product.price?.toFixed(2) || '0.00'}</td>
-                  <td data-label="Old Price" className="price-old">${product.oldprice?.toFixed(2) || '0.00'}</td>
+                  <td data-label="Current Price" className="price-new">₹{product.price?.toFixed(2) || '0.00'}</td>
+                  <td data-label="Old Price" className="price-old">₹{product.oldprice?.toFixed(2) || '0.00'}</td>
                   <td data-label="Actions" className="action-buttons">
                     <button onClick={() => handleEditClick(product)} className="edit-btn">Edit</button>
                     <button onClick={() => handleDelete(product._id, product.name)} className="delete-btn">Delete</button>

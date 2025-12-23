@@ -54,24 +54,20 @@
 }
 
 .form-group input:focus {
-    border-color: #0070f3; /* Primary blue focus */
+    border-color: #0070f3;
     box-shadow: 0 0 0 3px rgba(0, 112, 243, 0.1);
     outline: none;
 }
-
-/* Disabled State */
 .form-group input:disabled {
     background-color: #f8fafc;
     cursor: not-allowed;
     color: #94a3b8;
 }
-
-/* --- Submit Button Styling --- */
 .submit-button {
     width: 100%;
     padding: 14px;
     margin-top: 10px;
-    background-color: #0070f3; /* Primary blue */
+    background-color: #0070f3; 
     color: white;
     border: none;
     border-radius: 8px;
@@ -79,24 +75,21 @@
     font-size: 1rem;
     font-weight: 600;
     letter-spacing: 0.5px;
-    /* Transition for color and transform effects */
     transition: background-color 0.2s ease, transform 0.1s ease;
 }
 
 .submit-button:hover:not(:disabled) {
-    background-color: #005cc4; /* Darker blue on hover */
+    background-color: #005cc4; 
 }
 
 .submit-button:active:not(:disabled) {
-    transform: translateY(1px); /* Little push effect on click */
+    transform: translateY(1px);
 }
 
 .submit-button:disabled {
-    background-color: #a3c9f7; /* Lighter blue when disabled */
+    background-color: #a3c9f7; 
     cursor: not-allowed;
 }
-
-/* --- Message / Status Styling --- */
 .status-message {
     text-align: center;
     padding: 10px;
@@ -107,12 +100,10 @@
 }
 
 .status-message.success {
-    background-color: #dcfce7; /* Light green background */
-    color: #15803d; /* Dark green text */
+    background-color: #dcfce7; 
+    color: #15803d; 
     border: 1px solid #4ade80;
 }
-
-/* --- Footer Link Styling --- */
 .login-link {
     text-align: center;
     margin-top: 25px;

@@ -1,9 +1,10 @@
 import "../../styles/Cart.css";
 import { useCart } from "../../context/CartContext";
+import { useNavigate } from "react-router-dom";
 
 export default function Cart() {
+  const navigate = useNavigate();
   const { cart, removeFromCart, increaseQty, decreaseQty } = useCart();
-
   const totalPrice = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
   const formatCartForWhatsapp = () => {
     if (cart.length === 0) return "";
@@ -14,16 +15,27 @@ export default function Cart() {
     message += `Total: ₹${totalPrice}`;
     return encodeURIComponent(message);
   };
-  const whatsappLink = `https://wa.me/919568755984?text=${formatCartForWhatsapp()}`;
+  const whatsappLink = `https://wa.me/918439390374?text=${formatCartForWhatsapp()}`;
   return (
     <div className="cart-page">
+      <button className="back-home-btn" onClick={() => navigate("/")}>
+        ← Back to Home
+      </button>
       <h1>Your Cart</h1>
 
       {cart.length === 0 && <p className="empty-msg">Your cart is empty.</p>}
 
       {cart.map((item) => (
         <div key={item.id} className="cart-item">
-          <img src={item.images?.[0] || "/placeholder.jpg"} alt={item.title} />
+          <img
+            src={
+              item.images?.[0]?.url 
+              || item.images?.[0]  
+              || "/placeholder.jpg"
+            }
+            alt={item.title}
+          />
+
           <div>
             <h3>{item.title}</h3>
             <p>₹{item.price}</p>

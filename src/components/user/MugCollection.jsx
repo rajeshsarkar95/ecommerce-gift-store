@@ -16,9 +16,10 @@ export default function MugCollection() {
     const fetchMugs = async () => {
       try {
         const res = await axios.get("https://onlinegiftbackend.onrender.com/api/mugs");
+        if (!res.data.success) throw new Error("Failed to fetch mugs");
         setMugProducts(res.data.mugs || []);
       } catch (err) {
-        setError("Failed to load mugs",err);
+        setError("Failed to load mugs: " + err.message);
         console.error(err);
       } finally {
         setLoading(false);
@@ -32,31 +33,35 @@ export default function MugCollection() {
   if (!mugProducts.length) return <p>No mugs available.</p>;
 
   return (
-    <section className="product-section">
-      <h2>Mug Collection</h2>
+    <section className="mug-collection-section">
+      <h2 className="mug-collection-title">Mug Collection</h2>
 
-      <div className="product-grid">
+      <div className="mug-collection-grid">
         {mugProducts.map((product) => {
-          // Ensure proper image URL
-          const imageUrl = product.image
-            ? `https://onlinegiftbackend.onrender.com/${product.image}`
-            : "/placeholder.jpg";
+          const imageUrl =
+            product.image?.url ||
+            (Array.isArray(product.image) && product.image.length > 0
+              ? product.image[0].url
+              : "/placeholder.jpg");
 
-          // Map product for CartContext
           const cartProduct = {
             id: product._id,
             title: product.name || "No Name",
             price: product.price ?? 0,
-            images: product.image ? [product.image] : [],
+            images: product.image
+              ? Array.isArray(product.image)
+                ? product.image.map(img => (img.url ? img : { url: img }))
+                : [{ url: product.image.url || product.image }]
+              : [{ url: "/placeholder.jpg" }],
             folder: "mugs",
           };
 
           return (
-            <div className="product" key={product._id}>
+            <div className="mug-card" key={product._id}>
               <img
                 src={imageUrl}
                 alt={cartProduct.title}
-                className="clickable"
+                className="mug-img clickable"
                 loading="lazy"
                 onClick={() =>
                   navigate(`/product/${product._id}`, {
@@ -65,17 +70,17 @@ export default function MugCollection() {
                 }
               />
 
-              <h3>{cartProduct.title}</h3>
+              <h3 className="mug-title">{cartProduct.title}</h3>
 
-              <p>
+              <p className="mug-price">
                 {product.oldPrice && (
-                  <span className="old-price">₹{product.oldPrice}</span>
+                  <span className="mug-old-price">₹{product.oldPrice}</span>
                 )}
-                <span className="new-price"> ₹{cartProduct.price}</span>
+                <span className="mug-new-price"> ₹{cartProduct.price}</span>
               </p>
 
               <button
-                className="add-btn"
+                className="mug-add-btn"
                 onClick={() => addToCart(cartProduct)}
               >
                 Add to Cart

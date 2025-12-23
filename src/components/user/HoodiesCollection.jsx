@@ -8,7 +8,6 @@ export default function HoodiesCollection() {
   const [hoodies, setHoodies] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
   const { addToCart } = useCart();
   const navigate = useNavigate();
 
@@ -35,20 +34,26 @@ export default function HoodiesCollection() {
   return (
     <section className="tshirt-collection">
       <h2>Hoodies Collection</h2>
-
       <div className="product-list">
         {hoodies.map((product) => {
-          const imageUrl = product.image
-            ? `https://onlinegiftbackend.onrender.com/uploads/hoodies/${product.image}`
-            : "/placeholder.jpg";
+          const imageUrl =
+          product.image?.url ||
+          (product.images && product.images.length > 0 ? product.images[0].url : "/placeholder.jpg");
+      
+
           const cartProduct = {
             id: product._id,
             title: product.title || "No Title",
             price: product.price ?? 0,
-            images: product.image ? [product.image] : [],
+            images: product.image
+              ? Array.isArray(product.image)
+                ? product.image.map(img => (img.url ? img : { url: img })) 
+                : [{ url: product.image.url || product.image }]
+              : [],
             folder: "hoodies",
             description: product.description || "",
           };
+          
 
           return (
             <div key={product._id} className="product">
@@ -63,15 +68,10 @@ export default function HoodiesCollection() {
                   })
                 }
               />
-
               <div className="product-info">
                 <h4>{cartProduct.title}</h4>
                 <p>₹{cartProduct.price}</p>
-
-                <button
-                  className="add-btn"
-                  onClick={() => addToCart(cartProduct)}
-                >
+                <button className="add-btn" onClick={() => addToCart(cartProduct)}>
                   Add to Cart
                 </button>
               </div>
