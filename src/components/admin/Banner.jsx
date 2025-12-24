@@ -8,7 +8,7 @@ const emptyBanner = {
   title: '',
   subtitle: '',
   description: '',
-  images: [], 
+  images: [],
   _id: null,
 };
 
@@ -20,7 +20,7 @@ function BannerTable() {
   const [modalAction, setModalAction] = useState('add');
   const [formData, setFormData] = useState(emptyBanner);
   const [selectedImageFiles, setSelectedImageFiles] = useState([]);
-   console.log("banner form data",formData)
+  
   const fetchBanners = useCallback(async () => {
     setIsLoading(true);
     setError(null);
@@ -51,13 +51,17 @@ function BannerTable() {
 
   const handleEditClick = (banner) => {
     setFormData({
-      ...banner,
+      _id: banner._id,
+      title: banner.title || "",
+      subtitle: banner.subtitle || "",
+      description: banner.description || "",
       images: Array.isArray(banner.images) ? banner.images : [],
     });
     setSelectedImageFiles([]);
     setModalAction("edit");
     setIsModalOpen(true);
   };
+
 
   const handleCloseModal = () => setIsModalOpen(false);
   const handleContentClick = (e) => e.stopPropagation();
@@ -77,48 +81,37 @@ function BannerTable() {
     setIsLoading(true);
 
     const method = modalAction === "add" ? "post" : "put";
-    const url = modalAction === "add" ? API_URL : `${API_URL}/${formData._id}`;
+    const url = modalAction === "add"
+      ? API_URL
+      : `${API_URL}/${formData._id}`;
 
     const dataToSend = new FormData();
     dataToSend.append("title", formData.title);
     dataToSend.append("subtitle", formData.subtitle);
     dataToSend.append("description", formData.description);
 
-    // Append new selected files
     selectedImageFiles.forEach(file => {
       dataToSend.append("images", file);
     });
 
-    // If editing and no new images selected, send existing images
-    if (modalAction === "edit" && selectedImageFiles.length === 0 && formData.images.length > 0) {
-      formData.images.forEach(imgObj => {
-        dataToSend.append("existingImages", imgObj.url); // send URLs of existing images
-      });
-    }
-
     if (modalAction === "add" && selectedImageFiles.length === 0) {
-      setError("Please select at least one image file to upload for the banner.");
+      setError("Please select at least one image");
       setIsLoading(false);
       return;
     }
 
     try {
-      await axios({
-        method,
-        url,
-        data: dataToSend,
-        headers: { 'Content-Type': 'multipart/form-data' },
-      });
+      await axios({ method, url, data: dataToSend });
       setIsModalOpen(false);
       setSelectedImageFiles([]);
       fetchBanners();
     } catch (err) {
-      const serverMessage = err.response?.data?.message || err.message || "Check network and server logs.";
-      setError(`Failed to save banner: ${serverMessage}`);
+      setError(err.response?.data?.message || err.message);
     } finally {
       setIsLoading(false);
     }
   };
+
 
   const handleDelete = async (bannerId, title) => {
     if (!window.confirm(`Are you sure you want to DELETE the banner: "${title}"?`)) return;

@@ -64,7 +64,7 @@ function TshirtTable() {
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
-    if (name === 'image' && files) {
+    if (name === 'images' && files) {
       setSelectedImageFiles(Array.from(files));
       return;
     }
@@ -86,12 +86,9 @@ function TshirtTable() {
     dataToSend.append("price", formData.price);
     dataToSend.append("category", formData.category);
 
-    // append new image files
-    selectedImageFiles.forEach(file => dataToSend.append("image", file));
-
-    // For edit: if no new images selected, keep existing image URLs
+    selectedImageFiles.forEach(file => dataToSend.append("images", file));
     if (modalAction === "edit" && selectedImageFiles.length === 0 && formData.images.length > 0) {
-      formData.images.forEach(img => dataToSend.append("existingImages", img.url));
+      formData.images.forEach(img => dataToSend.append("images", img.url));
     }
 
     if (modalAction === "add" && selectedImageFiles.length === 0) {
@@ -209,7 +206,7 @@ function TshirtTable() {
                 <input
                   type="file"
                   id="image"
-                  name="image"
+                  name="images"
                   multiple
                   accept="image/*"
                   onChange={handleChange}

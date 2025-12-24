@@ -2,13 +2,15 @@ import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import '../../styles/admin/FlashDealsTable.css';
 const API_URL = 'https://onlinegiftbackend.onrender.com/api/flashdeals';
+
 const emptyDeal = {
-  tittle: '',
-  price: 0,
-  oldPrice: 0,
+  tittle: "",
+  price: "",
+  oldPrice: "",
   images: [],
   _id: null,
 };
+
 function FlashDealTable() {
   const [flashDeals, setFlashDeals] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -17,6 +19,7 @@ function FlashDealTable() {
   const [modalAction, setModalAction] = useState('add');
   const [formData, setFormData] = useState(emptyDeal);
   const [selectedImageFile, setSelectedImageFile] = useState(null);
+
   const fetchDeals = useCallback(async () => {
     setIsLoading(true);
     setError(null);
@@ -58,17 +61,11 @@ function FlashDealTable() {
 
   const handleEditClick = (deal) => {
     setFormData({
-      ...deal,
-      price: deal.price || 0,
-      oldPrice: deal.oldPrice || 0,
-
+      tittle: deal.tittle,
+      price: deal.price,
+      oldPrice: deal.oldPrice,
+      images: deal.images || [],
       _id: deal._id,
-
-      // ALWAYS ensure images is an array with one valid string
-      images:
-        Array.isArray(deal.images) && deal.images.length > 0
-          ? deal.images
-          : (deal.image ? [deal.image] : [""]),
     });
 
     setSelectedImageFile(null);
@@ -77,77 +74,69 @@ function FlashDealTable() {
   };
 
 
+
   const handleCloseModal = () => setIsModalOpen(false);
   const handleContentClick = (e) => e.stopPropagation();
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
-
-    if (name === "images" && files && files.length > 0) {
+  
+    if (name === "images" && files?.length > 0) {
       setSelectedImageFile(files[0]);
       return;
-    }    
-    setFormData(prevData => {
-      const newValue = (name === 'price' || name === 'oldPrice') ? parseFloat(value) || 0 : value;
-      return {
-        ...prevData,
-        [name]: newValue
-      };
-    });
+    }
+  
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value, 
+    }));
   };
+  
+
 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
     setIsLoading(true);
-  
+
     try {
       const isAdd = modalAction === "add";
       const url = isAdd
         ? API_URL
         : `${API_URL}/${formData._id}`;
-      const formDataToSend = new FormData();
-      formDataToSend.append("tittle", formData.tittle);
-      formDataToSend.append("price", Number(formData.price));
-      formDataToSend.append("oldPrice", Number(formData.oldPrice));
-  
+
+      const data = new FormData();
+      data.append("tittle", formData.tittle);
+      data.append("price", Number(formData.price));
+      data.append("oldPrice", Number(formData.oldPrice));
+      
       if (selectedImageFile) {
-        formDataToSend.append("images", selectedImageFile);
-      } 
-      else if (!isAdd && formData.images?.[0]) {
-        formDataToSend.append("existingImage", formData.images[0]);
-      } 
-      else if (isAdd) {
+        data.append("images", selectedImageFile);
+      } else if (isAdd) {
         throw new Error("Image is required for new Flash Deal");
       }
+
       await axios({
         method: isAdd ? "post" : "put",
         url,
-        data: formDataToSend,
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
+        data,
       });
-  
+
       setIsModalOpen(false);
       setSelectedImageFile(null);
       setFormData(emptyDeal);
       fetchDeals();
-  
     } catch (err) {
-      console.error("Save Error:", err);
       setError(
         err.response?.data?.message ||
         err.message ||
-        "Something went wrong while saving the deal"
+        "Failed to save deal"
       );
     } finally {
       setIsLoading(false);
     }
   };
-  
-
 
   const handleDelete = async (dealId, tittle) => {
     if (!window.confirm(`Are you sure you want to DELETE the deal: "${tittle}"?`)) {
@@ -262,9 +251,17 @@ function FlashDealTable() {
                   onChange={handleChange}
                   required={modalAction === "add"}
                 />
-
-                {(modalAction === 'edit' && formData.images[0]) && (
-                  <small>Current Image: <a href={`https://onlinegiftbackend.onrender.com${formData.images[0]}`} target="_blank" rel="noopener noreferrer">View</a> (Upload new file to replace)</small>
+                {modalAction === "edit" && formData.images[0]?.url && (
+                  <small>
+                    Current Image:{" "}
+                    <a
+                      href={formData.images[0].url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      View
+                    </a>
+                  </small>
                 )}
               </div>
 

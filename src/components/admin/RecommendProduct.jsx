@@ -230,7 +230,7 @@ function RecommendedProductTable() {
 
                 {(modalAction === 'edit' && formData.image) && (
                   <small>
-                    Current Image: <a href={`http://localhost:5000${formData.image}`} target="_blank" rel="noopener noreferrer">View</a> (Upload new file to replace)
+                    Current Image: <a href={`https://onlinegiftbackend.onrender.com${formData.image}`} target="_blank" rel="noopener noreferrer">View</a> (Upload new file to replace)
                   </small>
                 )}
               </div>

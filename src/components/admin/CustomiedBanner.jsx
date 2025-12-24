@@ -8,7 +8,7 @@ const emptyBanner = {
   title: '',
   subtitle: '',
   descriptions: '',
-  image: '',
+  backgroundImage: '',
   _id: null,
 };
 
@@ -74,7 +74,7 @@ function CustomGiftBannerTable() {
   const handleChange = (e) => {
     const { name, value, files } = e.target;
   
-    if (name === 'image' && files && files.length > 0) {
+    if (name === 'backgroundImage' && files && files.length > 0) {
       setSelectedImageFile(files[0]);  
       return;
     }
@@ -101,7 +101,7 @@ const handleSubmit = async (e) => {
   dataToSend.append('descriptions', formData.descriptions);
 
   if (selectedImageFile) {
-    dataToSend.append('image', selectedImageFile); 
+    dataToSend.append('backgroundImage', selectedImageFile); 
   }
   if (modalAction === 'add' && !selectedImageFile) {
     setError('Please select an image file to upload.');
@@ -231,7 +231,7 @@ const handleSubmit = async (e) => {
                 <input
                   type="file"
                   id="imageFile"
-                  name="image"
+                  name="backgroundImage"
                   accept="image/*"
                   onChange={handleChange}
                   required={modalAction === 'add'}

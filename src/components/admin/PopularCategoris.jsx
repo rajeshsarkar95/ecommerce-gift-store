@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 
-const API_URL = 'https://onlinegiftbackend.onrender.com/api/popularcategories'; 
+const API_URL = 'https://onlinegiftbackend.onrender.com/api/popularcategories';
 
 const emptyCategory = {
   title: '',
-  itemsCount: 0,
-  image: [], 
+  itemsCount: '',
+  image: [],
   _id: null,
 };
 
@@ -17,16 +17,15 @@ function PopularCategoryTable() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalAction, setModalAction] = useState('add');
   const [formData, setFormData] = useState(emptyCategory);
-  const [selectedImageFile, setSelectedImageFile] = useState(null); 
+  const [selectedImageFile, setSelectedImageFile] = useState(null);
 
-  console.log("Current category form data:", formData);
 
   const fetchCategories = useCallback(async () => {
     setIsLoading(true);
     setError(null);
     try {
       const response = await axios.get(API_URL);
-      const apiData = response.data.data || response.data; 
+      const apiData = response.data.data || response.data;
       let categoriesArray = Array.isArray(apiData) ? apiData : [];
       setCategories(categoriesArray);
     } catch (err) {
@@ -52,15 +51,16 @@ function PopularCategoryTable() {
   const handleEditClick = (category) => {
     setFormData({
       ...category,
-      itemsCount: category.itemsCount || 0,
+      itemsCount: category.itemsCount != null ? category.itemsCount : '',
       image: Array.isArray(category.images) && category.images.length > 0
-          ? category.images
-          : [""] 
+        ? category.images
+        : ['']
     });
     setSelectedImageFile(null);
-    setModalAction("edit");
+    setModalAction('edit');
     setIsModalOpen(true);
   };
+
 
   const handleCloseModal = () => setIsModalOpen(false);
   const handleContentClick = (e) => e.stopPropagation();
@@ -72,12 +72,13 @@ function PopularCategoryTable() {
       return;
     }
     setFormData(prevData => {
-      const newValue = (name === 'itemsCount') ? parseInt(value) || 0 : value;
+      const newValue = name === 'itemsCount' ? (value === '' ? '' : parseInt(value)) : value
       return {
         ...prevData,
         [name]: newValue
       };
     });
+
   };
 
   const handleSubmit = async (e) => {
@@ -97,7 +98,7 @@ function PopularCategoryTable() {
     if (selectedImageFile) {
       dataToSend.append("images", selectedImageFile);
     } else if (modalAction === "edit" && formData.image && formData.image[0]?.url) {
-      dataToSend.append("existingImage", formData.image[0].url);
+      dataToSend.append("images", formData.image[0].url);
     }
 
     if (modalAction === "add" && !selectedImageFile) {
@@ -118,7 +119,7 @@ function PopularCategoryTable() {
 
       setIsModalOpen(false);
       setSelectedImageFile(null);
-      fetchCategories(); 
+      fetchCategories();
 
     } catch (err) {
       const serverMessage =
@@ -151,7 +152,7 @@ function PopularCategoryTable() {
   }
 
   return (
-    <div className="flash-deal-container"> 
+    <div className="flash-deal-container">
       <div className="admin-header">
         <h2> Popular Categories Management</h2>
         <button onClick={handleAddClick} className="add-btn" title="Create a new Popular Category">
@@ -163,7 +164,7 @@ function PopularCategoryTable() {
       {categories.length === 0 && !isLoading ? (
         <div className="no-data-message">No popular categories found. Click ADD NEW CATEGORY to create one.</div>
       ) : (
-        <table className="flash-deal-table"> 
+        <table className="flash-deal-table">
           <thead>
             <tr>
               <th>Image</th>
@@ -177,11 +178,11 @@ function PopularCategoryTable() {
             {categories.map((category) => (
               <tr key={category._id}>
                 <td data-label="Image">
-                    <img
-                        src={category.images?.[0]?.url || ''}
-                        alt={category.title || 'Category Image'}
-                        className="deal-image" 
-                    />
+                  <img
+                    src={category.images?.[0]?.url || ''}
+                    alt={category.title || 'Category Image'}
+                    className="deal-image"
+                  />
                 </td>
                 <td data-label="Title">{category.title}</td>
                 <td data-label="Items Count" className="price-new">{category.itemsCount}</td>
@@ -224,7 +225,7 @@ function PopularCategoryTable() {
                   onChange={handleChange}
                   required={modalAction === 'add'}
                 />
-                
+
                 {(modalAction === 'edit' && formData.image[0]?.url) && (
                   <small>
                     Current Image: <a href={formData.image[0].url} target="_blank" rel="noopener noreferrer">View</a> (Upload new file to replace)
