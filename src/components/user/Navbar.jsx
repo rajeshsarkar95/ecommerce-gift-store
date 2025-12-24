@@ -54,7 +54,6 @@ const Navbar = () => {
             </Link>
           ))}
         </div>
-
         <div className="icons">
           <Link to="/wishlist" onClick={() => setMobileMenu(false)}>❤️ Wishlist</Link>
           <Link to="/cart" onClick={() => setMobileMenu(false)}>🛒 Cart ({cart?.length || 0})</Link>

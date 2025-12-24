@@ -3,6 +3,43 @@
   text-align: center;
   background: #fff;
 }
+.popular-categories-section {
+  position: relative;
+}
+
+.popular-categories-grid {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding: 10px 0;
+}
+
+.popular-categories-grid::-webkit-scrollbar {
+  display: none;
+}
+
+/* Scroll buttons */
+.scroll-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #fff;
+  border: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  padding: 10px 14px;
+  cursor: pointer;
+  font-size: 20px;
+  z-index: 10;
+}
+
+.scroll-btn.left {
+  left: 300px;
+}
+
+.scroll-btn.right {
+  right: px;
+}
 
 .popular-categories-title {
   color: #3e0066;

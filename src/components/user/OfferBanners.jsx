@@ -4,40 +4,41 @@ import "../../styles/OfferBanners.css";
 
 export default function OffersBanner() {
   const [banners, setBanners] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  const fetchBanners = async () => {
-    try {
-      const res = await axios.get("https://onlinegiftbackend.onrender.com/api/bulkOrderImage");
-      const data = res?.data?.data || [];
-      const formatted = data.map((item) => ({
-        id: item._id,
-        img: item.bulkOrderImage, 
-        alt: "Offer Banner",
-      }));
-      setBanners(formatted);
-    } catch (err) {
-      console.error("Banner Fetch Error:", err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
+  const [currentIndex, setCurrentIndex] = useState(0);
   useEffect(() => {
+    const fetchBanners = async () => {
+      try {
+        const res = await axios.get(
+          "https://onlinegiftbackend.onrender.com/api/bulkOrderImage"
+        );
+        setBanners(res?.data?.data || []);
+      } catch (err) {
+        console.error("Banner Fetch Error:", err);
+      }
+    };
     fetchBanners();
   }, []);
+  useEffect(() => {
+    if (!banners.length) return;
+    const interval = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % banners.length);
+    }, 7000);
 
-  if (loading) return <p>Loading banners...</p>;
-  if (!banners.length) return <p>No banners available.</p>;
+    return () => clearInterval(interval);
+  }, [banners]);
+  if (!banners.length) return <p>No banners available</p>;
+  const first = banners[currentIndex];
+  const second = banners[(currentIndex + 1) % banners.length];
 
   return (
     <section className="offer-banners">
-      {banners.map((offer) => (
-        <div className="offer" key={offer.id}>
-          <img src={offer.img} alt={offer.alt} />
-          <div className="offer-text"></div>
-        </div>
-      ))}
+      <div className="slider">
+        {[first, second].map((banner, i) => (
+          <div className="slide" key={banner._id || i}>
+            <img src={banner.bulkOrderImage} alt="Offer Banner" />
+          </div>
+        ))}
+      </div>
     </section>
   );
 }

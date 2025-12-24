@@ -1,8 +1,8 @@
 .custom-dropdown {
     position: fixed;
     top: 51px;
-    right: 190px;
-    width: 140px;
+    right: 164px;
+    width: 109px;
     font-family: Arial, sans-serif;
     z-index: 1000;
 }

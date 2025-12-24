@@ -6,7 +6,22 @@
   max-width: 1200px;
   gap: 15px;
   padding: 0 15px;
+  position: relative;
 }
+.slider {
+  gap: 15px;
+  display: flex;
+  transition: transform 6s ease-in-out;
+}
+
+.slide img {
+  width: 100%;      
+  height: 300px;    
+  object-fit: cover; 
+  display: block;
+  border-radius: 5px; 
+}
+
 .offer {
   flex: 1 1 45%;
   min-width: 280px;

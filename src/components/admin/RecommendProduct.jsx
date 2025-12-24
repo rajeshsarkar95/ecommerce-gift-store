@@ -1,16 +1,13 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import '../../styles/admin/FlashDealsTable.css';
-
 const API_URL = 'https://onlinegiftbackend.onrender.com/api/recommendedproducts';
-
 const emptyProduct = {
   name: '',
   price: 0,
   image: '',
   _id: null,
 };
-
 
 function RecommendedProductTable() {
   const [products, setProducts] = useState([]);
@@ -20,7 +17,6 @@ function RecommendedProductTable() {
   const [modalAction, setModalAction] = useState('add');
   const [formData, setFormData] = useState(emptyProduct);
   const [selectedImageFile, setSelectedImageFile] = useState(null);
-
 
   const fetchProducts = useCallback(async () => {
     try {
