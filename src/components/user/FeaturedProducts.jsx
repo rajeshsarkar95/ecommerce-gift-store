@@ -59,19 +59,21 @@ const FeaturedProducts = () => {
                   navigate(`/product/${product._id}`, { state: cartProduct })
                 }
               />
+              <div className="featured-product-container">
               <h3 className="featured-product-title">{cartProduct.title}</h3>
-              <p className="featured-product-price">
+              <div className="featured-product-price">
                 ₹{cartProduct.price}
                 {product.oldprice && (
                   <span className="featured-product-old-price"> ₹{product.oldprice}</span>
                 )}
-              </p>
               <button
                 className="featured-product-add-btn"
                 onClick={() => addToCart(cartProduct)}
               >
-                Add to Cart
+                Add Cart
               </button>
+              </div>
+              </div>
             </div>
           );
         })}

@@ -58,14 +58,20 @@ const RecommendedProducts = () => {
                   navigate(`/product/${product._id}`, { state: cartProduct })
                 }
               />
+              <div className="recommended-product-conatainer">
               <h3 className="recommended-product-title">{cartProduct.title}</h3>
-              <p className="recommended-product-price">₹{cartProduct.price}</p>
-              <button
-                className="recommended-add-btn"
-                onClick={() => addToCart(cartProduct)}
-              >
-                Add to Cart
-              </button>
+              <div className="recommended-product-price">
+                <small>
+                  ₹{cartProduct.price}
+                </small>
+                <button
+                  className="recommended-add-btn"
+                  onClick={() => addToCart(cartProduct)}
+                >
+                  Add Cart
+                </button>
+              </div>
+              </div>
             </div>
           );
         })}

@@ -69,22 +69,22 @@ export default function MugCollection() {
                   })
                 }
               />
+              <div className="muga-details-container">
 
               <h3 className="mug-title">{cartProduct.title}</h3>
-
-              <p className="mug-price">
+              <div className="mug-conatainer">
                 {product.oldPrice && (
-                  <span className="mug-old-price">₹{product.oldPrice}</span>
+                  <span className="mug-new-price"> ₹{cartProduct.price}</span>
                 )}
-                <span className="mug-new-price"> ₹{cartProduct.price}</span>
-              </p>
-
+                <span className="mug-old-price">₹{product.oldPrice}</span>
               <button
                 className="mug-add-btn"
                 onClick={() => addToCart(cartProduct)}
               >
-                Add to Cart
+                Add Cart
               </button>
+              </div>
+              </div>
             </div>
           );
         })}

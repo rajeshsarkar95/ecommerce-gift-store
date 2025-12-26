@@ -60,13 +60,18 @@ function TopSellers() {
               />
               <div className="top-sellers-info">
                 <h4 className="top-sellers-product-title">{product.title}</h4>
-                <p className="top-sellers-price">₹{product.price ?? "N/A"}</p>
+
+                <div className="top-sellers-price">
+                  <small>
+                  ₹{product.price ?? "N/A"}
+                  </small>
                 <button
                   className="top-sellers-add-btn"
                   onClick={() => addToCart(product)}
                 >
-                  Add to Cart
+                  Add Cart
                 </button>
+                  </div>
               </div>
             </div>
           );

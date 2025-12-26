@@ -29,7 +29,7 @@ const Footer = () => {
         </div>
         <div className="footer-contact">
           <h4>Contact Us</h4>
-          <p><strong>Gifty Gift Store</strong></p>
+          <p><strong>uphaarbox Gift Store</strong></p>
           <p>14 St Road, Mumbai, 400001</p>
           <p>Email: info@giftyonline.com</p>
           <p>Phone: +91 98701 65432</p>

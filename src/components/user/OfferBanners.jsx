@@ -5,6 +5,7 @@ import "../../styles/OfferBanners.css";
 export default function OffersBanner() {
   const [banners, setBanners] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
+
   useEffect(() => {
     const fetchBanners = async () => {
       try {
@@ -18,6 +19,7 @@ export default function OffersBanner() {
     };
     fetchBanners();
   }, []);
+
   useEffect(() => {
     if (!banners.length) return;
     const interval = setInterval(() => {
@@ -26,7 +28,9 @@ export default function OffersBanner() {
 
     return () => clearInterval(interval);
   }, [banners]);
+
   if (!banners.length) return <p>No banners available</p>;
+
   const first = banners[currentIndex];
   const second = banners[(currentIndex + 1) % banners.length];
 

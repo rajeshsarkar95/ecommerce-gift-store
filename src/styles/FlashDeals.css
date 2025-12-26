@@ -10,21 +10,18 @@
   letter-spacing: -0.5px;
 }
 .flash-deals-add-btn {
-  background: linear-gradient(135deg, #ff8c00 0%, #ff6b00 100%);
-  color: #fff;
-  padding: 10px 18px;
+  border: black solid;
+  color: rgb(123, 115, 115);
+  padding: 6px 9px;
   border: none;
-  border-radius: 8px;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 600;
   cursor: pointer;
-  margin-top: 8px;
-  width: 100%;
+  width: 50%;
   transition: all 0.25s ease-in-out;
   display: inline-block;
 }
 .flash-deals-add-btn:hover {
-  box-shadow: 0px 6px 15px rgba(255, 107, 0, 0.4);
   filter: brightness(1.1);
 }
 .flash-deals-add-btn:active {
@@ -64,11 +61,14 @@
   font-size: 16px;
   font-weight: 600;
   line-height: 1.4;
-  margin-bottom: 12px;
+  margin-bottom: 7px;
   height: 20px; 
   overflow: hidden;
 }
 .flash-deals-price {
+  display: flex;
+  align-items: center;
+  gap: 4px;
   color: #6a0dad;
   font-weight: bold;
   margin-bottom: 5px;
@@ -107,8 +107,8 @@
 
   .flash-deals-add-btn {
     width: 100%;
-    padding: 12px 0;
-    font-size: 13px;
+    padding: 7px 0;
+    font-size: 6px;
   }
 
   .flash-deals-grid {

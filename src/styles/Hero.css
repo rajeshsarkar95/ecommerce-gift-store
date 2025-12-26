@@ -36,6 +36,7 @@
 }
 .hero img {
   width: 45%;
+  height: 50%;
   max-width: 450px;
   border-radius: 30px;
 }

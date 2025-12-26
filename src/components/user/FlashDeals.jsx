@@ -21,7 +21,6 @@ function FlashDeals() {
     };
     fetchFlashDeals();
   }, []);
-
   return (
     <section className="flash-deals-section">
       <h2 className="flash-deals-title">Flash Deals</h2>
@@ -46,15 +45,16 @@ function FlashDeals() {
               />
               <div className="flash-deals-info">
                 <h4 className="flash-deals-product-title">{cartProduct.title}</h4>
-                <p className="flash-deals-price">
+
+                <div className="flash-deals-price">
                   ₹{product.price} <small className="flash-deals-old-price">₹{product.oldPrice}</small>
-                </p>
-                <button
-                  className="flash-deals-add-btn"
-                  onClick={() => addToCart(cartProduct)}
-                >
-                  Add to Cart
-                </button>
+                  <button
+                    className="flash-deals-add-btn"
+                    onClick={() => addToCart(cartProduct)}
+                  >
+                    Add Cart
+                  </button>
+                </div>
               </div>
             </div>
           );

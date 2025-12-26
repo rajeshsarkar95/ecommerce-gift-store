@@ -8,6 +8,7 @@
   padding: 0 15px;
   position: relative;
 }
+
 .slider {
   gap: 15px;
   display: flex;
@@ -15,37 +16,41 @@
 }
 
 .slide img {
-  width: 100%;      
-  height: 300px;    
-  object-fit: cover; 
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
   display: block;
-  border-radius: 5px; 
+  border-radius: 5px;
 }
 
 .offer {
-  flex: 1 1 45%;
+  flex: 1 1 45%; 
   min-width: 280px;
   position: relative;
   overflow: hidden;
   border-radius: 12px;
 }
+
 .offer img {
   width: 100%;
   height: auto;
   border-radius: 12px;
   object-fit: cover;
 }
+
 .offer-text {
   position: absolute;
   top: 15%;
   left: 10%;
   color: #fff;
 }
+
 .offer-text h2 {
   font-size: 1.8rem;
   font-weight: bold;
   line-height: 1.2;
 }
+
 .offer-text button {
   background: #ff6b00;
   color: white;
@@ -56,9 +61,11 @@
   margin-top: 10px;
   font-size: 1rem;
 }
+
+/* Mobile: ≤768px — one image per row */
 @media (max-width: 768px) {
   .offer {
-    flex: 1 1 100%;
+    flex: 1 1 100%; /* single image per row */
     min-width: 100%;
   }
   .offer-text h2 {
@@ -68,14 +75,29 @@
     padding: 8px 15px;
     font-size: 0.9rem;
   }
+  .slide img {
+    height: 250px; /* smaller height for mobile */
+  }
 }
+
+/* Small Mobile: ≤480px */
 @media (max-width: 480px) {
+  .offer {
+    flex: 1 1 100%;
+    min-width: 100%;
+  }
   .offer-text {
     top: 10%;
     left: 6%;
   }
-
   .offer-text h2 {
     font-size: 1.2rem;
+  }
+  .offer-text button {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+  }
+  .slide img {
+    height: 200px; /* tiny screen */
   }
 }

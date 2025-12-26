@@ -13,7 +13,9 @@ export default function TshirtCollection() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await axios.get("https://onlinegiftbackend.onrender.com/api/tshirt");
+        const res = await axios.get(
+          "https://onlinegiftbackend.onrender.com/api/tshirt"
+        );
         setProducts(res.data.data || []);
       } catch (error) {
         console.log("API Error:", error.message);
@@ -21,16 +23,18 @@ export default function TshirtCollection() {
     };
     fetchProducts();
   }, []);
-  
-  return (
-    <section className="tshirt-collection">
-      <h2>T-Shirt And Hoodies Collection</h2>
 
-      <div className="product-list">
+  return (
+    <section className="tshirtSection">
+      <h2 className="tshirtHeading">T-Shirt And Hoodies Collection</h2>
+
+      <div className="tshirtGrid">
         {products.map((product) => {
           const imageUrl =
             product.image?.url ||
-            (Array.isArray(product.image) && product.image.length > 0 ? product.image[0].url : Oversize1);
+            (Array.isArray(product.image) && product.image.length > 0
+              ? product.image[0].url
+              : Oversize1);
 
           const cartProduct = {
             ...product,
@@ -40,28 +44,30 @@ export default function TshirtCollection() {
           };
 
           return (
-            <div key={product._id} className="product">
+            <div key={product._id} className="tshirtCard">
               <img
                 src={cartProduct.imageUrl}
                 alt={cartProduct.title}
-                className="clickable"
+                className="tshirtImage"
                 onClick={() =>
                   navigate(`/product/${product._id}`, {
                     state: { ...cartProduct, folder: "tshirt" },
                   })
                 }
               />
-
-              <div className="product-info">
-                <h4>{cartProduct.title}</h4>
-                <p>₹{product.price ?? "N/A"}</p>
-
-                <button
-                  className="add-btn"
-                  onClick={() => addToCart(cartProduct)}
-                >
-                  Add to Cart
-                </button>
+              <div className="tshirtDetails">
+                <h3 className="tshirtTitle">{cartProduct.title}</h3>
+                <div className="tshirtPriceRow">
+                  <span className="tshirtPrice">
+                    ₹{product.price ?? "N/A"}
+                  </span>
+                  <button
+                    className="tshirtAddBtn"
+                    onClick={() => addToCart(cartProduct)}
+                  >
+                    Add Cart
+                  </button>
+                </div>
               </div>
             </div>
           );

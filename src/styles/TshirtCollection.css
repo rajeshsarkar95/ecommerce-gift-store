@@ -1,127 +1,181 @@
-.tshirt-collection {
+.tshirtSection {
   text-align: center;
-  padding: 50px;
+  padding: 80px 5%;
+  background-color: #ffffff;
 }
 
-.product .add-btn {
-  margin-top: 8px;
-  padding: 8px 14px;
-  background: #ff6b00;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 14px;
-  transition: 0.2s ease;
-}
-
-.product .add-btn:hover {
-  background: #e15800;
-}
-
-.tshirt-collection h2 {
+.tshirtHeading {
   color: #3e0066;
-  font-size: 28px;
-  margin-bottom: 30px;
+  font-size: 34px;
+  font-weight: 800;
+  margin-bottom: 40px;
+  letter-spacing: -1px;
 }
 
-.tshirt-collection .product-list {
+.tshirtGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 25px;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
-.product {
-  border: 1px solid #ddd;
-  border-radius: 10px;
+.tshirtCard {
   background: #fff;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  transition: 0.3s;
+  border-radius: 0;
+  border: none;
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  position: relative;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
 }
 
-.product:hover {
+.tshirtCard:hover {
   transform: translateY(-5px);
 }
 
-.product img {
-  margin-top: 15px;
-  width: 90%;
-  height: 220px;
-  object-fit: cover;
+.tshirtImage {
+  width: 100%;
+  height: 296px;
+  object-fit: contain;
+  background-color: #f7f7f7;
+  transition: filter 0.3s ease;
+  display: block;
+  cursor: pointer;
 }
 
-.product-info {
-  padding: 15px;
+.tshirtCard:hover .tshirtImage {
+  filter: brightness(0.95);
 }
 
-.product-info h4 {
-  color: #333;
-  font-size: 16px;
-  margin-bottom: 8px;
+.tshirtDetails {
+  padding: 5px 8px;
 }
 
-.product-info p {
+.tshirtTitle {
+  color: #222;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.4;
+  height: 25px;
+  overflow: hidden;
+}
+
+.tshirtPriceRow {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 12px;
   color: #6a0dad;
   font-weight: bold;
   margin-bottom: 5px;
 }
 
-.product-info small {
-  text-decoration: line-through;
-  color: #999;
+.tshirtPrice {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.tshirtAddBtn {
+  width: 36%;
+  padding: 9px;
+  color: rgb(123, 115, 115);
+  border: none;
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
 }
 
 @media (max-width: 576px) {
-  .tshirt-collection {
+  .tshirtSection {
     padding: 25px;
   }
 
-  .tshirt-collection .product-list {
+  .tshirtGrid {
     grid-template-columns: repeat(2, 1fr);
     gap: 15px;
   }
 
-  .product img {
+  .tshirtImage {
     width: 95%;
     height: 170px;
   }
 
-  .product-info h4 {
+  .tshirtTitle {
     font-size: 13px;
   }
 
-  .product-info p {
+  .tshirtPrice {
     font-size: 13px;
   }
 
-  .tshirt-collection h2 {
+  .tshirtHeading {
     font-size: 20px;
+  }
+
+  .tshirtAddBtn {
+    width: 50%;
+    padding: 7px;
+    font-size: 8px;
   }
 }
 
 @media (min-width: 577px) and (max-width: 992px) {
-  .tshirt-collection {
+  .tshirtSection {
     padding: 35px;
   }
 
-  .tshirt-collection .product-list {
+  .tshirtGrid {
     grid-template-columns: repeat(3, 1fr);
     gap: 20px;
   }
 
-  .product img {
+  .tshirtImage {
     height: 200px;
   }
 
-  .product-info h4 {
+  .tshirtTitle {
     font-size: 14px;
   }
 
-  .product-info p {
+  .tshirtPrice {
     font-size: 14px;
   }
 
-  .tshirt-collection h2 {
+  .tshirtHeading {
     font-size: 24px;
+  }
+
+  .tshirtAddBtn {
+    width: 40%;
+    padding: 7px;
+    font-size: 11px;
+  }
+}
+
+@media (min-width: 993px) and (max-width: 1199px) {
+  .tshirtGrid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 25px;
+  }
+
+  .tshirtImage {
+    height: 250px;
+  }
+
+  .tshirtTitle {
+    font-size: 15px;
+  }
+
+  .tshirtPrice {
+    font-size: 16px;
+  }
+
+  .tshirtHeading {
+    font-size: 28px;
   }
 }

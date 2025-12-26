@@ -14,7 +14,9 @@ export default function HoodiesCollection() {
   useEffect(() => {
     const fetchHoodies = async () => {
       try {
-        const { data } = await axios.get("https://onlinegiftbackend.onrender.com/api/hoodies");
+        const { data } = await axios.get(
+          "https://onlinegiftbackend.onrender.com/api/hoodies"
+        );
         if (!data.success) throw new Error(data.message);
         setHoodies(data.data || []);
       } catch (err) {
@@ -32,14 +34,16 @@ export default function HoodiesCollection() {
   if (!hoodies.length) return <p>No hoodies available.</p>;
 
   return (
-    <section className="tshirt-collection">
-      <h2>Hoodies Collection</h2>
-      <div className="product-list">
+    <section className="hoodieSection">
+      <h2 className="hoodieHeading">Hoodies Collection</h2>
+
+      <div className="hoodieGrid">
         {hoodies.map((product) => {
           const imageUrl =
-          product.image?.url ||
-          (product.images && product.images.length > 0 ? product.images[0].url : "/placeholder.jpg");
-      
+            product.image?.url ||
+            (product.images && product.images.length > 0
+              ? product.images[0].url
+              : "/placeholder.jpg");
 
           const cartProduct = {
             id: product._id,
@@ -47,20 +51,21 @@ export default function HoodiesCollection() {
             price: product.price ?? 0,
             images: product.image
               ? Array.isArray(product.image)
-                ? product.image.map(img => (img.url ? img : { url: img })) 
+                ? product.image.map((img) =>
+                  img.url ? img : { url: img }
+                )
                 : [{ url: product.image.url || product.image }]
               : [],
             folder: "hoodies",
             description: product.description || "",
           };
-          
 
           return (
-            <div key={product._id} className="product">
+            <div key={product._id} className="hoodieCard">
               <img
                 src={imageUrl}
                 alt={cartProduct.title}
-                className="clickable"
+                className="hoodieImage"
                 loading="lazy"
                 onClick={() =>
                   navigate(`/product/${product._id}`, {
@@ -68,12 +73,21 @@ export default function HoodiesCollection() {
                   })
                 }
               />
-              <div className="product-info">
-                <h4>{cartProduct.title}</h4>
-                <p>₹{cartProduct.price}</p>
-                <button className="add-btn" onClick={() => addToCart(cartProduct)}>
-                  Add to Cart
-                </button>
+
+              <div className="hoodieDetails">
+                <h4 className="hoodieTitle">{cartProduct.title}</h4>
+                <div className="hoodiePrice">
+                  <small>
+                    ₹{cartProduct.price}
+                  </small>
+                  <button
+                    className="hoodieAddBtn"
+                    onClick={() => addToCart(cartProduct)}
+                  >
+                    Add Cart
+                  </button>
+                </div>
+
               </div>
             </div>
           );
