@@ -47,5 +47,4 @@ const Dropdown = ({ options }) => {
     </div>
   );
 };
-
 export default Dropdown;
