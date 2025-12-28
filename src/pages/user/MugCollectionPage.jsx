@@ -8,10 +8,8 @@ export default function MugCollection() {
   const [mugProducts, setMugProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
   const navigate = useNavigate();
   const { addToCart } = useCart();
-
   useEffect(() => {
     const fetchMugs = async () => {
       try {
@@ -27,15 +25,17 @@ export default function MugCollection() {
     };
     fetchMugs();
   }, []);
-
   if (loading) return <p>Loading mugs...</p>;
   if (error) return <p>{error}</p>;
   if (!mugProducts.length) return <p>No mugs available.</p>;
-
+  const sectionStyle = {
+    width: "95%",
+    margin: "auto",
+    padding: "121px 0",
+  };
   return (
-    <section className="mug-collection-section">
+    <section style={sectionStyle} className="mug-collection-section">
       <h2 className="mug-collection-title">Mug Collection</h2>
-
       <div className="mug-collection-grid">
         {mugProducts.map((product) => {
           const imageUrl =
@@ -55,9 +55,9 @@ export default function MugCollection() {
               : [{ url: "/placeholder.jpg" }],
             folder: "mugs",
           };
-
+        
           return (
-            <div className="mug-card" key={product._id}>
+            <div   className="mug-card" key={product._id}>
               <img
                 src={imageUrl}
                 alt={cartProduct.title}
@@ -88,13 +88,6 @@ export default function MugCollection() {
             </div>
           );
         })}
-      </div>
-      <div className="mugs-more-button-con">
-        <button
-         onClick={()=>navigate("/mugspage")}
-         className="mugs-more-btn">
-          more
-        </button>
       </div>
     </section>
   );

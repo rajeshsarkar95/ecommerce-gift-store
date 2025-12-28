@@ -1,5 +1,3 @@
-import TopBar from "../../components/user/TopBar";
-import Navbar from "../../components/user/Navbar";
 import Hero from "../../components/user/Hero";
 import FlashDeals from "../../components/user/FlashDeals";
 import PromoSection from "../../components/user/PromoBanners";
@@ -19,8 +17,6 @@ import WhatsAppIcon from "../../components/user/WhatapsIcons";
 export default function LandingPage() {
   return (
     <>
-      <TopBar />
-      <Navbar />
       <Hero />
       <FlashDeals />
       <PromoSection />

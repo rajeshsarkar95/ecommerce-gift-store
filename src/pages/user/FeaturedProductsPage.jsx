@@ -4,7 +4,7 @@ import axios from "axios";
 import { useCart } from "../../context/CartContext";
 import { useNavigate } from "react-router-dom";
 
-const FeaturedProducts = () => {
+const FeaturedProductsPage = () => {
   const navigate = useNavigate();
   const { addToCart } = useCart();
   const [products, setProducts] = useState([]);
@@ -47,7 +47,6 @@ const FeaturedProducts = () => {
               : [{ url: "/placeholder.jpg" }],
             folder: "featured",
           };
-
           return (
             <div className="featured-product-card" key={product._id}>
               <img
@@ -78,16 +77,8 @@ const FeaturedProducts = () => {
           );
         })}
       </div>
-      <div className="featuresproduct-more-con">
-        <button
-          onClick={() => navigate("/featuredproducts")}
-          className="FeaturesProduct-more-btn"
-        >
-          more
-        </button>
-      </div>
     </section>
   );
 };
 
-export default FeaturedProducts;
+export default FeaturedProductsPage;

@@ -32,9 +32,14 @@ export default function HoodiesCollection() {
   if (loading) return <p>Loading Hoodies...</p>;
   if (error) return <p>Error: {error}</p>;
   if (!hoodies.length) return <p>No hoodies available.</p>;
-
+  
+  const sectionStyle = {
+    width: "100%",
+    margin: "auto",
+    padding: "121px 0",
+  };
   return (
-    <section className="hoodieSection">
+    <section style={sectionStyle} className="hoodieSection">
       <h2 className="hoodieHeading">Hoodies Collection</h2>
       <div className="hoodieGrid">
         {hoodies.map((product) => {
@@ -89,13 +94,6 @@ export default function HoodiesCollection() {
             </div>
           );
         })}
-      </div>
-      <div className="hoodies-more-buttons-con">
-        <button
-           onClick={()=>navigate("/hoodiesPage")}
-         className="hoodies-more-btn">
-           more
-        </button>
       </div>
     </section>
   );

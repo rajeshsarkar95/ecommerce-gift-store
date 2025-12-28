@@ -22,7 +22,7 @@ function FlashDeals() {
     fetchFlashDeals();
   }, []);
   return (
-    <section className="flash-deals-section">
+    <section style={sectionStyle} className="flash-deals-section">
       <h2 className="flash-deals-title">Flash Deals</h2>
       <div className="flash-deals-grid">
         {products.map((product) => {
@@ -60,16 +60,15 @@ function FlashDeals() {
           );
         })}
       </div>
-      <div className="flash-deals-bottom-buttons-more">
-        <button
-          className="flash-deals-add-btn-more-b"
-          onClick={()=>navigate("/flashdealspage")}
-        >
-          More
-        </button>
-      </div>
+
     </section>
   );
 }
-
 export default FlashDeals;
+
+const sectionStyle = {
+  width: "100%",
+  margin: "auto",
+  padding: "121px 0",
+  backgroundColor: "#f9f9f9",
+};

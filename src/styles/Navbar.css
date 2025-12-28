@@ -11,17 +11,14 @@
   z-index: 999;
   height: 70px;
 }
-
 .navbar .logo img {
   height: 50px;
 }
-
 .navbar .search-bar {
   display: flex;
   flex: 1;
   margin: 0 20px;
 }
-
 .navbar input {
   width:85%;
   padding: 8px 10px;

@@ -3,7 +3,6 @@
   padding: 80px 5%;
   background-color: #ffffff;
 }
-
 .mug-collection-title {
   font-size: 36px;
   color: #1a1a1a;
@@ -11,7 +10,25 @@
   margin-bottom: 50px;
   letter-spacing: -1.5px;
 }
-
+.mugs-more-button-con{
+  display: flex;
+  justify-content: flex-end;
+  padding: 8px;
+  font-size: 13px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+}
+.mugs-more-btn{
+  color: rgb(123, 115, 115);
+  background-color: white;
+  border: none;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.25s ease-in-out;
+}
 .mug-conatainer {
   display: flex;
   align-items: center;

@@ -5,6 +5,25 @@
   text-align: center;
 }
 
+.recommended-product-btn{
+  display: flex;
+  justify-content: flex-end;
+  padding: 8px;
+  font-size: 13px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+}
+.recommeded-more-btn{
+  color: rgb(123, 115, 115);
+  background-color: white;
+  border: none;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.25s ease-in-out;
+}
 .recommended-title {
   color: #1a1a1a;
   font-size: 36px;

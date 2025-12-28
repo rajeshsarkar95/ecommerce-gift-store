@@ -5,7 +5,7 @@ import { useCart } from "../../context/CartContext";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-export default function TshirtCollection() {
+export default function TShirtCollectionPage() {
   const [products, setProducts] = useState([]);
   const navigate = useNavigate();
   const { addToCart } = useCart();
@@ -23,10 +23,16 @@ export default function TshirtCollection() {
     };
     fetchProducts();
   }, []);
-
+  const sectionStyle = {
+    width: "100%",
+    margin: "auto",
+    padding: "121px 0",
+    backgroundColor: "#f9f9f9",
+  };
   return (
-    <section className="tshirtSection">
+    <section  style={sectionStyle} className="tshirtSection">
       <h2 className="tshirtHeading">T-Shirt And Hoodies Collection</h2>
+
       <div className="tshirtGrid">
         {products.map((product) => {
           const imageUrl =
@@ -72,13 +78,6 @@ export default function TshirtCollection() {
           );
         })}
       </div>
-        <div className="Tshirt-bottom-buttons-more-con">
-           <button 
-           onClick={()=>navigate("/tshirtpage")}
-           className="tshirt-more-btn">
-              more
-           </button>
-        </div>
     </section>
   );
 }

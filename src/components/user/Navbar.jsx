@@ -7,14 +7,14 @@ import { useState } from "react";
 
 const Navbar = () => {
   const { cart } = useCart();
-  const option = [
-    "Home",
-    "FlashDeals",
-    "Topellers",
-    "PopularCategories",
-    "T-Shirt",
-    "HoodiesCollection",
-    "MugCollection",
+
+  const menuItems = [
+    { label: "Home", path: "/" },
+    { label: "Flash Deals", path: "/flashdealspage" },
+    { label: "Top Sellers", path: "/topsellerpage" },
+    { label: "T-Shirt", path: "/tshirtpage" },
+    { label: "Hoodies Collection", path: "/hoodiesPage" },
+    { label: "Mug Collection", path: "/mugspage" },
   ];
   const [mobileMenu, setMobileMenu] = useState(false);
 
@@ -33,7 +33,7 @@ const Navbar = () => {
       <div className="search-bar">
         <input type="text" placeholder="Search products..." />
         <button aria-label="Search">🔍</button>
-        <Dropdown options={option} label="Select Category" />
+        <Dropdown options={menuItems} label="Select Category" />
       </div>
       <div className="icons">
         <Link to="/wishlist">❤️</Link>
@@ -45,14 +45,19 @@ const Navbar = () => {
         <div className="search-bar">
           <input type="text" placeholder="Search products..." />
           <button aria-label="Search">🔍</button>
-          <Dropdown options={option} label="Select Category" />
+          <Dropdown options={menuItems} label="Select Category" />
         </div>
         <div className="menu-links">
-          {option.map((item) => (
-            <Link key={item} to={`/${item.toLowerCase()}`} onClick={() => setMobileMenu(false)}>
-              {item}
+          {menuItems.map((item) => (
+            <Link
+              key={item.label}
+              to={item.path}
+              onClick={() => setMobileMenu(false)}
+            >
+              {item.label}
             </Link>
           ))}
+
         </div>
         <div className="icons">
           <Link to="/wishlist" onClick={() => setMobileMenu(false)}>❤️ Wishlist</Link>

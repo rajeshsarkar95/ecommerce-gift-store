@@ -4,7 +4,7 @@ import "../../styles/RecommendedProducts.css";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../../context/CartContext";
 
-const RecommendedProducts = () => {
+const RecommendedProductsPage = () => {
   const navigate = useNavigate();
   const { addToCart } = useCart();
 
@@ -31,9 +31,13 @@ const RecommendedProducts = () => {
 
   if (loading) return <p style={{ textAlign: "center" }}>Loading...</p>;
   if (error) return <p style={{ textAlign: "center", color: "red" }}>{error}</p>;
-
+  const sectionStyle = {
+    width: "99%",
+    margin: "auto",
+    padding: "121px 0",
+  };
   return (
-    <section className="recommended-section">
+    <section style={sectionStyle} className="recommended-section">
       <h2 className="recommended-title">Recommended Products</h2>
       <div className="recommended-grid">
         {products.map((product) => {
@@ -76,15 +80,8 @@ const RecommendedProducts = () => {
           );
         })}
       </div>
-      <div className="recommended-product-btn">
-        <button
-         onClick={()=>navigate("/recommendedproducts")}
-         className="recommeded-more-btn">
-            more
-        </button>
-      </div>
     </section>
   );
 };
 
-export default RecommendedProducts;
+export default RecommendedProductsPage;

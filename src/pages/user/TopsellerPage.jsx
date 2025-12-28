@@ -4,7 +4,7 @@ import { useCart } from "../../context/CartContext";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-function TopSellers() {
+function TopSellersPage() {
   const { addToCart } = useCart();
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
@@ -34,9 +34,14 @@ function TopSellers() {
   if (loading) return <p>Loading top sellers...</p>;
   if (error) return <p>{error}</p>;
   if (products.length === 0) return <p>No top sellers available.</p>;
-
+  const sectionStyle = {
+    width: "100%",
+    margin: "auto",
+    padding: "121px 0",
+    backgroundColor: "#f9f9f9",
+  };
   return (
-    <section className="top-sellers-section">
+    <section style={sectionStyle} className="top-sellers-section">
       <h2 className="top-sellers-title">Top Sellers</h2>
       <div className="top-sellers-grid">
         {products.map((p) => {
@@ -77,13 +82,6 @@ function TopSellers() {
           );
         })}
       </div>
-      <div className="topSeller-bottom-buttons-more"> 
-        <button
-         onClick={()=>navigate("/topsellerpage")}
-         className="top-sellers-add-btn-t">
-           more
-        </button>
-      </div>
       <div className="top-sellers-back-top">
         <a href="#top">↑ Back to top</a>
       </div>
@@ -91,4 +89,4 @@ function TopSellers() {
   );
 }
 
-export default TopSellers;
+export default TopSellersPage;
