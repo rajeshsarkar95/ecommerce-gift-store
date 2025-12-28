@@ -13,6 +13,7 @@ export default function ProductDetails() {
 
   useEffect(() => {
     if (location.state) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setProduct(location.state);
       localStorage.setItem("product_" + id, JSON.stringify(location.state));
     } else {
