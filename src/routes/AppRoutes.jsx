@@ -11,7 +11,7 @@ import TShirtCollection from "../pages/user/TShirtCollectionPage";
 import HoodiesCollection from "../pages/user/HoodiesCollectionPage";
 import MugCollection from "../pages/user/MugCollectionPage";
 import RecommendedProductsPage from "../pages/user/RecommendedProductsPage";
-import FeaturedProductsPage from "../pages/user/FeaturedProductspage";
+import FeaturedProductsPage from "../pages/user/FeaturedProductsPage";
 
 export default function AppRoutes() {
   return (
