@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { useCart } from "../../context/CartContext";
 import Dropdown from "./Dropdown";
 import { useState } from "react";
+import { CiShoppingCart } from "react-icons/ci";
 
 const Navbar = () => {
   const { cart } = useCart();
@@ -28,7 +29,7 @@ const Navbar = () => {
         onClick={() => setMobileMenu(!mobileMenu)}
       >
         ☰
-        <Link to="/cart" onClick={() => setMobileMenu(false)}>🛒</Link>
+        <Link to="/cart" onClick={() => setMobileMenu(false)}><CiShoppingCart/></Link>
       </div>
       <div className="search-bar">
         <input type="text" placeholder="Search products..." />
@@ -37,7 +38,7 @@ const Navbar = () => {
       </div>
       <div className="icons">
         <Link to="/wishlist">❤️</Link>
-        <Link to="/cart">🛒 <span>({cart?.length || 0})</span></Link>
+        <Link to="/cart"><CiShoppingCart /><span>({cart?.length || 0})</span></Link>
         <Link to="/profile">👤</Link>
       </div>
       <div className={`mobile-menu ${mobileMenu ? "active" : ""}`}>
@@ -61,7 +62,7 @@ const Navbar = () => {
         </div>
         <div className="icons">
           <Link to="/wishlist" onClick={() => setMobileMenu(false)}>❤️ Wishlist</Link>
-          <Link to="/cart" onClick={() => setMobileMenu(false)}>🛒 Cart ({cart?.length || 0})</Link>
+          <Link to="/cart" onClick={() => setMobileMenu(false)}><CiShoppingCart /> Cart ({cart?.length || 0})</Link>
           <Link to="/profile" onClick={() => setMobileMenu(false)}>👤 Profile</Link>
         </div>
       </div>

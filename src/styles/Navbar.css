@@ -116,6 +116,8 @@
 @media (max-width: 768px) {
   .hamburger {
     display: block;
+    display: flex;
+    align-items: center;
   }
 
   .hamburger a {
@@ -128,6 +130,8 @@
   }
 
   .navbar {
+    display: flex;
+    align-items: center;
     top: 21px;
     padding: 0 15px;
   }
