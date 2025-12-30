@@ -21,24 +21,40 @@ const Navbar = () => {
 
   return (
     <nav className="navbar">
+
       <div className="logo">
-        <img src={logo} alt="UphaarBox Logo" />
-      </div>
+  <Link to="/">
+    <img src={logo} alt="UphaarBox Logo" />
+  </Link>
+</div>
       <div
         className="hamburger"
-        onClick={() => setMobileMenu(!mobileMenu)}
       >
-        ☰
-        <Link to="/cart" onClick={() => setMobileMenu(false)}><CiShoppingCart/></Link>
+        <i onClick={() => setMobileMenu(!mobileMenu)}>
+          ☰
+        </i>
+        <Link to="/cart">
+          <CiShoppingCart
+            className="Add-to-cart"
+          />
+          {cart?.length > 0 && (
+            <div className="add-counter">{cart.length}</div>
+          )}
+        </Link>
       </div>
+
       <div className="search-bar">
         <input type="text" placeholder="Search products..." />
         <button aria-label="Search">🔍</button>
         <Dropdown options={menuItems} label="Select Category" />
       </div>
       <div className="icons">
-        <Link to="/wishlist">❤️</Link>
-        <Link to="/cart"><CiShoppingCart /><span>({cart?.length || 0})</span></Link>
+        <Link to="/cart">
+          <CiShoppingCart className="Add-to-cart" />
+          {cart?.length > 0 && (
+            <div className="add-counter">{cart.length}</div>
+          )}
+        </Link>
         <Link to="/profile">👤</Link>
       </div>
       <div className={`mobile-menu ${mobileMenu ? "active" : ""}`}>
