@@ -3,6 +3,7 @@ import axios from "axios";
 import "../../styles/MugCollection.css";
 import { useCart } from "../../context/CartContext";
 import { useNavigate } from "react-router-dom";
+import ProductSkeleton from "./ProductSkeleton";
 
 export default function MugCollection() {
   const [mugProducts, setMugProducts] = useState([]);
@@ -28,74 +29,79 @@ export default function MugCollection() {
     fetchMugs();
   }, []);
 
-  if (loading) return <p>Loading mugs...</p>;
-  if (error) return <p>{error}</p>;
-  if (!mugProducts.length) return <p>No mugs available.</p>;
-
   return (
     <section className="mug-collection-section">
       <h2 className="mug-collection-title">Mug Collection</h2>
 
       <div className="mug-collection-grid">
-        {mugProducts.map((product) => {
-          const imageUrl =
-            product.image?.url ||
-            (Array.isArray(product.image) && product.image.length > 0
-              ? product.image[0].url
-              : "/placeholder.jpg");
+        {loading
+          ? Array.from({ length: 6 }).map((_, i) => <ProductSkeleton key={i} />)
+          : error
+          ? <p>{error}</p>
+          : mugProducts.length === 0
+          ? <p>No mugs available.</p>
+          : mugProducts.map((product) => {
+              const imageUrl =
+                product.image?.url ||
+                (Array.isArray(product.image) && product.image.length > 0
+                  ? product.image[0].url
+                  : "/placeholder.jpg");
 
-          const cartProduct = {
-            id: product._id,
-            title: product.name || "No Name",
-            price: product.price ?? 0,
-            images: product.image
-              ? Array.isArray(product.image)
-                ? product.image.map(img => (img.url ? img : { url: img }))
-                : [{ url: product.image.url || product.image }]
-              : [{ url: "/placeholder.jpg" }],
-            folder: "mugs",
-          };
+              const cartProduct = {
+                id: product._id,
+                title: product.name || "No Name",
+                price: product.price ?? 0,
+                images: product.image
+                  ? Array.isArray(product.image)
+                    ? product.image.map(img => (img.url ? img : { url: img }))
+                    : [{ url: product.image.url || product.image }]
+                  : [{ url: "/placeholder.jpg" }],
+                folder: "mugs",
+              };
 
-          return (
-            <div className="mug-card" key={product._id}>
-              <img
-                src={imageUrl}
-                alt={cartProduct.title}
-                className="mug-img clickable"
-                loading="lazy"
-                onClick={() =>
-                  navigate(`/product/${product._id}`, {
-                    state: cartProduct,
-                  })
-                }
-              />
-              <div className="muga-details-container">
-
-              <h3 className="mug-title">{cartProduct.title}</h3>
-              <div className="mug-conatainer">
-                {product.oldPrice && (
-                  <span className="mug-new-price"> ₹{cartProduct.price}</span>
-                )}
-                <span className="mug-old-price">₹{product.oldPrice}</span>
-              <button
-                className="mug-add-btn"
-                onClick={() => addToCart(cartProduct)}
-              >
-                Add Cart
-              </button>
-              </div>
-              </div>
-            </div>
-          );
-        })}
+              return (
+                <div className="mug-card" key={product._id}>
+                  <img
+                    src={imageUrl}
+                    alt={cartProduct.title}
+                    className="mug-img clickable"
+                    loading="lazy"
+                    onClick={() =>
+                      navigate(`/product/${product._id}`, {
+                        state: cartProduct,
+                      })
+                    }
+                  />
+                  <div className="muga-details-container">
+                    <h3 className="mug-title">{cartProduct.title}</h3>
+                    <div className="mug-conatainer">
+                      {product.oldPrice && (
+                        <span className="mug-new-price"> ₹{cartProduct.price}</span>
+                      )}
+                      <span className="mug-old-price">₹{product.oldPrice}</span>
+                      <button
+                        className="mug-add-btn"
+                        onClick={() => addToCart(cartProduct)}
+                      >
+                        Add Cart
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
       </div>
-      <div className="mugs-more-button-con">
-        <button
-         onClick={()=>navigate("/mugspage")}
-         className="mugs-more-btn">
-          more
-        </button>
-      </div>
+
+      {!loading && mugProducts.length > 0 && (
+        <div className="mugs-more-button-con">
+          <button
+            onClick={() => navigate("/mugspage")}
+            className="mugs-more-btn"
+          >
+            more
+          </button>
+        </div>
+      )}
     </section>
   );
 }

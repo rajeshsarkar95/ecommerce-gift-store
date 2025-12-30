@@ -3,6 +3,7 @@ import "../../styles/TopSellers.css";
 import { useCart } from "../../context/CartContext";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import ProductSkeleton from "./ProductSkeleton";
 
 function TopSellers() {
   const { addToCart } = useCart();
@@ -31,62 +32,67 @@ function TopSellers() {
     fetchTopSellers();
   }, []);
 
-  if (loading) return <p>Loading top sellers...</p>;
-  if (error) return <p>{error}</p>;
-  if (products.length === 0) return <p>No top sellers available.</p>;
-
   return (
     <section className="top-sellers-section">
       <h2 className="top-sellers-title">Top Sellers</h2>
       <div className="top-sellers-grid">
-        {products.map((p) => {
-          const product = {
-            ...p,
-            id: p._id,
-            title: p.title || p.tittle || "No Title",
-          };
-
-          return (
-            <div className="top-sellers-card" key={p._id}>
-              <img
-                src={product.images?.[0]?.url || "/placeholder.jpg"}
-                alt={product.title}
-                className="top-sellers-img clickable"
-                onClick={() =>
-                  navigate(`/product/${p._id}`, {
-                    state: { ...product, folder: "topSeller" },
-                  })
-                }
-              />
-              <div className="top-sellers-info">
-                <h4 className="top-sellers-product-title">{product.title}</h4>
-
-                <div className="top-sellers-price">
-                  <small>
-                  ₹{product.price ?? "N/A"}
-                  </small>
-                <button
-                  className="top-sellers-add-btn"
-                  onClick={() => addToCart(product)}
-                >
-                  Add Cart
-                </button>
+        {loading
+          ? Array.from({ length: 6 }).map((_, i) => <ProductSkeleton key={i} />)
+          : error
+          ? <p>{error}</p>
+          : products.length === 0
+          ? <p>No top sellers available.</p>
+          : products.map((p) => {
+              const product = {
+                ...p,
+                id: p._id,
+                title: p.title || p.tittle || "No Title",
+              };
+              return (
+                <div className="top-sellers-card" key={p._id}>
+                  <img
+                    src={product.images?.[0]?.url || "/placeholder.jpg"}
+                    alt={product.title}
+                    className="top-sellers-img clickable"
+                    onClick={() =>
+                      navigate(`/product/${p._id}`, {
+                        state: { ...product, folder: "topSeller" },
+                      })
+                    }
+                  />
+                  <div className="top-sellers-info">
+                    <h4 className="top-sellers-product-title">{product.title}</h4>
+                    <div className="top-sellers-price">
+                      <small>₹{product.price ?? "N/A"}</small>
+                      <button
+                        className="top-sellers-add-btn"
+                        onClick={() => addToCart(product)}
+                      >
+                        Add Cart
+                      </button>
+                    </div>
                   </div>
-              </div>
-            </div>
-          );
-        })}
+                </div>
+              );
+            })}
       </div>
-      <div className="topSeller-bottom-buttons-more"> 
-        <button
-         onClick={()=>navigate("/topsellerpage")}
-         className="top-sellers-add-btn-t">
-           more
-        </button>
-      </div>
-      <div className="top-sellers-back-top">
-        <a href="#top">↑ Back to top</a>
-      </div>
+
+      {!loading && products.length > 0 && (
+        <div className="topSeller-bottom-buttons-more">
+          <button
+            onClick={() => navigate("/topsellerpage")}
+            className="top-sellers-add-btn-t"
+          >
+            More
+          </button>
+        </div>
+      )}
+
+      {!loading && (
+        <div className="top-sellers-back-top">
+          <a href="#top">↑ Back to top</a>
+        </div>
+      )}
     </section>
   );
 }
