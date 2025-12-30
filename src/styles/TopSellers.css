@@ -49,8 +49,6 @@
 .top-sellers-add-btn:active {
   transform: scale(0.95);
 }
-
-/* Product Grid */
 .top-sellers-grid {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
@@ -59,7 +57,6 @@
 
 .top-sellers-card {
   border: none; 
-  border-radius: 16px; 
   background: #fff;
   overflow: hidden; 
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); 
@@ -76,7 +73,6 @@
   height: 240px;
   object-fit: contain; 
   background-color: #f9f9f9; 
-  padding: 20px; 
   border-radius: 0;
 }
 

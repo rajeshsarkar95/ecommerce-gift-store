@@ -30,13 +30,13 @@ const Footer = () => {
         <div className="footer-contact">
           <h4>Contact Us</h4>
           <p><strong>uphaarbox Gift Store</strong></p>
-          <p>14 St Road, Mumbai, 400001</p>
-          <p>Email: info@giftyonline.com</p>
-          <p>Phone: +91 98701 65432</p>
+          <p>Tankpur Road , 262001 Pilibhit,Uttar Pradesh</p>
+          <p>Email:info@Uphaarbox.com</p>
+          <p>Phone:+8439390374</p>
         </div>
       </div>
       <div className="footer-bottom">
-        <p>© 2025 Gifty. All Rights Reserved.</p>
+        <p>© 2025 Uphaarbox. All Rights Reserved.</p>
       </div>
     </footer>
   );

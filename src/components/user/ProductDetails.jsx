@@ -49,9 +49,6 @@ export default function ProductDetails() {
   return (
     <div className="product-details-container">
       <div className="product-details-page">
-        <button className="back-btn" onClick={() => navigate(-1)}>
-          ← Back
-        </button>
         <div className="product-wrapper">
           <img src={imageUrl} className="product-img" alt={title} />
           <div className="details-box">
