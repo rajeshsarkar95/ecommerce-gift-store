@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import "../../styles/ProductDetails.css";
 import { useCart } from "../../context/CartContext";
 import { useNavigate } from "react-router-dom";
+import SizeSelector from "../comon/SizeSelector";
 export default function ProductDetails() {
   const { id } = useParams(); 
   const location = useLocation(); 
@@ -60,6 +61,7 @@ export default function ProductDetails() {
             <button className="product-add-btn" onClick={() => addToCart(product)}>
               Add to Cart
             </button>
+            <SizeSelector/>
           </div>
         </div>
         {relatedProducts.length > 0 && (
