@@ -22,20 +22,17 @@ export default function Cart() {
         ← Back to Home
       </button>
       <h1>Your Cart</h1>
-
       {cart.length === 0 && <p className="empty-msg">Your cart is empty.</p>}
-
       {cart.map((item) => (
         <div key={item.id} className="cart-item">
           <img
             src={
-              item.images?.[0]?.url 
-              || item.images?.[0]  
+              item.images?.[0]?.url
+              || item.images?.[0]
               || "/placeholder.jpg"
             }
             alt={item.title}
           />
-
           <div>
             <h3>{item.title}</h3>
             <p>₹{item.price}</p>

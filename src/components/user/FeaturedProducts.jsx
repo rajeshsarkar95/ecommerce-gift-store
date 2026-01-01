@@ -35,14 +35,13 @@ const FeaturedProducts = () => {
 
       <div className="featured-products-grid">
         {loading
-          ? Array.from({ length: 6 }).map((_, i) => <ProductSkeleton key={i} />)
+          ? Array.from({ length: 6 }).map((_, i)=><ProductSkeleton key={i} />)
           : error
           ? <p style={{ textAlign: "center", color: "red" }}>{error}</p>
           : products.length === 0
           ? <p style={{ textAlign: "center" }}>No featured products available.</p>
           : products.map((product) => {
               const imageUrl = product.image || "/placeholder.jpg";
-
               const cartProduct = {
                 id: product._id,
                 title: product.title || product.name || "No Title",
@@ -54,7 +53,6 @@ const FeaturedProducts = () => {
                   : [{ url: "/placeholder.jpg" }],
                 folder: "featured",
               };
-
               return (
                 <div className="featured-product-card" key={product._id}>
                   <img
@@ -85,7 +83,6 @@ const FeaturedProducts = () => {
               );
             })}
       </div>
-
       {!loading && products.length > 0 && (
         <div className="featuresproduct-more-con">
           <button
@@ -99,5 +96,4 @@ const FeaturedProducts = () => {
     </section>
   );
 };
-
 export default FeaturedProducts;
