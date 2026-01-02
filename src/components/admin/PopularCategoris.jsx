@@ -18,7 +18,7 @@ function PopularCategoryTable() {
   const [modalAction, setModalAction] = useState('add');
   const [formData, setFormData] = useState(emptyCategory);
   const [selectedImageFile, setSelectedImageFile] = useState(null);
-
+  const token = localStorage.getItem("adminToken");
 
   const fetchCategories = useCallback(async () => {
     setIsLoading(true);
@@ -114,6 +114,7 @@ function PopularCategoryTable() {
         data: dataToSend,
         headers: {
           'Content-Type': 'multipart/form-data',
+          Authorization:`Bearer ${token}`
         },
       });
 
@@ -137,7 +138,12 @@ function PopularCategoryTable() {
     setError(null);
     setIsLoading(true);
     try {
-      await axios.delete(`${API_URL}/${categoryId}`);
+      await axios.delete(`${API_URL}/${categoryId}`,
+        {
+          headers: {
+            Authorization:`Bearer ${token}`
+          }
+        });
       setCategories(prevCategories => prevCategories.filter(category => category._id !== categoryId));
     } catch (err) {
       const serverMessage = err.response?.data?.message || 'Check network and server logs.';

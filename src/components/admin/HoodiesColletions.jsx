@@ -20,6 +20,7 @@ function HoodieTable() {
   const [modalAction, setModalAction] = useState('add');
   const [formData, setFormData] = useState(emptyProduct);
   const [selectedImageFile, setSelectedImageFile] = useState(null);
+  const token = localStorage.getItem("adminToken");
 
   const fetchProducts = useCallback(async () => {
     setIsLoading(true);
@@ -52,7 +53,7 @@ function HoodieTable() {
       title: product.title,
       price: product.price,
       category: product.category,
-      image: product.image, // store full image object
+      image: product.image, 
     });
     setSelectedImageFile(null);
     setModalAction('edit');
@@ -104,7 +105,7 @@ function HoodieTable() {
         method,
         url,
         data: formPayload,
-        headers: { 'Content-Type': 'multipart/form-data' },
+        headers: { 'Content-Type': 'multipart/form-data', Authorization:`Bearer ${token}` },
       });
 
       setIsModalOpen(false);
@@ -122,7 +123,12 @@ function HoodieTable() {
 
     setIsLoading(true);
     try {
-      await axios.delete(`${API_URL}/${id}`);
+      await axios.delete(`${API_URL}/${id}`,
+        {
+          headers: {
+            Authorization:`Bearer ${token}`
+          }
+        });
       setProducts(prev => prev.filter(p => p._id !== id));
     } catch {
       setError('Failed to delete product.');

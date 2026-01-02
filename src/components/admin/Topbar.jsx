@@ -18,6 +18,8 @@ function Topbar({ isAdmin = true, initialFetchedData = null }) {
   const [formData, setFormData] = useState(initialFetchedData || emptyData);
   const [isLoading, setIsLoading] = useState(true); 
   const [error, setError] = useState(null);
+  const token = localStorage.getItem("adminToken");
+
   useEffect(() => {
     if (initialFetchedData) {
         setIsLoading(false);
@@ -92,6 +94,7 @@ function Topbar({ isAdmin = true, initialFetchedData = null }) {
             data: dataToSend, 
             headers: {
                 'Content-Type': 'application/json',
+                Authorization:`Bearer ${token}`
             },
         });
         const result = response.data;
@@ -113,7 +116,12 @@ function Topbar({ isAdmin = true, initialFetchedData = null }) {
     setIsLoading(true);
 
     try {
-        await axios.delete(`${API_URL}/${topBarData._id}`);
+        await axios.delete(`${API_URL}/${topBarData._id}`,
+            {
+                headers: {
+                    Authorization:`Bearer ${token}`
+                }
+            });
         setTopBarData(emptyData); 
         console.log("Topbar data successfully deleted.");
     } catch (err) {

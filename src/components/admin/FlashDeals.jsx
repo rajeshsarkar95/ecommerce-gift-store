@@ -19,7 +19,7 @@ function FlashDealTable() {
   const [modalAction, setModalAction] = useState('add');
   const [formData, setFormData] = useState(emptyDeal);
   const [selectedImageFile, setSelectedImageFile] = useState(null);
-
+  const token = localStorage.getItem("adminToken");
   const fetchDeals = useCallback(async () => {
     setIsLoading(true);
     setError(null);
@@ -121,6 +121,9 @@ function FlashDealTable() {
         method: isAdd ? "post" : "put",
         url,
         data,
+        headers:{
+          Authorization:`Bearer ${token}`
+        }
       });
 
       setIsModalOpen(false);
@@ -145,7 +148,12 @@ function FlashDealTable() {
     setError(null);
     setIsLoading(true);
     try {
-      await axios.delete(`${API_URL}/${dealId}`);
+      await axios.delete(`${API_URL}/${dealId}`,
+        {
+          headers: {
+            Authorization:`Bearer ${token}`
+          }
+        });
       setFlashDeals(prevDeals => prevDeals.filter(deal => deal._id !== dealId));
     } catch (err) {
       const serverMessage = err.response?.data?.message || 'Check network and server logs.';

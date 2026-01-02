@@ -21,6 +21,8 @@ function BannerTable() {
   const [formData, setFormData] = useState(emptyBanner);
   const [selectedImageFiles, setSelectedImageFiles] = useState([]);
   
+  const token = localStorage.getItem("adminToken");
+
   const fetchBanners = useCallback(async () => {
     setIsLoading(true);
     setError(null);
@@ -101,7 +103,11 @@ function BannerTable() {
     }
 
     try {
-      await axios({ method, url, data: dataToSend });
+      await axios({ method, url, data: dataToSend, 
+        headers: { 
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'multipart/form-data'
+        } });
       setIsModalOpen(false);
       setSelectedImageFiles([]);
       fetchBanners();
@@ -118,7 +124,12 @@ function BannerTable() {
     setError(null);
     setIsLoading(true);
     try {
-      await axios.delete(`${API_URL}/${bannerId}`);
+      await axios.delete(`${API_URL}/${bannerId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
       setBanners(prevBanners => prevBanners.filter(banner => banner._id !== bannerId));
     } catch (err) {
       const serverMessage = err.response?.data?.message || 'Check network and server logs.';

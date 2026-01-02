@@ -21,6 +21,7 @@ function FeaturedProductTable() {
   const [modalAction, setModalAction] = useState('add');
   const [formData, setFormData] = useState(emptyProduct);
   const [selectedImageFile, setSelectedImageFile] = useState(null);
+  const token = localStorage.getItem("adminToken");
 
   const fetchProducts = useCallback(async () => {
     try {
@@ -120,7 +121,7 @@ function FeaturedProductTable() {
         method: method,
         url: url,
         data: dataToSend,
-        headers: { 'Content-Type': 'multipart/form-data' },
+        headers: { 'Content-Type': 'multipart/form-data', Authorization:`Bearer ${token}` },
       });
 
       setIsModalOpen(false);
@@ -140,7 +141,12 @@ function FeaturedProductTable() {
     setError(null);
     setIsLoading(true);
     try {
-      await axios.delete(`${API_URL}/${productId}`);
+      await axios.delete(`${API_URL}/${productId}`,
+        {
+          headers: {
+            Authorization:`Bearer ${token}`
+          }
+        });
       setProducts(prev => prev.filter(p => p._id !== productId));
     } catch (err) {
       const serverMessage = err.response?.data?.message || 'Check network and server logs.';

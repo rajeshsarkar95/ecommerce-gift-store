@@ -17,6 +17,7 @@ function RecommendedProductTable() {
   const [modalAction, setModalAction] = useState('add');
   const [formData, setFormData] = useState(emptyProduct);
   const [selectedImageFile, setSelectedImageFile] = useState(null);
+  const token = localStorage.getItem("adminToken");
 
   const fetchProducts = useCallback(async () => {
     try {
@@ -116,6 +117,7 @@ function RecommendedProductTable() {
         data: dataToSend,
         headers: {
           'Content-Type': 'multipart/form-data',
+          Authorization:`Bearer ${token}`
         },
       });
 
@@ -138,7 +140,12 @@ function RecommendedProductTable() {
     setError(null);
     setIsLoading(true);
     try {
-      await axios.delete(`${API_URL}/${productId}`);
+      await axios.delete(`${API_URL}/${productId}`,
+        {
+          headers: {
+            Authorization:`Bearer ${token}`
+          }
+        });
       setProducts(prevProducts => prevProducts.filter(product => product._id !== productId));
     } catch (err) {
       const serverMessage = err.response?.data?.message || 'Check network and server logs.';

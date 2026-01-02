@@ -21,6 +21,8 @@ function CustomGiftBannerTable() {
   const [formData, setFormData] = useState(emptyBanner);
   const [selectedImageFile, setSelectedImageFile] = useState(null);
 
+  const token = localStorage.getItem("adminToken");
+
   const fetchBanners = useCallback(async () => {
     setIsLoading(true);
     setError(null);
@@ -73,58 +75,60 @@ function CustomGiftBannerTable() {
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
-  
+
     if (name === 'backgroundImage' && files && files.length > 0) {
-      setSelectedImageFile(files[0]);  
+      setSelectedImageFile(files[0]);
       return;
     }
-  
+
     setFormData(prevData => ({
       ...prevData,
       [name]: value
     }));
   };
-  
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError(null);
+    setIsLoading(true);
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  setError(null);
-  setIsLoading(true);
+    const method = modalAction === 'add' ? 'post' : 'put';
+    const url = modalAction === 'add' ? API_URL : `${API_URL}/${formData._id}`;
 
-  const method = modalAction === 'add' ? 'post' : 'put';
-  const url = modalAction === 'add' ? API_URL : `${API_URL}/${formData._id}`;
+    const dataToSend = new FormData();
+    dataToSend.append('title', formData.title);
+    dataToSend.append('subtitle', formData.subtitle);
+    dataToSend.append('descriptions', formData.descriptions);
 
-  const dataToSend = new FormData();
-  dataToSend.append('title', formData.title);
-  dataToSend.append('subtitle', formData.subtitle);
-  dataToSend.append('descriptions', formData.descriptions);
+    if (selectedImageFile) {
+      dataToSend.append('backgroundImage', selectedImageFile);
+    }
+    if (modalAction === 'add' && !selectedImageFile) {
+      setError('Please select an image file to upload.');
+      setIsLoading(false);
+      return;
+    }
+    try {
+      await axios({
+        method: method,
+        url: url,
+        data: dataToSend,
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${token}`
 
-  if (selectedImageFile) {
-    dataToSend.append('backgroundImage', selectedImageFile); 
-  }
-  if (modalAction === 'add' && !selectedImageFile) {
-    setError('Please select an image file to upload.');
-    setIsLoading(false);
-    return;
-  }
-  try {
-    await axios({
-      method: method,
-      url: url,
-      data: dataToSend,
-      headers: { 'Content-Type': 'multipart/form-data' }
-    });
-    setIsModalOpen(false);
-    setSelectedImageFile(null);
-    fetchBanners();
-  } catch (err) {
-    const serverMessage = err.response?.data?.message || err.message || 'Check network and server logs.';
-    setError(`Failed to save banner: ${serverMessage}`);
-  } finally {
-    setIsLoading(false);
-  }
-};
+        }
+      });
+      setIsModalOpen(false);
+      setSelectedImageFile(null);
+      fetchBanners();
+    } catch (err) {
+      const serverMessage = err.response?.data?.message || err.message || 'Check network and server logs.';
+      setError(`Failed to save banner: ${serverMessage}`);
+    } finally {
+      setIsLoading(false);
+    }
+  };
   const handleDelete = async (bannerId, title) => {
     if (!window.confirm(`Are you sure you want to DELETE the banner: "${title}"?`)) {
       return;
@@ -133,7 +137,12 @@ const handleSubmit = async (e) => {
     setIsLoading(true);
 
     try {
-      await axios.delete(`${API_URL}/${bannerId}`);
+      await axios.delete(`${API_URL}/${bannerId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
       setBanners(prevBanners => prevBanners.filter(banner => banner._id !== bannerId));
 
     } catch (err) {

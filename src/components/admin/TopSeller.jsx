@@ -21,8 +21,7 @@ function TopSellerTable() {
   const [formData, setFormData] = useState(emptyProduct);
   const [selectedImageFiles, setSelectedImageFiles] = useState([]); 
 
-  console.log("Current top seller product form data:", formData);
-
+  const token = localStorage.getItem("adminToken");
   const fetchProducts = useCallback(async () => {
     setIsLoading(true);
     setError(null);
@@ -118,6 +117,7 @@ function TopSellerTable() {
         data: dataToSend,
         headers: {
             'Content-Type': 'multipart/form-data', 
+            Authorization:`Bearer ${token}`
         },
       });
   
@@ -141,7 +141,12 @@ function TopSellerTable() {
     setError(null);
     setIsLoading(true);
     try {
-      await axios.delete(`${API_URL}/${productId}`);
+      await axios.delete(`${API_URL}/${productId}`,
+        {
+          headers: {
+            Authorization:`Bearer ${token}`
+          }
+        });
       setProducts(prevProducts => prevProducts.filter(product => product._id !== productId));
     } catch (err) {
       const serverMessage = err.response?.data?.message || 'Check network and server logs.';

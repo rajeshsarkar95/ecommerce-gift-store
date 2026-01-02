@@ -7,9 +7,8 @@ const Dropdown = ({ options }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
-
   const toggleDropdown = () => setIsOpen(!isOpen);
-
+  
   const handleSelect = (path) => {
     setIsOpen(false);
     navigate(path);
