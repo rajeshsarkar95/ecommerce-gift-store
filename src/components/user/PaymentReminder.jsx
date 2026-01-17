@@ -25,7 +25,7 @@ const PaymentReminder = () => {
 
         {!canClose && (
           <p style={styles.warning}>
-            This message cannot be skipped for 5 minutes
+            This message cannot be skipped for 1 minutes
           </p>
         )}
 
