@@ -7,7 +7,7 @@ const PaymentReminder = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setCanClose(true);
-    }, 5 * 60 * 1000); // 5 minutes
+    }, 1 * 60 * 1000); 
 
     return () => clearTimeout(timer);
   }, []);
