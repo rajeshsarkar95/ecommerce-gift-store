@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import '../../styles/admin/FlashDealsTable.css';
+
 const API_URL = 'https://onlinegiftbackend.onrender.com/api/flashdeals';
 
 const emptyDeal = {
@@ -91,9 +92,6 @@ function FlashDealTable() {
       [name]: value, 
     }));
   };
-  
-
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
