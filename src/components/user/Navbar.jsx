@@ -54,7 +54,7 @@ const Navbar = () => {
             <div className="add-counter">{cart.length}</div>
           )}
         </Link>
-        <Link to="/profile">👤</Link>
+        {/* <Link to="/profile">👤</Link> */}
       </div>
       <div className={`mobile-menu ${mobileMenu ? "active" : ""}`}>
         <div className="close-menu" onClick={() => setMobileMenu(false)}>✖</div>
