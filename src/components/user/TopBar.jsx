@@ -53,7 +53,6 @@ function TopBar() {
           <FaInstagram />
         </a>
         <button className="redirect-btn" onClick={handleRedirect}>
-          admin
         </button>
       </div>
     </div>

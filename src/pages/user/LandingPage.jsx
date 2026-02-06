@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import Hero from "../../components/user/Hero";
 import FlashDeals from "../../components/user/FlashDeals";
 import PromoSection from "../../components/user/PromoBanners";
@@ -15,9 +16,15 @@ import Newsletter from "../../components/user/Newsletter";
 import WhatsAppIcon from "../../components/user/WhatapsIcons";
 
 export default function LandingPage() {
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    setIsMobile(window.innerWidth < 768);
+  }, []);
+
+
   return (
     <>
-      <Hero />
+      {!isMobile && <Hero />}
       <FlashDeals />
       <PromoSection />
       <TopSellers />
