@@ -54,7 +54,6 @@ function FlashDeals() {
                 />
                 <div className="flash-deals-info">
                   <h4 className="flash-deals-product-title">{cartProduct.title}</h4>
-
                   <div className="flash-deals-price">
                     ₹{product.price}{" "}
                     <small className="flash-deals-old-price">₹{product.oldPrice}</small>

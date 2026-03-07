@@ -16,7 +16,7 @@ import AdminDashboard from "../pages/admin/AdminDashboard";
 import AdminLogin from "../pages/admin/SignInForm";
 import AdminPrivateRoute from "./AdminPrivateRoute";
 
-export default function AppRoutes() {
+export default function AppRoutes(){
   return (
     <Routes>
 

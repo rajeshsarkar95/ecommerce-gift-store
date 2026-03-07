@@ -13,7 +13,6 @@ const Dropdown = ({ options }) => {
     setIsOpen(false);
     navigate(path);
   };
-
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {

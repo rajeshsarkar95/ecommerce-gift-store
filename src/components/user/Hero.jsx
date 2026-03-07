@@ -1,4 +1,4 @@
-/* eslint-disable no-unused-vars */
+
 import React, { useEffect, useState } from "react";
 import "../../styles/Hero.css";
 import axios from "axios";
@@ -6,7 +6,7 @@ const defaultHero = {
   title: "Welcome to Online Gift Store",
   subtitle: "Best Gifts Online",
   descriptions: "Find amazing gifts for your loved ones",
-  backgroundImage: "/default-hero.webp", 
+  backgroundImage: "/default-hero.webp",
 };
 const Hero = () => {
   const [heroData, setHeroData] = useState(defaultHero);
@@ -47,12 +47,13 @@ const Hero = () => {
       </div>
       {heroData.backgroundImage && (
         <img
-          src={heroData.backgroundImage}   
-          alt="Gift Banner"               
-          loading="eager"                 
-          fetchpriority="high"           
-          width="1200"
-          height="600"
+          className="hero_images"
+          width={250}
+          height={250}
+          src={heroData.backgroundImage}
+          alt="Gift Banner"
+          loading="eager"
+          fetchpriority="high"
         />
       )}
     </section>

@@ -5,12 +5,12 @@ import { useNavigate } from "react-router-dom";
 import ProductSkeleton from "./ProductSkeleton";
 import "../../styles/HoodiesCollection.css";
 
-export default function HoodiesCollection() {
+
+export default function HoodiesCollection(){
   const [hoodies, setHoodies] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { addToCart } = useCart();
-
 
   const navigate = useNavigate();
   useEffect(() => {
@@ -21,7 +21,7 @@ export default function HoodiesCollection() {
         );
         if (!data.success) throw new Error(data.message);
         setHoodies(data.data || []);
-      } catch (err) {
+      } catch (err){
         setError(err.message);
         console.error(err);
       } finally {

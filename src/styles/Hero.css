@@ -34,12 +34,11 @@
 .hero-text button:hover {
   background: #c2185b;
 }
-.hero img {
-  width: 45%;
-  height: 50%;
-  max-width: 450px;
-  border-radius: 30px;
+.hero_images{
+  width: 25%;
+  border-radius: 12px;
 }
+
 @media (max-width: 400px) {
   .hero {
     width: 100%;
