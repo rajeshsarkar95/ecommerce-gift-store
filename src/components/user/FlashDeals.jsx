@@ -9,22 +9,22 @@ function FlashDeals() {
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchFlashDeals = async () => {
+  
+  useEffect(()=>{
+    const fetchFlashDeals = async ()=> {
       try {
         const res = await fetch("https://onlinegiftbackend.onrender.com/api/flashdeals");
         const data = await res.json();
-        console.log("Fetched flash deals:", data);
+        console.log("Fetched flash deals:",data);
         setProducts(data.data || []);
-      } catch (error) {
-        console.error("Error fetching flash deals:", error);
+      } catch (error){
+        console.error("Error fetching flash deals:",error);
       } finally {
         setLoading(false);
       }
     };
     fetchFlashDeals();
-  }, []);
+  },[]);
 
   return (
     <section className="flash-deals-section">
@@ -34,8 +34,8 @@ function FlashDeals() {
           ? Array.from({ length: 6 }).map((_, index) => (
             <ProductSkeleton key={index} />
           ))
-          : products.map((product) => {
-            const cartProduct = { ...product, id: product._id, title: product.tittle };
+          : products.map((product)=>{
+            const cartProduct = {...product,id:product._id,title:product.tittle};
             return (
               <div className="flash-deals-card" key={product._id}>
                 <img
@@ -48,7 +48,7 @@ function FlashDeals() {
                   className="flash-deals-img"
                   onClick={() =>
                     navigate(`/product/${product._id}`, {
-                      state: { ...cartProduct, folder: "flashdeals" },
+                      state: {...cartProduct,folder: "flashdeals" },
                     })
                   }
                 />
@@ -69,6 +69,7 @@ function FlashDeals() {
             );
           })}
       </div>
+
       {!loading && (
         <div className="flash-deals-bottom-buttons-more">
           <button
@@ -79,8 +80,8 @@ function FlashDeals() {
           </button>
         </div>
       )}
+
     </section>
   );
 }
-
 export default FlashDeals;

@@ -9,7 +9,6 @@ export default function MugCollection() {
   const [mugProducts, setMugProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
   const navigate = useNavigate();
   const { addToCart } = useCart();
 
@@ -32,10 +31,9 @@ export default function MugCollection() {
   return (
     <section className="mug-collection-section">
       <h2 className="mug-collection-title">Mug Collection</h2>
-
       <div className="mug-collection-grid">
         {loading
-          ? Array.from({ length: 6 }).map((_, i) => <ProductSkeleton key={i} />)
+          ? Array.from({ length:6}).map((_, i) => <ProductSkeleton key={i} />)
           : error
           ? <p>{error}</p>
           : mugProducts.length === 0
@@ -58,7 +56,6 @@ export default function MugCollection() {
                   : [{ url: "/placeholder.jpg" }],
                 folder: "mugs",
               };
-
               return (
                 <div className="mug-card" key={product._id}>
                   <img
@@ -91,7 +88,6 @@ export default function MugCollection() {
               );
             })}
       </div>
-
       {!loading && mugProducts.length > 0 && (
         <div className="mugs-more-button-con">
           <button

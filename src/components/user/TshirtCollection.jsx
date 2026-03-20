@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import ProductSkeleton from "./ProductSkeleton";
 
-export default function TshirtCollection() {
+export default function TshirtCollection(){
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -41,11 +41,7 @@ export default function TshirtCollection() {
           ? <p>No products available.</p>
           : products.map((product) => {
               const imageUrl =
-                product.image?.url ||
-                (Array.isArray(product.image) && product.image.length > 0
-                  ? product.image[0].url
-                  : Oversize1);
-
+                product.images?.[0]?.url || Oversize1;
               const cartProduct = {
                 ...product,
                 id: product._id,
@@ -59,12 +55,14 @@ export default function TshirtCollection() {
                     src={cartProduct.imageUrl}
                     alt={cartProduct.title}
                     className="tshirtImage"
-                    onClick={() =>
-                      navigate(`/product/${product._id}`, {
-                        state: { ...cartProduct, folder: "tshirt" },
+                    
+                    onClick={()=>
+                      navigate(`/product/${product._id}`,{
+                        state: {...cartProduct, folder:"tshirt"},
                       })
                     }
                   />
+
                   <div className="tshirtDetails">
                     <h3 className="tshirtTitle">{cartProduct.title}</h3>
                     <div className="tshirtPriceRow">

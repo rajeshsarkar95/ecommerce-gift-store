@@ -20,10 +20,10 @@ function BannerTable() {
   const [modalAction, setModalAction] = useState('add');
   const [formData, setFormData] = useState(emptyBanner);
   const [selectedImageFiles, setSelectedImageFiles] = useState([]);
-  
+
   const token = localStorage.getItem("adminToken");
 
-  const fetchBanners = useCallback(async () => {
+  const fetchBanners = useCallback(async ()=> {
     setIsLoading(true);
     setError(null);
     try {
@@ -51,7 +51,7 @@ function BannerTable() {
     setIsModalOpen(true);
   };
 
-  const handleEditClick = (banner) => {
+  const handleEditClick = (banner)=>{
     setFormData({
       _id: banner._id,
       title: banner.title || "",
@@ -68,16 +68,16 @@ function BannerTable() {
   const handleCloseModal = () => setIsModalOpen(false);
   const handleContentClick = (e) => e.stopPropagation();
 
-  const handleChange = (e) => {
+  const handleChange = (e) =>{
     const { name, value, files } = e.target;
-    if (name === 'images' && files) {
+    if (name === 'images' && files){
       setSelectedImageFiles(Array.from(files));
       return;
     }
-    setFormData(prevData => ({ ...prevData, [name]: value }));
+    setFormData(prevData => ({...prevData,[name]:value}));
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e)=>{
     e.preventDefault();
     setError(null);
     setIsLoading(true);
@@ -91,9 +91,8 @@ function BannerTable() {
     dataToSend.append("title", formData.title);
     dataToSend.append("subtitle", formData.subtitle);
     dataToSend.append("description", formData.description);
-
-    selectedImageFiles.forEach(file => {
-      dataToSend.append("images", file);
+    selectedImageFiles.forEach(file =>{
+    dataToSend.append("images", file);
     });
 
     if (modalAction === "add" && selectedImageFiles.length === 0) {
@@ -118,8 +117,7 @@ function BannerTable() {
     }
   };
 
-
-  const handleDelete = async (bannerId, title) => {
+  const handleDelete = async (bannerId,title)=>{
     if (!window.confirm(`Are you sure you want to DELETE the banner: "${title}"?`)) return;
     setError(null);
     setIsLoading(true);

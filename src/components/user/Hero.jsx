@@ -8,16 +8,17 @@ const defaultHero = {
   descriptions: "Find amazing gifts for your loved ones",
   backgroundImage: "/default-hero.webp",
 };
-const Hero = () => {
+const Hero = ()=>{
   const [heroData, setHeroData] = useState(defaultHero);
   const [loading, setLoading] = useState(true);
+
   useEffect(() => {
-    const fetchHero = async () => {
+    const fetchHero = async ()=>{
       try {
         const response = await axios.get(
           "https://onlinegiftbackend.onrender.com/api/customebanner"
         );
-        if (response.data.length > 0) {
+        if (response.data.length > 0){
           const data = response.data[0];
           const imageUrl = data.backgroundImage || defaultHero.backgroundImage;
           setHeroData({

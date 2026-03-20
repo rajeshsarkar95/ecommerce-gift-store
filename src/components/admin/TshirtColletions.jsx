@@ -3,7 +3,8 @@ import axios from 'axios';
 import '../../styles/admin/FlashDealsTable.css';
 
 const API_URL = 'https://onlinegiftbackend.onrender.com/api/tshirt';
-const CATEGORY_OPTIONS = ["tshirt", "hoodie", "kids", "women", "men"];
+
+const CATEGORY_OPTIONS = ["tshirt","hoodie","kids","women","men"];
 
 const emptyProduct = {
   title: '',
@@ -21,22 +22,23 @@ function TshirtTable() {
   const [modalAction, setModalAction] = useState('add');
   const [formData, setFormData] = useState(emptyProduct);
   const [selectedImageFiles, setSelectedImageFiles] = useState([]);
+
   const token = localStorage.getItem("adminToken");
 
-  const fetchProducts = useCallback(async () => {
+  const fetchProducts = useCallback(async ()=>{
     setIsLoading(true);
     setError(null);
     try {
       const response = await axios.get(API_URL);
       const apiData = response.data.data || response.data;
       setProducts(Array.isArray(apiData) ? apiData : []);
-    } catch (err) {
+    } catch (err){
       setError('Failed to load products. Check the server and API_URL.',err);
       setProducts([]);
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  },[]);
 
   useEffect(() => {
     fetchProducts();
@@ -118,7 +120,7 @@ function TshirtTable() {
     }
   };
 
-  const handleDelete = async (productId, title) => {
+  const handleDelete = async (productId,title) => {
     if (!window.confirm(`Are you sure you want to DELETE the product: "${title}"?`)) return;
     setError(null);
     setIsLoading(true);
@@ -138,14 +140,16 @@ function TshirtTable() {
     }
   };
 
-  if (isLoading && products.length === 0) {
+  if (isLoading && products.length === 0){
     return <div className="loading-message">Loading products...</div>;
   }
+
+  console.log("IMAGE:", products.images?.[0]?.url);
 
   return (
     <div className="flash-deal-container">
       <div className="admin-header">
-        <h2> T-Shirt Collection Management</h2>
+        <h2>T-Shirt Collection Management</h2>
         <button onClick={handleAddClick} className="add-btn" title="Create a new Product">+ ADD NEW PRODUCT</button>
       </div>
       {error && <div className="error-message admin-error">{error}</div>}
@@ -162,14 +166,18 @@ function TshirtTable() {
               <th>Actions</th>
             </tr>
           </thead>
+
           <tbody>
-            {products.map(product => (
+            {products.map(product =>(
               <tr key={product._id}>
                 <td data-label="Image">
                   <img
-                    src={product.images && product.images[0]?.url ? product.images[0].url : 'placeholder.jpg'}
-                    alt={product.title || 'Product Image'}
-                    className="deal-image"
+                  src={product.images?.[0]?.url || "/placeholder.jpg"}
+                  alt={product.title || "Product Images"}
+                  className='deal-image'
+                  onError={(e)=>{
+                    e.target.src = "/placeholder.jpg"
+                  }}
                   />
                 </td>
                 <td data-label="Title">{product.title}</td>
@@ -182,9 +190,10 @@ function TshirtTable() {
               </tr>
             ))}
           </tbody>
+
+
         </table>
       )}
-
       {isModalOpen && (
         <div className="modal-overlay" onClick={handleCloseModal}>
           <div className="modal-content" onClick={handleContentClick}>
@@ -202,7 +211,7 @@ function TshirtTable() {
               <div className="form-group">
                 <label htmlFor="category">Category:</label>
                 <select id="category" name="category" value={formData.category} onChange={handleChange} required>
-                  {CATEGORY_OPTIONS.map(option => (
+                  {CATEGORY_OPTIONS.map(option =>(
                     <option key={option} value={option}>{option.charAt(0).toUpperCase() + option.slice(1)}</option>
                   ))}
                 </select>
@@ -222,7 +231,6 @@ function TshirtTable() {
                   <small>Currently loaded images: {formData.images.length}</small>
                 )}
               </div>
-
               <div className="modal-actions">
                 <button type="submit" className="submit-btn" disabled={isLoading}>
                   {isLoading ? 'Saving...' : (modalAction === 'add' ? 'Create Product' : 'Save Changes')}
@@ -237,5 +245,4 @@ function TshirtTable() {
     </div>
   );
 }
-
 export default TshirtTable;

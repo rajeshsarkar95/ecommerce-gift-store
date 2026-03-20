@@ -4,6 +4,7 @@ import "../../styles/ProductDetails.css";
 import { useCart } from "../../context/CartContext";
 import { useNavigate } from "react-router-dom";
 import SizeSelector from "../comon/SizeSelector";
+
 export default function ProductDetails() {
   const { id } = useParams(); 
   const location = useLocation(); 
@@ -12,16 +13,15 @@ export default function ProductDetails() {
   const [product, setProduct] = useState(null); 
   const [relatedProducts, setRelatedProducts] = useState([]); 
 
-  useEffect(() => {
-    if (location.state) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
+  useEffect(()=>{
+    if (location.state){
       setProduct(location.state);
-      localStorage.setItem("product_" + id, JSON.stringify(location.state));
+      localStorage.setItem("product_" + id,JSON.stringify(location.state));
     } else {
       const stored = localStorage.getItem("product_" + id);
       if (stored) setProduct(JSON.parse(stored));
     }
-  }, [id, location.state]);
+  }, [id,location.state]);
 
   useEffect(() => {
     const fetchRelatedProducts = async () => {
@@ -34,7 +34,7 @@ export default function ProductDetails() {
         const filtered = (data.data || []).filter((p) => p._id !== product._id);
         setRelatedProducts(filtered);
       } catch (error) {
-        console.error("Error fetching related products:", error);
+        console.error("Error fetching related products:",error);
       }
     };
     fetchRelatedProducts();
@@ -51,7 +51,7 @@ export default function ProductDetails() {
     <div className="product-details-container">
       <div className="product-details-page">
         <div className="product-wrapper">
-          <img src={imageUrl} className="product-img" alt={title} />
+          <img src={imageUrl} className="product-img" alt={title}/>
           <div className="details-box">
             <h2>{title}</h2>
             <p className="price">
@@ -61,18 +61,20 @@ export default function ProductDetails() {
             <button className="product-add-btn" onClick={() => addToCart(product)}>
               Add to Cart
             </button>
-            <SizeSelector/>
+            {(product.category === "tshirt") && <SizeSelector/>}
+            {(product.category === "hoodies") && <SizeSelector/>}
           </div>
         </div>
         {relatedProducts.length > 0 && (
           <div className="related-products-section">
             <h3>Related Products</h3>
             <div className="related-products-grid">
-              {relatedProducts.map((item) => (
+
+              {relatedProducts.map((item)=>(
                 <div
                   key={item._id}
                   className="related-product-card"
-                  onClick={() => navigate(`/product/${item._id}`, { state: item })}
+                  onClick={() => navigate(`/product/${item._id}`,{state:item})}
                 >
                   <img
                     src={
