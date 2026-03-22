@@ -11,14 +11,18 @@ export default function MugCollection() {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
   const { addToCart } = useCart();
-
+  
   useEffect(() => {
     const fetchMugs = async () => {
       try {
-        const res = await axios.get("https://onlinegiftbackend.onrender.com/api/mugs");
+        const res = await axios.get("https://onlinegiftbackend.onrender.com/api/mug");
+
+        console.log("Api Response data",res.data);
+
         if (!res.data.success) throw new Error("Failed to fetch mugs");
+
         setMugProducts(res.data.mugs || []);
-      } catch (err) {
+      } catch (err){
         setError("Failed to load mugs: " + err.message);
         console.error(err);
       } finally {
@@ -32,26 +36,26 @@ export default function MugCollection() {
     <section className="mug-collection-section">
       <h2 className="mug-collection-title">Mug Collection</h2>
       <div className="mug-collection-grid">
+
         {loading
           ? Array.from({ length:6}).map((_, i) => <ProductSkeleton key={i} />)
           : error
           ? <p>{error}</p>
           : mugProducts.length === 0
           ? <p>No mugs available.</p>
-          : mugProducts.map((product) => {
+          : mugProducts.map((product)=>{
               const imageUrl =
                 product.image?.url ||
                 (Array.isArray(product.image) && product.image.length > 0
                   ? product.image[0].url
                   : "/placeholder.jpg");
-
               const cartProduct = {
                 id: product._id,
                 title: product.name || "No Name",
                 price: product.price ?? 0,
                 images: product.image
                   ? Array.isArray(product.image)
-                    ? product.image.map(img => (img.url ? img : { url: img }))
+                    ? product.image.map(img => (img.url ? img : {url:img}))
                     : [{ url: product.image.url || product.image }]
                   : [{ url: "/placeholder.jpg" }],
                 folder: "mugs",
@@ -69,6 +73,7 @@ export default function MugCollection() {
                       })
                     }
                   />
+
                   <div className="muga-details-container">
                     <h3 className="mug-title">{cartProduct.title}</h3>
                     <div className="mug-conatainer">

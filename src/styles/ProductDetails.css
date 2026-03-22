@@ -11,7 +11,6 @@
 .related-products-section {
   margin-top: 60px;
 }
-
 .related-products-section h3 {
   font-size: 24px;
   font-weight: 700;
@@ -67,7 +66,7 @@
 .product-img {
   width: 400px;
   height: 20rem;
-  object-fit: cover;
+  object-fit:fill;
   border-radius: 12px;
   border: 1px solid #e0e0e0;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);

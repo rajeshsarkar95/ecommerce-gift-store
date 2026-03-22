@@ -1,6 +1,7 @@
 .tshirtSection {
   text-align: center;
-  padding: 80px 5%;
+  margin-top: 30px;
+  padding:1px 5%;
   background-color: #ffffff;
 }
 .tshirtHeading {
@@ -13,12 +14,13 @@
 .Tshirt-bottom-buttons-more-con{
   display: flex;
   justify-content:flex-end;
-  padding: 8px;
-  font-size: 13px;
-  border-radius: 4px;
-  border: none;
-  cursor: pointer;
+  padding:8px;
+  font-size:13px;
+  border-radius:4px;
+  border:none;
+  cursor:pointer;
 }
+
 .tshirt-more-btn{
   display: flex;
   justify-content: flex-end;

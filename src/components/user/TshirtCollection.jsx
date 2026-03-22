@@ -12,29 +12,29 @@ export default function TshirtCollection(){
   const [error, setError] = useState(null);
   const navigate = useNavigate();
   const { addToCart } = useCart();
-
+  
   useEffect(() => {
-    const fetchProducts = async () => {
+    const fetchProducts = async ()=>{
       try {
         const res = await axios.get(
           "https://onlinegiftbackend.onrender.com/api/tshirt"
         );
         setProducts(res.data.data || []);
-      } catch (err) {
+      } catch (err){
         setError(err.message || "Failed to fetch products");
       } finally {
         setLoading(false);
       }
     };
     fetchProducts();
-  }, []);
+  },[]);
 
   return (
     <section className="tshirtSection">
       <h2 className="tshirtHeading">T-Shirt And Hoodies Collection</h2>
       <div className="tshirtGrid">
         {loading
-          ? Array.from({ length: 6 }).map((_, i) => <ProductSkeleton key={i} />)
+          ? Array.from({ length: 6 }).map((_, i)=> <ProductSkeleton key={i}/>)
           : error
           ? <p>Error: {error}</p>
           : products.length === 0

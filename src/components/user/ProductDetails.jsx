@@ -24,7 +24,7 @@ export default function ProductDetails() {
   }, [id,location.state]);
 
   useEffect(() => {
-    const fetchRelatedProducts = async () => {
+    const fetchRelatedProducts = async ()=>{
       if (!product) return;
       try {
         const res = await fetch(
@@ -69,13 +69,11 @@ export default function ProductDetails() {
           <div className="related-products-section">
             <h3>Related Products</h3>
             <div className="related-products-grid">
-
               {relatedProducts.map((item)=>(
                 <div
                   key={item._id}
                   className="related-product-card"
-                  onClick={() => navigate(`/product/${item._id}`,{state:item})}
-                >
+                  onClick={() => navigate(`/product/${item._id}`,{state:item})}>
                   <img
                     src={
                       item.images && item.images.length > 0 ? item.images[0].url : "/placeholder.jpg"
