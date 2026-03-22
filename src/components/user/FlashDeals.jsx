@@ -13,7 +13,7 @@ function FlashDeals() {
   useEffect(()=>{
     const fetchFlashDeals = async ()=> {
       try {
-        const res = await fetch("https://onlinegiftbackend.onrender.com/api/flashdeals");
+        const res = await fetch("https://onlinegiftbackend.onrender.com/api/flashdeal");
         const data = await res.json();
         console.log("Fetched flash deals:",data);
         setProducts(data.data || []);
