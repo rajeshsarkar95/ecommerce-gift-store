@@ -13,14 +13,11 @@ export default function MugCollection() {
   const { addToCart } = useCart();
   
   useEffect(() => {
-    const fetchMugs = async () => {
+    const fetchMugs = async ()=>{
       try {
-        const res = await axios.get("https://onlinegiftbackend.onrender.com/api/mug");
-
+        const res = await axios.get("https://onlinegiftbackend.onrender.com/api/mugs");
         console.log("Api Response data",res.data);
-
         if (!res.data.success) throw new Error("Failed to fetch mugs");
-
         setMugProducts(res.data.mugs || []);
       } catch (err){
         setError("Failed to load mugs: " + err.message);

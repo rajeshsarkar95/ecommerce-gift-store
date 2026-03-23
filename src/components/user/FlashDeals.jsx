@@ -9,11 +9,11 @@ function FlashDeals() {
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  
   useEffect(()=>{
     const fetchFlashDeals = async ()=> {
       try {
-        const res = await fetch("https://onlinegiftbackend.onrender.com/api/flashdeal");
+        const res = await fetch("https://onlinegiftbackend.onrender.com/api/flashdeals");
         const data = await res.json();
         console.log("Fetched flash deals:",data);
         setProducts(data.data || []);
@@ -25,13 +25,13 @@ function FlashDeals() {
     };
     fetchFlashDeals();
   },[]);
-
   return (
     <section className="flash-deals-section">
       <h2 className="flash-deals-title">Flash Deals</h2>
       <div className="flash-deals-grid">
+
         {loading
-          ? Array.from({ length: 6 }).map((_, index) => (
+          ? Array.from({ length: 6 }).map((_,index)=>(
             <ProductSkeleton key={index} />
           ))
           : products.map((product)=>{
@@ -69,7 +69,6 @@ function FlashDeals() {
             );
           })}
       </div>
-
       {!loading && (
         <div className="flash-deals-bottom-buttons-more">
           <button
