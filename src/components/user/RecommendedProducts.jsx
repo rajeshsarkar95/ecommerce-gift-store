@@ -5,16 +5,17 @@ import { useNavigate } from "react-router-dom";
 import { useCart } from "../../context/CartContext";
 import ProductSkeleton from "./ProductSkeleton";
 
+
 const RecommendedProducts = () => {
   const navigate = useNavigate();
   const { addToCart } = useCart();
-
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const fetchRecommended = async () => {
+  
+  useEffect(()=>{
+    const fetchRecommended = async ()=>{
       try {
         const res = await axios.get(
           "https://onlinegiftbackend.onrender.com/api/recommendedproducts"
@@ -28,23 +29,22 @@ const RecommendedProducts = () => {
       }
     };
     fetchRecommended();
-  }, []);
+  },[]);
 
   return (
     <section className="recommended-section">
       <h2 className="recommended-title">Recommended Products</h2>
       <div className="recommended-grid">
         {loading
-          ? Array.from({ length: 6 }).map((_, i) => (
-              <ProductSkeleton key={i} />
+          ? Array.from({length:6}).map((_,i)=>(
+              <ProductSkeleton key={i}/>
             ))
           : error
-          ? <p style={{ textAlign: "center", color: "red" }}>{error}</p>
+          ? <p style={{ textAlign:"center",color:"red"}}>{error}</p>
           : products.length === 0
-          ? <p style={{ textAlign: "center" }}>No recommended products available.</p>
-          : products.map((product) => {
+          ? <p style={{textAlign: "center"}}>No recommended products available.</p>
+          : products.map((product)=>{
               const imageUrl = product.image?.url || "/placeholder.jpg";
-
               const cartProduct = {
                 id: product._id,
                 title: product.name || "No Name",
@@ -53,15 +53,14 @@ const RecommendedProducts = () => {
                 images: imageUrl ? [imageUrl] : [],
                 folder: "recommended",
               };
-
               return (
                 <div className="recommended-card" key={product._id}>
                   <img
                     src={imageUrl}
                     alt={cartProduct.title}
                     className="recommended-img clickable"
-                    onClick={() =>
-                      navigate(`/product/${product._id}`, { state: cartProduct })
+                    onClick={()=>
+                      navigate(`/product/${product._id}`,{state:cartProduct})
                     }
                   />
                   <div className="recommended-product-conatainer">
