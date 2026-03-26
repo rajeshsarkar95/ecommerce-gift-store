@@ -31,7 +31,7 @@ function FlashDeals() {
       <h2 className="flash-deals-title">Flash Deals</h2>
       <div className="flash-deals-grid">
         {loading
-          ? Array.from({ length: 6 }).map((_,index)=>(
+          ? Array.from({ length: 6}).map((_,index)=>(
             <ProductSkeleton key={index}/>
           ))
           : products.map((product)=>{
@@ -47,8 +47,8 @@ function FlashDeals() {
                   alt={cartProduct.title}
                   className="flash-deals-img"
                   onClick={() =>
-                    navigate(`/product/${product._id}`, {
-                      state: {...cartProduct,folder: "flashdeals" },
+                    navigate(`/product/${product._id}`,{
+                      state: {...cartProduct,folder:"flashdeals"},
                     })
                   }
                 />
