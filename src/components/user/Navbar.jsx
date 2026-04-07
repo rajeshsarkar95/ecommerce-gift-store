@@ -1,5 +1,5 @@
 import "../../styles/Navbar.css";
-import logo from "../../assets/image.png";
+import logo from "../../assets/upharbox.jpeg";
 import { Link } from "react-router-dom";
 import { useCart } from "../../context/CartContext";
 import Dropdown from "./Dropdown";
@@ -10,12 +10,12 @@ const Navbar = () => {
   const { cart } = useCart();
 
   const menuItems = [
-    { label: "Home", path: "/" },
-    { label: "Flash Deals", path: "/flashdealspage" },
-    { label: "Top Sellers", path: "/topsellerpage" },
-    { label: "T-Shirt", path: "/tshirtpage" },
-    { label: "Hoodies Collection", path: "/hoodiesPage" },
-    { label: "Mug Collection", path: "/mugspage" },
+    { label: "Home", path:"/"},
+    { label: "Flash Deals", path: "/flashdealspage"},
+    { label: "Top Sellers", path: "/topsellerpage"},
+    { label: "T-Shirt", path: "/tshirtpage"},
+    { label: "Hoodies Collection", path:"/hoodiesPage"},
+    { label: "Mug Collection", path:"/mugspage"},
   ];
   const [mobileMenu, setMobileMenu] = useState(false);
 
@@ -23,7 +23,7 @@ const Navbar = () => {
     <nav className="navbar">
       <div className="logo">
         <Link to="/">
-          <img src={logo} alt="UphaarBox Logo" />
+          <img src={logo} alt="UphaarBox Logo"/>
         </Link>
       </div>
       <div
@@ -41,30 +41,29 @@ const Navbar = () => {
           )}
         </Link>
       </div>
-
       <div className="search-bar">
-        <input type="text" placeholder="Search products..." />
+        <input type="text" placeholder="Search products..."/>
         <button aria-label="Search">🔍</button>
-        <Dropdown options={menuItems} label="Select Category" />
+        <Dropdown options={menuItems} label="Select Category"/>
       </div>
       <div className="icons">
         <Link to="/cart">
-          <CiShoppingCart className="Add-to-cart" />
+          <CiShoppingCart className="Add-to-cart"/>
           {cart?.length > 0 && (
             <div className="add-counter">{cart.length}</div>
           )}
         </Link>
-        {/* <Link to="/profile">👤</Link> */}
+        {/* <Link to="/profile">👤</Link>*/}
       </div>
       <div className={`mobile-menu ${mobileMenu ? "active" : ""}`}>
         <div className="close-menu" onClick={() => setMobileMenu(false)}>✖</div>
         <div className="search-bar">
           <input type="text" placeholder="Search products..." />
           <button aria-label="Search">🔍</button>
-          <Dropdown options={menuItems} label="Select Category" />
+          <Dropdown options={menuItems} label="Select Category"/>
         </div>
         <div className="menu-links">
-          {menuItems.map((item) => (
+          {menuItems.map((item)=>(
             <Link
               key={item.label}
               to={item.path}
@@ -73,7 +72,6 @@ const Navbar = () => {
               {item.label}
             </Link>
           ))}
-
         </div>
         <div className="icons">
           <Link to="/wishlist" onClick={() => setMobileMenu(false)}>❤️ Wishlist</Link>
