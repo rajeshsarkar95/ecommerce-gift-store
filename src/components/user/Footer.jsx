@@ -6,8 +6,8 @@ const Footer = () => {
     <footer>
       <div className="footer-container">
         <div className="footer-about">
-          <h3>Gifty - Happy Gift Store</h3>
-          <p>Making every gift uniquely yours. Personalized with love </p>
+          <h3>Uphaarbox - Happy Uphaarbox- Store</h3>
+          <p>Making every Uphaarbox uniquely yours. Personalized with love </p>
         </div>
         <div className="footer-links">
           <h4>Top Categories</h4>

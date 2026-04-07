@@ -1,7 +1,7 @@
-
 import React, { useEffect, useState } from "react";
 import "../../styles/Hero.css";
 import axios from "axios";
+
 const defaultHero = {
   title: "Welcome to Online Gift Store",
   subtitle: "Best Gifts Online",
@@ -29,15 +29,16 @@ const Hero = ()=>{
           });
         }
         console.log("Hero Data:", response.data);
-      } catch (error) {
-        console.error("Error fetching hero data", error);
-      } finally {
+      } catch (error){
+        console.error("Error fetching hero data",error);
+      } finally{
         setLoading(false);
       }
     };
     fetchHero();
   }, []);
   if (!heroData) return <p>Loading hero data...</p>;
+  
   return (
     <section className="hero">
       <div className="hero-text">

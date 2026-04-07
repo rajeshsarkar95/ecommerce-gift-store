@@ -5,13 +5,13 @@ import { useCart } from "../../context/CartContext";
 import { useNavigate } from "react-router-dom";
 import ProductSkeleton from "./ProductSkeleton";
 
-export default function MugCollection() {
+export default function MugCollection(){
   const [mugProducts, setMugProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
   const { addToCart } = useCart();
-  
+
   useEffect(() => {
     const fetchMugs = async ()=>{
       try {
@@ -20,22 +20,21 @@ export default function MugCollection() {
         if (!res.data.success) throw new Error("Failed to fetch mugs");
         setMugProducts(res.data.mugs || []);
       } catch (err){
-        setError("Failed to load mugs: " + err.message);
+        setError("Failed to load mugs:" + err.message);
         console.error(err);
       } finally {
         setLoading(false);
       }
     };
     fetchMugs();
-  }, []);
+  },[]);
 
   return (
     <section className="mug-collection-section">
       <h2 className="mug-collection-title">Mug Collection</h2>
       <div className="mug-collection-grid">
-
         {loading
-          ? Array.from({ length:6}).map((_, i) => <ProductSkeleton key={i} />)
+          ? Array.from({ length:6}).map((_,i)=><ProductSkeleton key={i}/>)
           : error
           ? <p>{error}</p>
           : mugProducts.length === 0
@@ -65,12 +64,11 @@ export default function MugCollection() {
                     className="mug-img clickable"
                     loading="lazy"
                     onClick={() =>
-                      navigate(`/product/${product._id}`, {
+                      navigate(`/product/${product._id}`,{
                         state: cartProduct,
                       })
                     }
                   />
-
                   <div className="muga-details-container">
                     <h3 className="mug-title">{cartProduct.title}</h3>
                     <div className="mug-conatainer">

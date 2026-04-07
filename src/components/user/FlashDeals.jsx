@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect,useState} from "react";
 import "../../styles/FlashDeals.css";
 import { useCart } from "../../context/CartContext";
 import ProductSkeleton from "./ProductSkeleton";
 import { useNavigate } from "react-router-dom";
 
-function FlashDeals() {
+function FlashDeals(){
   const { addToCart } = useCart();
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
@@ -25,7 +25,7 @@ function FlashDeals() {
     };
     fetchFlashDeals();
   },[]);
-
+  
   return (
     <section className="flash-deals-section">
       <h2 className="flash-deals-title">Flash Deals</h2>
