@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect,useState} from "react";
 import "../../styles/Hero.css";
 import axios from "axios";
 
@@ -8,6 +8,7 @@ const defaultHero = {
   descriptions: "Find amazing gifts for your loved ones",
   backgroundImage: "/default-hero.webp",
 };
+
 const Hero = ()=>{
   const [heroData, setHeroData] = useState(defaultHero);
   const [loading, setLoading] = useState(true);
@@ -22,13 +23,13 @@ const Hero = ()=>{
           const data = response.data[0];
           const imageUrl = data.backgroundImage || defaultHero.backgroundImage;
           setHeroData({
-            title: data.title || defaultHero.title,
-            subtitle: data.subtitle || defaultHero.subtitle,
-            descriptions: data.descriptions || defaultHero.descriptions,
-            backgroundImage: imageUrl,
+            title:data.title || defaultHero.title,
+            subtitle:data.subtitle || defaultHero.subtitle,
+            descriptions:data.descriptions || defaultHero.descriptions,
+            backgroundImage:imageUrl,
           });
         }
-        console.log("Hero Data:", response.data);
+        console.log("Hero Data:",response.data);
       } catch (error){
         console.error("Error fetching hero data",error);
       } finally{
@@ -36,7 +37,8 @@ const Hero = ()=>{
       }
     };
     fetchHero();
-  }, []);
+  },[]);
+
   if (!heroData) return <p>Loading hero data...</p>;
   
   return (
@@ -61,5 +63,4 @@ const Hero = ()=>{
     </section>
   );
 };
-
 export default Hero;

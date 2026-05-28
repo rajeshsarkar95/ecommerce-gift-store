@@ -13,7 +13,6 @@ const RecommendedProducts = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  
   useEffect(()=>{
     const fetchRecommended = async ()=>{
       try {
@@ -30,7 +29,7 @@ const RecommendedProducts = () => {
     };
     fetchRecommended();
   },[]);
-
+  
   return (
     <section className="recommended-section">
       <h2 className="recommended-title">Recommended Products</h2>
@@ -79,7 +78,6 @@ const RecommendedProducts = () => {
               );
             })}
       </div>
-
       {!loading && products.length > 0 && (
         <div className="recommended-product-btn">
           <button

@@ -17,8 +17,7 @@ const Navbar = () => {
     { label: "Hoodies Collection", path:"/hoodiesPage"},
     { label: "Mug Collection", path:"/mugspage"},
   ];
-  const [mobileMenu, setMobileMenu] = useState(false);
-
+  const [mobileMenu,setMobileMenu] = useState(false);
   return (
     <nav className="navbar">
       <div className="logo">
@@ -55,10 +54,10 @@ const Navbar = () => {
         </Link>
         {/* <Link to="/profile">👤</Link>*/}
       </div>
-      <div className={`mobile-menu ${mobileMenu ? "active" : ""}`}>
+      <div className={`mobile-menu ${mobileMenu ? "active":""}`}>
         <div className="close-menu" onClick={() => setMobileMenu(false)}>✖</div>
         <div className="search-bar">
-          <input type="text" placeholder="Search products..." />
+          <input type="text" placeholder="Search products..."/>
           <button aria-label="Search">🔍</button>
           <Dropdown options={menuItems} label="Select Category"/>
         </div>

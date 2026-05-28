@@ -39,7 +39,7 @@ export default function ProductDetails() {
     };
     fetchRelatedProducts();
   }, [product]);
-
+  
   if (!product) return <h2>Product not found</h2>;
 
   const title = product.title;

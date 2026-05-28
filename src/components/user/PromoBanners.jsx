@@ -6,23 +6,22 @@ function PromoSection() {
   const [banners, setBanners] = useState([]);
 
   useEffect(() => {
-    const fetchBanners = async () => {
+    const fetchBanners = async () =>{
       try {
         const res = await axios.get("https://onlinegiftbackend.onrender.com/api/Promobanners");
-        if (res.data.success) {
+        if (res.data.success){
           setBanners(res.data.data);
         }
-      } catch (error) {
+      } catch (error){
         console.error("Error fetching banners:", error);
       }
     };
     fetchBanners();
-  }, []);
+  },[]);
   return (
     <section className="promo-section">
       <div className="promo-container">
-
-        {banners.map((banner) => (
+        {banners.map((banner)=>(
           <div className="promo-banner" key={banner._id}>
             <img
               src={banner.images?.[0]?.url || "/placeholder.jpg"} 
@@ -35,10 +34,8 @@ function PromoSection() {
             </div>
           </div>
         ))}
-
       </div>
     </section>
   );
 }
-
 export default PromoSection;

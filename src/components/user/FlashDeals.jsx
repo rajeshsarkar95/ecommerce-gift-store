@@ -1,4 +1,4 @@
-import React, { useEffect,useState} from "react";
+import React,{ useEffect,useState} from "react";
 import "../../styles/FlashDeals.css";
 import { useCart } from "../../context/CartContext";
 import ProductSkeleton from "./ProductSkeleton";
@@ -10,9 +10,10 @@ function FlashDeals(){
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  
   useEffect(()=>{
     const fetchFlashDeals = async ()=>{
-      try {
+      try { 
         const res = await fetch("https://onlinegiftbackend.onrender.com/api/flashdeals");
         const data = await res.json();
         console.log("Fetched flash deals:",data);
@@ -79,7 +80,6 @@ function FlashDeals(){
           </button>
         </div>
       )}
-
     </section>
   );
 }

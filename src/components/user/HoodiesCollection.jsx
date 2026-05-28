@@ -91,7 +91,6 @@ export default function HoodiesCollection() {
                 );
               })}
       </div>
-
       {!loading && hoodies.length > 0 && (
         <div className="hoodies-more-buttons-con">
           <button
@@ -102,7 +101,6 @@ export default function HoodiesCollection() {
           </button>
         </div>
       )}
-
     </section>
   );
 }

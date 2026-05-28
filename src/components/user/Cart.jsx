@@ -6,7 +6,7 @@ export default function Cart(){
   const navigate = useNavigate();
   const { cart, removeFromCart, increaseQty, decreaseQty } = useCart();
   const totalPrice = cart.reduce((sum,item)=> sum + item.price * item.qty,0);
-
+  
   const formatCartForWhatsapp = () =>{
   if (cart.length === 0) return "";
   let message = "Hello! I want to order the following items:\n\n";
@@ -52,7 +52,7 @@ export default function Cart(){
           <div className="item-total">₹{item.price * item.qty}</div>
         </div>
       ))}
-      
+
       {cart.length > 0 && (
         <div className="cart-summary">
           <h2>Total: ₹{totalPrice}</h2>

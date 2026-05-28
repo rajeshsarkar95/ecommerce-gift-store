@@ -17,13 +17,12 @@ function TopBar() {
       try {
         const response = await axios.get("https://onlinegiftbackend.onrender.com/api/topbar");
         setTopBar(response.data[0]);
-      } catch (error) {
-        console.error("Error fetching TopBar:", error);
+      } catch (error){
+        console.error("Error fetching TopBar:",error);
       } finally {
         setLoading(false);
       }
     };
-
     fetchTopBar();
   }, []);
   if (loading) return null;

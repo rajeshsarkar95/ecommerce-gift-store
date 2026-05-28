@@ -17,12 +17,12 @@ function TopSellers() {
       try {
         const res = await axios.get("https://onlinegiftbackend.onrender.com/api/topseller");
         const data = res.data.data || res.data;
-        if (Array.isArray(data)) {
+        if (Array.isArray(data)){
           setProducts(data);
         } else {
           setProducts([]);
         }
-      } catch (err) {
+      } catch (err){
         setError("Failed to fetch products");
         console.error(err);
       } finally {
@@ -76,7 +76,7 @@ function TopSellers() {
               );
             })}
       </div>
-
+      
       {!loading && products.length > 0 && (
         <div className="topSeller-bottom-buttons-more">
           <button
@@ -87,7 +87,6 @@ function TopSellers() {
           </button>
         </div>
       )}
-
       {!loading && (
         <div className="top-sellers-back-top">
           <a href="#top">↑ Back to top</a>
