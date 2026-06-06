@@ -9,7 +9,6 @@ function FlashDeals(){
   const navigate = useNavigate();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-
   
   useEffect(()=>{
     const fetchFlashDeals = async ()=>{

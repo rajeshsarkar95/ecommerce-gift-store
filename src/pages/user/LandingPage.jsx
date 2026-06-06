@@ -20,7 +20,8 @@ export default function LandingPage(){
   const [isMobile, setIsMobile] = useState(false);
   useEffect(() => {
     setIsMobile(window.innerWidth < 768);
-  }, []);
+  },[]);
+
   return (
     <>
       {!isMobile && <Hero />}
