@@ -18,27 +18,27 @@ import DiscountBanner from "../../components/user/DiscountBanner";
 
 export default function LandingPage(){
   const [isMobile, setIsMobile] = useState(false);
-  useEffect(() => {
+  useEffect(()=>{
     setIsMobile(window.innerWidth < 768);
   },[]);
 
   return (
     <>
-      {!isMobile && <Hero />}
+      {!isMobile && <Hero/>}
       <FlashDeals/>
       <PromoSection/>
       <DiscountBanner/>
       <TopSellers/>
-      <PopularCategories />
-      <PersonalizedGifts />
-      <TShirtCollection />
+      <PopularCategories/>
+      <PersonalizedGifts/>
+      <TShirtCollection/>
       <OffersBanner/>
-      <HoddiesCollection />
-      <DiscountBanner />
-      <MugCollection />
-      <FeaturedProducts />
-      <RecommendedProducts />
-      <Newsletter />
+      <HoddiesCollection/>
+      <DiscountBanner/>
+      <MugCollection/>
+      <FeaturedProducts/>
+      <RecommendedProducts/>
+      <Newsletter/>
       <WhatsAppIcon/>
       <Footer />
     </>
