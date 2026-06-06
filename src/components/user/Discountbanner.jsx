@@ -11,24 +11,24 @@ const styles = {
     margin: '0 auto',
     fontFamily: "'Segoe UI', Arial, sans-serif",
   },
-  heading: {
+  heading:{
     color: '#ffffff',
     fontSize: '28px',
     fontWeight: '700',
     marginBottom: '12px',
     lineHeight: '1.3',
   },
-  headingSpan: {
-    color: '#c9a84c',
-    fontStyle: 'italic',
+  headingSpan:{
+    color:'#c9a84c',
+    fontStyle:'italic',
   },
-  paragraph: {
+  paragraph:{
     color:'#aaaaaa',
     fontSize:'13px',
     lineHeight:'1.6',
     marginBottom:'28px',
   },
-  codeBox: {
+  codeBox:{
     display: 'inline-block',
     border: '1.5px dashed #c9a84c',
     borderRadius: '8px',
@@ -48,7 +48,7 @@ const styles = {
     fontWeight: '700',
     letterSpacing: '4px',
   },
-  ctaBtn: {
+  ctaBtn:{
     display: 'inline-block',
     background: '#4ade80',
     color: '#111111',
@@ -62,7 +62,6 @@ const styles = {
     marginTop: '8px',
   },
 }
-
 function DiscountBanner(){
   return (
     <div style={styles.wrapper}>
