@@ -5,71 +5,74 @@ import "../../styles/WhatsApp.css";
 const WhatsAppIcon = ({
   phoneNumber = "",
   message = "",
-  imageUrls = [],
   shareImages = [],
   size = 40,
   color = "#25D366",
   className = "",
-}) => {
-  const buildWaLink = ()=>{
-    let fullMessage = message;
-    if (imageUrls.length > 0){
-      const imgBlock = imageUrls
-        .map((url, i) => `🖼 Image ${i + 1}: ${url}`)
-        .join("\n");
-      fullMessage = `${message}\n\n${imgBlock}`;
-    }
-    const encoded = encodeURIComponent(fullMessage);
+})=> {
+const buildWaLink = ()=>{
+    const encoded = encodeURIComponent(message);
     return phoneNumber
       ? `https://wa.me/${phoneNumber}?text=${encoded}`
       : `https://wa.me/?text=${encoded}`;
   };
-  const handleClick = async (e)=>{
-    if (shareImages.length > 0 && navigator.share){
-      e.preventDefault();
+  const fetchImageFiles = async ()=>{
+    return Promise.all(
+      shareImages.map(async (imgUrl,index)=>{
+        const response = await fetch(imgUrl);
+        if (!response.ok) throw new Error(`Failed to fetch image: ${imgUrl}`);
+        const blob = await response.blob();
+        const ext = blob.type.split("/")[1] || "jpg";
+        return new File([blob],`product-${index + 1}.${ext}`,{
+          type: blob.type,
+        });
+      })
+    );
+  };
+const handleClick = async (e)=>{
+    e.preventDefault();
+    const hasImages = shareImages.length > 0;
+    const canUseNativeShare = typeof navigator.share === "function";
+    const canUseCanShare = typeof navigator.canShare === "function";
+    if (hasImages && canUseNativeShare){
       try {
-        const files = await Promise.all(
-          shareImages.map(async (imgUrl, index) => {
-            const response = await fetch(imgUrl);
-            const blob = await response.blob();
-            return new File(
-              [blob],
-              `image-${index + 1}.jpg`,
-              { type: blob.type }
-            );
-          })
-        );
+        const files = await fetchImageFiles();
         const shareData = {
-          title: "Product Details",
-          text: message,
+          title:"Product Details",
+          text:message,
           files,
         };
-        if (navigator.canShare && navigator.canShare({ files })) {
-          await navigator.share(shareData);
-          return;
-        }
-      } catch (err) {
-        console.error("Share failed:", err);
+        const finalData =
+          canUseCanShare && navigator.canShare({files})
+            ? shareData
+            : {title:shareData.title,text:shareData.text};
+        await navigator.share(finalData);
+        return;
+      } catch (err){
+        if (err.name === "AbortError") return;
+        console.warn("Native share failed,falling back to WhatsApp:",err);
       }
     }
-    window.open(buildWaLink(), "_blank", "noopener,noreferrer");
+    window.open(buildWaLink(),"_blank","noopener,noreferrer");
   };
   return (
     <button
       onClick={handleClick}
       className={`whatsapp-icon ${className}`}
       style={{
-        fontSize: size,
+        fontSize:size,
         color,
-        background: "none",
-        border: "none",
-        cursor: "pointer",
+        background:"none",
+        border:"none",
+        cursor:"pointer",
+        padding:0,
+        lineHeight:1,
       }}
       title="Share on WhatsApp"
+      aria-label="Share on WhatsApp"
     >
-      <FaWhatsapp />
+      <FaWhatsapp/>
     </button>
   );
 };
-
 export default WhatsAppIcon;

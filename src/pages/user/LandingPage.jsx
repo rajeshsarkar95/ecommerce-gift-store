@@ -14,25 +14,26 @@ import RecommendedProducts from "../../components/user/RecommendedProducts";
 import Footer from "../../components/user/Footer";
 import Newsletter from "../../components/user/Newsletter";
 import WhatsAppIcon from "../../components/user/WhatapsIcons";
+import DiscountBanner from "../../components/user/DiscountBanner";
 
-export default function LandingPage() {
+export default function LandingPage(){
   const [isMobile, setIsMobile] = useState(false);
   useEffect(() => {
     setIsMobile(window.innerWidth < 768);
   }, []);
-
-
   return (
     <>
       {!isMobile && <Hero />}
-      <FlashDeals />
-      <PromoSection />
-      <TopSellers />
+      <FlashDeals/>
+      <PromoSection/>
+      <DiscountBanner/>
+      <TopSellers/>
       <PopularCategories />
       <PersonalizedGifts />
       <TShirtCollection />
+      <OffersBanner/>
       <HoddiesCollection />
-      <OffersBanner />
+      <DiscountBanner />
       <MugCollection />
       <FeaturedProducts />
       <RecommendedProducts />
