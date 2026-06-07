@@ -14,7 +14,7 @@ createRoot(document.getElementById('root')).render(
     <BrowserRouter>
       <CartProvider>
        <QueryClientProvider client={queryClient}>
-          <App />
+          <App/>
         </QueryClientProvider>
       </CartProvider>
     </BrowserRouter>

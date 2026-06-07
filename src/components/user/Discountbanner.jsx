@@ -18,7 +18,7 @@ const styles = {
     marginBottom: '12px',
     lineHeight: '1.3',
   },
-  headingSpan:{
+  headingSpan: {
     color:'#c9a84c',
     fontStyle:'italic',
   },
@@ -59,14 +59,15 @@ const styles = {
     border: 'none',
     cursor: 'pointer',
     textDecoration: 'none',
-    marginTop: '8px',
+    marginTop:'8px',
   },
 }
+
 function DiscountBanner(){
   return (
     <div style={styles.wrapper}>
       <h1 style={styles.heading}>
-        Get <span style={styles.headingSpan}>15% Off</span> Your First Order
+        Get <span style={styles.headingSpan}>15% Off</span>Your First Order
       </h1>
       <p style={styles.paragraph}>
         New here? Use the code below and save on your first personalised gift.<br/>
@@ -83,5 +84,4 @@ function DiscountBanner(){
     </div>
   )
 }
-
-export default DiscountBanner
+export default DiscountBanner;
