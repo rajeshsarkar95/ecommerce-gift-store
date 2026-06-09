@@ -71,7 +71,7 @@ export default function HoodiesCollection() {
                 className="hoodieImage"
                 loading="lazy"
                 onClick={() =>
-                  navigate(`/product/${product._id}`, {
+                  navigate(`/product/${product._id}`,{
                     state: cartProduct,
                   })
                 }
@@ -89,7 +89,6 @@ export default function HoodiesCollection() {
                     Add Cart
                   </button>
                 </div>
-
               </div>
             </div>
           );

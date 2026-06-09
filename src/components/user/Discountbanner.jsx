@@ -1,15 +1,15 @@
 import React from 'react'
 
 const styles = {
-  wrapper: {
-    background: '#1a1a1a',
-    borderRadius: '12px',
-    padding: '48px 32px',
-    textAlign: 'center',
-    maxWidth: '800px',
-    width: '100%',
-    margin: '0 auto',
-    fontFamily: "'Segoe UI', Arial, sans-serif",
+  wrapper:{
+    background:'#1a1a1a',
+    borderRadius:'12px',
+    padding:'48px 32px',
+    textAlign:'center',
+    maxWidth:'800px',
+    width:'100%',
+    margin:'0 auto',
+    fontFamily:"'Segoe UI', Arial, sans-serif",
   },
   heading:{
     color: '#ffffff',
@@ -18,7 +18,7 @@ const styles = {
     marginBottom: '12px',
     lineHeight: '1.3',
   },
-  headingSpan: {
+  headingSpan:{
     color:'#c9a84c',
     fontStyle:'italic',
   },
@@ -43,22 +43,22 @@ const styles = {
     marginBottom: '8px',
   },
   codeValue:{
-    color: '#ffffff',
-    fontSize: '26px',
-    fontWeight: '700',
-    letterSpacing: '4px',
+    color:'#ffffff',
+    fontSize:'26px',
+    fontWeight:'700',
+    letterSpacing:'4px',
   },
   ctaBtn:{
-    display: 'inline-block',
-    background: '#4ade80',
-    color: '#111111',
-    fontSize: '14px',
-    fontWeight: '600',
-    padding: '13px 30px',
-    borderRadius: '6px',
-    border: 'none',
-    cursor: 'pointer',
-    textDecoration: 'none',
+    display:'inline-block',
+    background:'#4ade80',
+    color:'#111111',
+    fontSize:'14px',
+    fontWeight:'600',
+    padding:'13px 30px',
+    borderRadius:'6px',
+    border:'none',
+    cursor:'pointer',
+    textDecoration:'none',
     marginTop:'8px',
   },
 }
@@ -66,7 +66,7 @@ const styles = {
 function DiscountBanner(){
   return (
     <div style={styles.wrapper}>
-      <h1 style={styles.heading}>
+     <h1 style={styles.heading}>
         Get <span style={styles.headingSpan}>15% Off</span>Your First Order
       </h1>
       <p style={styles.paragraph}>

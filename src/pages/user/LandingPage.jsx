@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import {useEffect,useState} from "react";
 import Hero from "../../components/user/Hero";
 import FlashDeals from "../../components/user/FlashDeals";
 import PromoSection from "../../components/user/PromoBanners";
@@ -21,8 +21,8 @@ export default function LandingPage(){
   useEffect(()=>{
     setIsMobile(window.innerWidth < 768);
   },[]);
-
-  return (
+  
+  return(
     <>
       {!isMobile && <Hero/>}
       <FlashDeals/>
@@ -34,13 +34,12 @@ export default function LandingPage(){
       <TShirtCollection/>
       <OffersBanner/>
       <HoddiesCollection/>
-      <DiscountBanner/>
       <MugCollection/>
       <FeaturedProducts/>
       <RecommendedProducts/>
       <Newsletter/>
       <WhatsAppIcon/>
-      <Footer />
+      <Footer/>
     </>
   );
 }

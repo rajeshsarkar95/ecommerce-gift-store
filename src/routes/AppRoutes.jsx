@@ -1,5 +1,4 @@
-import { Routes, Route } from "react-router-dom";
-
+import {Routes,Route} from "react-router-dom";
 import UserLayout from "../layouts/UserLayout";
 import LandingPage from "../pages/user/LandingPage";
 import ProductDetails from "../components/user/ProductDetails";
@@ -19,7 +18,7 @@ export default function AppRoutes(){
   return (
     <Routes>
       <Route element={<UserLayout/>}>
-        <Route path="/" element={<LandingPage />}/>
+        <Route path="/" element={<LandingPage/>}/>
         <Route path="/product/:id" element={<ProductDetails/>}/>
         <Route path="/cart" element={<Cart/>}/>
         <Route path="/flashdealspage" element={<FlashDealsPage/>}/>
@@ -36,7 +35,7 @@ export default function AppRoutes(){
         element={
           <AdminPrivateRoute>
             <AdminDashboard/>
-          </AdminPrivateRoute>
+         </AdminPrivateRoute>
         }
       />
     </Routes>
