@@ -63,7 +63,6 @@ const styles = {
   },
 }
 
-
 function DiscountBanner(){
   return (
     <div style={styles.wrapper}>
@@ -74,7 +73,7 @@ function DiscountBanner(){
         New here? Use the code below and save on your first personalised gift.<br/>
         No minimum order required.
       </p>
-      <div style={styles.codeBox}>
+      <div style={styles.codeBox}>5
         <div style={styles.codeLabel}>Your Gift Code</div>
         <div style={styles.codeValue}>UPHAAR15</div>
       </div>
