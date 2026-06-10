@@ -63,6 +63,7 @@ const styles = {
   },
 }
 
+
 function DiscountBanner(){
   return (
     <div style={styles.wrapper}>
