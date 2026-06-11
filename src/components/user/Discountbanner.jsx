@@ -12,11 +12,11 @@ const styles = {
     fontFamily:"'Segoe UI', Arial, sans-serif",
   },
   heading:{
-    color: '#ffffff',
-    fontSize: '28px',
-    fontWeight: '700',
-    marginBottom: '12px',
-    lineHeight: '1.3',
+    color:'#ffffff',
+    fontSize:'28px',
+    fontWeight:'700',
+    marginBottom:'12px',
+    lineHeight:'1.3',
   },
   headingSpan:{
     color:'#c9a84c',
@@ -36,11 +36,11 @@ const styles = {
     marginBottom: '28px',
   },
   codeLabel:{
-    color: '#c9a84c',
-    fontSize: '10px',
-    letterSpacing: '2px',
-    textTransform: 'uppercase',
-    marginBottom: '8px',
+    color:'#c9a84c',
+    fontSize:'10px',
+    letterSpacing:'2px',
+    textTransform:'uppercase',
+    marginBottom:'8px',
   },
   codeValue:{
     color:'#ffffff',
@@ -70,7 +70,8 @@ function DiscountBanner(){
         Get <span style={styles.headingSpan}>15% Off</span>Your First Order
       </h1>
       <p style={styles.paragraph}>
-        New here? Use the code below and save on your first personalised gift.<br/>
+        New here? Use the code below and save on your first personalised gift.
+        <br/>
         No minimum order required.
       </p>
       <div style={styles.codeBox}>5

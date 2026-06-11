@@ -21,8 +21,8 @@ export default function LandingPage(){
   useEffect(()=>{
     setIsMobile(window.innerWidth < 768);
   },[]);
-  
-  return(
+
+  return (
     <>
       {!isMobile && <Hero/>}
       <FlashDeals/>
