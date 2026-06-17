@@ -17,7 +17,7 @@ import WhatsAppIcon from "../../components/user/WhatapsIcons";
 import DiscountBanner from "../../components/user/DiscountBanner";
 
 export default function LandingPage(){
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobile,setIsMobile] = useState(false);
   useEffect(()=>{
     setIsMobile(window.innerWidth < 768);
   },[]);

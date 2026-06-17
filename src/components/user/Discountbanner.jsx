@@ -71,7 +71,7 @@ function DiscountBanner(){
       </h1>
       <p style={styles.paragraph}>
         New here? Use the code below and save on your first personalised gift.
-        <br/>
+      <br/>
         No minimum order required.
       </p>
       <div style={styles.codeBox}>5
