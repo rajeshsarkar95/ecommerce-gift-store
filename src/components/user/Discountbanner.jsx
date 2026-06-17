@@ -71,14 +71,12 @@ function DiscountBanner(){
       </h1>
       <p style={styles.paragraph}>
         New here? Use the code below and save on your first personalised gift.
-      <br/>
         No minimum order required.
       </p>
       <div style={styles.codeBox}>5
         <div style={styles.codeLabel}>Your Gift Code</div>
         <div style={styles.codeValue}>UPHAAR15</div>
       </div>
-      <br/>
       <a style={styles.ctaBtn} href="https://wa.me/8439390374" target="_blank" rel="noreferrer">
         Claim Offer on WhatsApp →
       </a>
