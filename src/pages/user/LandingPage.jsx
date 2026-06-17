@@ -27,7 +27,7 @@ export default function LandingPage(){
       {!isMobile && <Hero/>}
       <FlashDeals/>
       <PromoSection/>
-      <DiscountBanner/>
+      {/* <DiscountBanner/> */}
       <TopSellers/>
       <PopularCategories/>
       <PersonalizedGifts/>
