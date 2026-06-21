@@ -62,7 +62,6 @@ const styles = {
     marginTop:'8px',
   },
 }
-
 function DiscountBanner(){
   return (
     <div style={styles.wrapper}>

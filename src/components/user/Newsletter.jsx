@@ -2,23 +2,23 @@ import React from "react";
 import "../../styles/Newsletter.css";
 
 const newsletterData = {
-  title: "Subscribe Newsletter",
-  description: "Don't miss out on thousands of great deals & promotions!",
-  placeholder: "Enter your email here..."
+  title: "Follow Us on Instagram",
+  description: "Stay updated with our latest posts and offers!",
 };
+
 function Newsletter() {
+  const handleClick = () => {
+    window.open("https://www.instagram.com/uphaarbox_by_kumarbrothers?igsh=MWF0dDFtcnRnb28ydQ%3D%3D&utm_source=qr", "_blank");
+  };
+
   return (
     <section className="newsletter">
       <h2>{newsletterData.title}</h2>
       <p>{newsletterData.description}</p>
-      <form onSubmit={(e) => e.preventDefault()}>
-        <input
-          type="email"
-          placeholder={newsletterData.placeholder}
-          required
-        />
-        <button type="submit">Subscribe</button>
-      </form>
+
+      <button onClick={handleClick}>
+        Follow on Instagram
+      </button>
     </section>
   );
 }
