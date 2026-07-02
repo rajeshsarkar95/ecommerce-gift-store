@@ -1,56 +1,59 @@
 .offer-banners {
   display: flex;
+  flex-direction: column;
   justify-content: center;
-  flex-wrap: wrap;
   margin: 40px auto;
   max-width: 1200px;
   gap: 15px;
   padding: 0 15px;
   position: relative;
 }
-
 .slider {
-  gap: 15px;
   display: flex;
-  transition: transform 6s ease-in-out;
-}
-
-.slide img {
+  flex-wrap: wrap;
+  gap: 15px;
   width: 100%;
-  height: 300px;
-  object-fit: cover;
-  display: block;
-  border-radius: 5px;
+  transition: transform 0.6s ease-in-out;
 }
-
-.offer {
-  flex: 1 1 45%; 
+.slide {
+  flex: 1 1 calc(50% - 7.5px); 
   min-width: 280px;
   position: relative;
   overflow: hidden;
   border-radius: 12px;
 }
-
+.slide img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  display: block;
+  border-radius: 12px;
+}
+.offer {
+  flex: 1 1 45%;
+  min-width: 280px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+}
 .offer img {
   width: 100%;
   height: auto;
   border-radius: 12px;
   object-fit: cover;
 }
-
 .offer-text {
   position: absolute;
   top: 15%;
   left: 10%;
   color: #fff;
 }
-
 .offer-text h2 {
-  font-size: 1.8rem;
+  font-size: clamp(1.2rem, 2.5vw, 1.8rem);
   font-weight: bold;
   line-height: 1.2;
 }
-
 .offer-text button {
   background: #ff6b00;
   color: white;
@@ -61,13 +64,20 @@
   margin-top: 10px;
   font-size: 1rem;
 }
-
-/* Mobile: ≤768px — one image per row */
+.visitor-badge {
+  text-align: center;
+  font-size: 0.9rem;
+  padding: 6px 12px;
+  margin-bottom: 8px;
+}
+.visitor-badge.first-visit {
+  color: #d6336c;
+  font-weight: 600;
+}
+.visitor-badge.returning-visit {
+  color: #555;
+}
 @media (max-width: 768px) {
-  .offer {
-    flex: 1 1 100%; /* single image per row */
-    min-width: 100%;
-  }
   .offer-text h2 {
     font-size: 1.4rem;
   }
@@ -75,16 +85,20 @@
     padding: 8px 15px;
     font-size: 0.9rem;
   }
-  .slide img {
-    height: 250px; /* smaller height for mobile */
-  }
 }
-
-/* Small Mobile: ≤480px */
-@media (max-width: 480px) {
+@media (max-width: 640px) {
+  .offer-banners {
+    padding: 0 10px;
+    margin: 24px auto;
+  }
+  .slide,
   .offer {
     flex: 1 1 100%;
     min-width: 100%;
+  }
+  .slide img {
+    aspect-ratio: 16 / 10;
+    border-radius: 8px;
   }
   .offer-text {
     top: 10%;
@@ -97,7 +111,7 @@
     padding: 6px 12px;
     font-size: 0.8rem;
   }
-  .slide img {
-    height: 200px; /* tiny screen */
+  .visitor-badge {
+    font-size: 0.8rem;
   }
 }

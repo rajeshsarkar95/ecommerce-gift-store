@@ -14,7 +14,7 @@ const Dropdown = ({ options }) => {
     navigate(path);
   };
   useEffect(() => {
-    const handleClickOutside = (event) => {
+    const handleClickOutside = (event) =>{
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setIsOpen(false);
       }
@@ -31,7 +31,7 @@ const Dropdown = ({ options }) => {
 
       {isOpen && (
         <div className="dropdown-list">
-          {options.map((item, index) => (
+          {options.map((item, index)=>(
             <div
               key={index}
               className="dropdown-item"
